@@ -19,7 +19,9 @@ HEADERS = (u'Book',
            u'Page',
            u'Location',
            u'Date',
-           u'Text')
+           u'Text',
+           u'Highlight',
+           u'Note')
 DEFAULT_DELIMITER = '=' * 10
 DEFAULT_PATTERN = ur"""
                 ^\s*                           	# 
@@ -34,6 +36,8 @@ DEFAULT_PATTERN = ur"""
                 (?P<%s>(.*)(AM|PM))             # Date & time
                 \s*                            	# 
                 (?P<%s>.*?)                     # Text
+                (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
+                (Inactive (?P<%s>.*?))?         # Eats up Note Header
                 \s*$ 		                #
                 """ % HEADERS
 DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE
@@ -253,6 +257,11 @@ class TableModel(QAbstractTableModel):
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
                             # Edit previous row
 
+                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.DisplayRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
+                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole]
+                            self.tableData[len(self.tableData)-1][u'Note'][Qt.DisplayRole] = self.tableData[len(self.tableData)][u'Text'][Qt.DisplayRole]
+                            self.tableData[len(self.tableData)-1][u'Note'][Qt.EditRole] = self.tableData[len(self.tableData)][u'Text'][Qt.EditRole]
+
                             highlight = '%s%s%s' % (self.delimiters['Before'],
                                                     import_data[row - 1][u'Text'][Qt.DisplayRole],
                                                     self.delimiters['After'])
@@ -260,9 +269,15 @@ class TableModel(QAbstractTableModel):
                             self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
 
                         elif self.notesPosition == 'Before highlights' and\
+                             row < len(import_data) and\
                              import_data[row][u'Date'][Qt.DisplayRole] == import_data[row + 1][u'Date'][Qt.DisplayRole] and\
                              import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
                             # Combine with next row, skip next row
+
+                            import_data[row][u'Highlight'][Qt.DisplayRole] = import_data[row + 1][u'Text'][Qt.DisplayRole]
+                            import_data[row][u'Highlight'][Qt.EditRole] = import_data[row + 1][u'Text'][Qt.EditRole]
+                            import_data[row][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
+                            import_data[row][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
 
                             highlight = '%s%s%s' % (self.delimiters['Before'],
                                                     import_data[row + 1][u'Text'][Qt.DisplayRole],
