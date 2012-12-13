@@ -271,7 +271,7 @@ class MainWin(QMainWindow):
             #self.saveCsvComma(unicode(fileName[0]))
         elif fileName[1] == 'Tab separated values, UTF-16LE (*.csv)':
             self.saveCsvTab(unicode(fileName[0]))
-            
+
     def onExportCustom(self):
         """
         Slot for custom export actions triggered signals
@@ -312,28 +312,8 @@ class MainWin(QMainWindow):
             # The top code is replaced to work when not enought variables to replace
             bodyLine = body
             for i in wildCards:
-                if i == 'Date':
-                    bodyLine = bodyLine.replace(u'?P<%s>' % i, unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(i)), Qt.EditRole).toDateTime().toString(dateFormat)))
-                elif i == 'XmlSafeText':
-                    bodyLine = bodyLine.replace(u'?P<%s>' % i, re.sub("<(?!br/)","&lt;", re.sub("(?<!br/)>","&gt;",re.sub("&","&amp;",unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index('Text')), Qt.DisplayRole).toString()))))) # .translate({u',':u'_',u'<':u'&lt;',u'>':u'&gt;',u'&':u'&amp;'})
-                elif i == 'EvernoteTagBook':
-                    # replace_string = unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index('Book')), Qt.DisplayRole).toString()).translate(dict.fromkeys(map(ord, ','), None))
-                    replace_string = unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index('Book')), Qt.DisplayRole).toString()).translate(dict((ord(char), u'_') for char in u','))
-                    if len(replace_string) > 100:
-                        replace_string = replace_string[:97] + '...'
-                    if len(replace_string) > 0:
-                        replace_string = u'<tag>' + replace_string + u'</tag>'
-                    bodyLine = bodyLine.replace(u'?P<%s>' % i, replace_string)
-                elif i == 'EvernoteTagAuthor':
-                    # replace_string = unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index('Author')), Qt.DisplayRole).toString()).translate(dict.fromkeys(map(ord, ','), None))
-                    replace_string = unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index('Author')), Qt.DisplayRole).toString()).translate(dict((ord(char), u'_') for char in u','))
-                    if len(replace_string) > 100:
-                        replace_string = replace_string[:97] + '...'
-                    if len(replace_string) > 0:
-                        replace_string = u'<tag>' + replace_string + u'</tag>'
-                    bodyLine = bodyLine.replace(u'?P<%s>' % i, replace_string)
-                else:
-                    bodyLine = bodyLine.replace(u'?P<%s>' % i, unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(i)), Qt.DisplayRole).toString()))
+                bodyLine = bodyLine.replace(u'?P<%s>' % i, self.processWildcard(name, i, row, dateFormat))
+
             fileOut.write(bodyLine)
         
         fileOut.write(bottom)
@@ -343,7 +323,41 @@ class MainWin(QMainWindow):
                                                    QDir.dirName(QDir(fileName)))
         print status
         self.ui.statusBar.showMessage(status, 3000)
-            
+
+    def processWildcard(self, template_name, wildcard, row, dateFormat):
+        # sys.stderr.write(u'STATUS: parsing ' + wildcard + u'\n')
+        # catch formatting prefixes, recursively call wildcards
+        try:
+            # Capture MergedText Tag because it needs special logic to handle prefixes
+            if wildcard[-10:] == 'CustomText':
+                if self.processWildcard(template_name, 'Note', row, dateFormat) == '':
+                    return self.processWildcard(template_name, wildcard[:-10] + 'Text', row, dateFormat)
+                else:
+                    # response = self.settings['Export Settings'][template_name]['Attached Highlights']
+                    response = u'PatternDriven<br/>?P<Note><br/><br/>REGARDING HIGHLIGHT<br/>=========<br/>?P<Highlight><br/>=========<br/>END HIGHLIGHT<br/>  '
+                    response = response.replace(u'?P<%s>' % 'Note', self.processWildcard(template_name, wildcard[:-10] + 'Note', row, dateFormat))
+                    response = response.replace(u'?P<%s>' % 'Highlight', self.processWildcard(template_name, wildcard[:-10] + 'Highlight', row, dateFormat))
+                    return response
+
+            # support for prefixes
+            elif wildcard[:11] == 'EvernoteTag':
+                replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat).translate(dict((ord(char), u'_') for char in u','))
+                if len(replace_string) > 100:
+                    replace_string = replace_string[:97] + '...'
+                if len(replace_string) > 0:
+                    replace_string = u'<tag>' + replace_string + u'</tag>'
+                return replace_string
+            elif wildcard[:7] == 'XmlSafe':
+                return re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[7:], row, dateFormat))))
+
+            # return data types
+            elif wildcard == 'Date':
+                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
+            else:
+                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole).toString())
+        except:
+            return u''
+
     def onFilter(self):
         """
         Slot for filterAction signal

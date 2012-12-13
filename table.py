@@ -19,9 +19,9 @@ HEADERS = (u'Book',
            u'Page',
            u'Location',
            u'Date',
-           u'Text',
            u'Highlight',
-           u'Note')
+           u'Note',
+           u'Text')
 DEFAULT_DELIMITER = '=' * 10
 DEFAULT_PATTERN = ur"""
                 ^\s*                           	# 
@@ -35,9 +35,9 @@ DEFAULT_PATTERN = ur"""
                 .*?Added\ on\             	#
                 (?P<%s>(.*)(AM|PM))             # Date & time
                 \s*                            	# 
-                (?P<%s>.*?)                     # Text
                 (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
                 (Inactive (?P<%s>.*?))?         # Eats up Note Header
+                (?P<%s>.*?)                     # Text preserved for backwards compatibility
                 \s*$ 		                #
                 """ % HEADERS
 DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE
@@ -262,6 +262,7 @@ class TableModel(QAbstractTableModel):
                             self.tableData[len(self.tableData)-1][u'Note'][Qt.DisplayRole] = self.tableData[len(self.tableData)][u'Text'][Qt.DisplayRole]
                             self.tableData[len(self.tableData)-1][u'Note'][Qt.EditRole] = self.tableData[len(self.tableData)][u'Text'][Qt.EditRole]
 
+                            # merging process preserved for backwards compatibility
                             highlight = '%s%s%s' % (self.delimiters['Before'],
                                                     import_data[row - 1][u'Text'][Qt.DisplayRole],
                                                     self.delimiters['After'])
@@ -279,6 +280,7 @@ class TableModel(QAbstractTableModel):
                             import_data[row][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
                             import_data[row][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
 
+                            # merging process preserved for backwards compatibility
                             highlight = '%s%s%s' % (self.delimiters['Before'],
                                                     import_data[row + 1][u'Text'][Qt.DisplayRole],
                                                     self.delimiters['After'])
@@ -289,11 +291,10 @@ class TableModel(QAbstractTableModel):
                             skip = True
                             # create modified row and append
 
-
-                    else:
+                    else: # if row is note
                         #self.tableData[rows] = line
                         self.tableData.append(import_data[row])
-        else:
+        else: # if attach notes flag is on
             for row in import_data:
                 self.tableData.append(row)
 

@@ -67,7 +67,7 @@
 	},
 	"Export Settings": {
 		"Evernote": {
-			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n\t<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t\t\t<div>Source:  ?P<Book></div>\n\t\t\t<div>Author(s):  ?P<Author></div>\n\t\t\t<div>Page(s):  ?P<Page></div>\n\t\t\t<div>Location:  ?P<Location></div>\n\t\t\t<div><br/></div>\n\t\t\t<div>?P<XmlSafeText></div>\n\t\t</en-note>\n\t]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByKlippings</tag>?P<EvernoteBookTag>?P<EvernoteAuthorTag>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>\n",
+			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n\t<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t\t\t<div>Source:  ?P<Book></div>\n\t\t\t<div>Author(s):  ?P<Author></div>\n\t\t\t<div>Page(s):  ?P<Page></div>\n\t\t\t<div>Location:  ?P<Location></div>\n\t\t\t<div><br/></div>\n\t\t\t<div>?P<XmlSafeCustomText></div>\n\t\t</en-note>\n\t]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>\n",
 			"Extension": "enex",
 			"Bottom": "</en-export>",
 			"Default": "True",
