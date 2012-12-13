@@ -1,0 +1,1595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settingsDialog</class>
+ <widget class="QDialog" name="settingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>505</width>
+    <height>501</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="mainWin.qrc">
+    <normaloff>:/icons/Bloomy/configure.png</normaloff>:/icons/Bloomy/configure.png</iconset>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabsSettings">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabApplication">
+      <attribute name="title">
+       <string>Application</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QGroupBox" name="groupNotesAttachments">
+         <property name="title">
+          <string>Notes</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="chbAttachNotes">
+            <property name="whatsThis">
+             <string>Highlights and related notes are stored separately in 'My Clippings.txt'. Check the box if you want to unify them in a one table row.</string>
+            </property>
+            <property name="text">
+             <string>Attach notes to highlights they are attributed to:</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelNotesPosition">
+              <property name="text">
+               <string>Notes position:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="cmbNotesPosition">
+              <property name="whatsThis">
+               <string>Choose here notes position: before or after highlights.</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Before highlights</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>After highlights</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelHighlightDelimiters">
+              <property name="text">
+               <string>Highlights delimeters:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="labelBefore">
+                <property name="text">
+                 <string>before</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="editBeforeHighlight">
+                <property name="whatsThis">
+                 <string>Symbols just before a highlight to separate it from notes.</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="labelAfter">
+                <property name="text">
+                 <string>after</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="editAfterHighlight">
+                <property name="whatsThis">
+                 <string>Symbols just after a highlight to separate it from notes.</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupLanguage">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Language</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelHighlightLanguage">
+              <property name="text">
+               <string>Highlight:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="editHighlightLanguage">
+              <property name="whatsThis">
+               <string>Highlight in 'MyClippings.txt' file language (e.g. Выделение)</string>
+              </property>
+              <property name="placeholderText">
+               <string>Highlight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelNoteLanguge">
+              <property name="text">
+               <string>Note:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="editNoteLanguge">
+              <property name="whatsThis">
+               <string>Note in 'MyClippings.txt' file language (e.g. Заметка)</string>
+              </property>
+              <property name="placeholderText">
+               <string>Note</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelBookmarkLanguage">
+              <property name="text">
+               <string>Bookmark:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="editBookmarkLanguage">
+              <property name="whatsThis">
+               <string>Bookmark in 'MyClippings.txt' file language (e.g. Закладка)</string>
+              </property>
+              <property name="placeholderText">
+               <string>Bookmark</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabImport">
+      <attribute name="title">
+       <string>Import</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="labelImportPatternName">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cmbImportPatternName">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Import&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt; pattern name&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;, that will be shown in the Import button context menu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chbIsDefaultImport">
+           <property name="whatsThis">
+            <string>Make current import pattern default Import &amp; Append buttons action</string>
+           </property>
+           <property name="text">
+            <string>Default</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonImportAddPattern">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Add new &lt;span style=&quot; font-weight:600;&quot;&gt;import pattern&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Add...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonImportDeletePattern">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Delete the active &lt;span style=&quot; font-weight:600;&quot;&gt;import pattern&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="boxImportPattern">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>Notes pattern</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelImportDelimiter">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Notes&lt;br&gt;delimiter:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="editImportDelimiter">
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Delimiter&lt;/span&gt; is an array of characters used to divide notes in a file. If the field is empty, carrier return and line feed characters are used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="placeholderText">
+               <string notr="true">\r\n</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelImportPattern">
+              <property name="text">
+               <string>Notes&lt;br&gt;pattern:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPlainTextEdit" name="textImportPattern">
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Notes pattern&lt;/span&gt; is a regular expression used to divide notes into an array of named groups. Groups names must be the same as names of the Klippings table header: &lt;span style=&quot; font-weight:600;&quot;&gt;(?P&amp;lt;&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;table_header_name&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;regular_expression&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;)&lt;/span&gt;.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Patterns must be in &lt;span style=&quot; font-weight:600;&quot;&gt;raw string notation&lt;/span&gt;, &lt;span style=&quot; font-weight:600;&quot;&gt;VERBOSE&lt;/span&gt; and&lt;span style=&quot; font-weight:600;&quot;&gt; UNICODE&lt;/span&gt; options are on. (&lt;a href=&quot;http://docs.python.org/library/re.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;more&lt;/span&gt;&lt;/a&gt;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelImportDateFormat">
+              <property name="text">
+               <string>Date&lt;br&gt;format:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="editImportDateFormat">
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Date and time forma&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;t to convert a local languge string into a date. If the field is empty, &amp;quot;My Clippings.txt' date and time format &amp;quot;dddd, MMMM dd, yyyy, hh:mm AP&amp;quot; is used. If&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;your OS local language is not English, and you want to use a custom import pattern for &amp;quot;My Clippings.txt&amp;quot; file, leave this field empty.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Date:&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;d&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the day as number without a leading zero (1 to 31)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;dd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the day as number with a leading zero (01 to 31)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ddd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the abbreviated localized day name (e.g. 'Mon' to 'Sun') &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;dddd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the long localized day name (e.g. 'Monday' )&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;M&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the month as number without a leading zero (1-12)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the month as number with a leading zero (01-12)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MMM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the abbreviated localized month name (e.g. 'Jan' to 'Dec')&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MMMM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the long localized month name (e.g. 'January' to 'December')&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yy&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the year as two digit number (00-99)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yyyy&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the year as four digit number&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Time&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;h&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;hh&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;m&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the minute without a leading zero (0 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;mm&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the minute with a leading zero (00 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the second without a leading zero (0 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ss&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the second with a leading zero (00 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;z&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the milliseconds without leading zeroes (0 to 999)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;zzz&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the milliseconds with leading zeroes (000 to 999)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;AP&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;use AM/PM display. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;AP&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by either &amp;quot;AM&amp;quot; or &amp;quot;PM&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;use am/pm display. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;ap&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by either &amp;quot;am&amp;quot; or &amp;quot;pm&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="placeholderText">
+               <string notr="true">dddd, MMMM dd, yyyy, hh:mm AP</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="boxImportFileSettings">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>File settings</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="labelImportExtension">
+              <property name="text">
+               <string>Extensions:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="editImportExtension">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;File extensions&lt;/span&gt; seprated by commas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="placeholderText">
+               <string notr="true">txt</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labeImportlEncoding">
+              <property name="text">
+               <string>Encoding:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cmbImportEncoding">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Source &lt;span style=&quot; font-weight:600;&quot;&gt;file encoding.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <item>
+               <property name="text">
+                <string notr="true">UTF-8 (all languages)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string notr="true">UTF-16 (all languages)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string notr="true">UTF-32 (all languages)</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabExport">
+      <attribute name="title">
+       <string>Export</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="labelExportPatternName">
+           <property name="text">
+            <string>Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cmbExportPatternName">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Export&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt; pattern name&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;, that will be shown in the Export button context menu.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chbIsDefaultExport">
+           <property name="whatsThis">
+            <string>Make current export pattern default Export button action</string>
+           </property>
+           <property name="text">
+            <string>Default</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonExportAddPattern">
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Add new &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;export&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt; pattern&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Add...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonExportDeletePattern">
+           <property name="whatsThis">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Delete the active &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;export&lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt; pattern&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="boxExportPattern">
+         <property name="title">
+          <string>Notes pattern</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labelExportHeader">
+              <property name="text">
+               <string>Header:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPlainTextEdit" name="textExportHeader">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Header&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; is the data to write in the beginning of the export file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelExportBody">
+              <property name="text">
+               <string>Body:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPlainTextEdit" name="textExportBody">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Body &lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;is a pattern to convert notes from the Klippings table into formated text. Wildcards &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;?P&amp;lt;table_header_name&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by the edited, filtered and sorted table data.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelExportBottom">
+              <property name="text">
+               <string>Bottom:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPlainTextEdit" name="textExportBottom">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Bottom&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; is the data to append to the ending of the export file.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="labelExportDateFormat">
+              <property name="text">
+               <string>Date&lt;br&gt;format:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="editExportDateFormat">
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Date and time forma&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;t to convert a note date into a local language string.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Date:&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;d&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the day as number without a leading zero (1 to 31)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;dd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the day as number with a leading zero (01 to 31)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ddd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the abbreviated localized day name (e.g. 'Mon' to 'Sun') &lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;dddd&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the long localized day name (e.g. 'Monday' )&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;M&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the month as number without a leading zero (1-12)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the month as number with a leading zero (01-12)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MMM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the abbreviated localized month name (e.g. 'Jan' to 'Dec')&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;MMMM&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the long localized month name (e.g. 'January' to 'December')&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yy&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the year as two digit number (00-99)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;yyyy&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the year as four digit number&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Time&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;h&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;hh&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;m&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the minute without a leading zero (0 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;mm&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the minute with a leading zero (00 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;s&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the second without a leading zero (0 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ss&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the second with a leading zero (00 to 59)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;z&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the milliseconds without leading zeroes (0 to 999)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;zzz&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;the milliseconds with leading zeroes (000 to 999)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;AP&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;use AM/PM display. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;AP&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by either &amp;quot;AM&amp;quot; or &amp;quot;PM&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;ap&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;use am/pm display. &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-style:italic;&quot;&gt;ap&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by either &amp;quot;am&amp;quot; or &amp;quot;pm&amp;quot;.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="placeholderText">
+               <string notr="true">dd.MM.yy, hh:mm</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="boxExportFileSettings">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title">
+          <string>File settings</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="labelExtension">
+              <property name="text">
+               <string>Extensions:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="editExportExtensions">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;File extensions&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; seprated by commas.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="placeholderText">
+               <string notr="true">txt</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelExportEncoding">
+              <property name="text">
+               <string>Encoding:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cmbExportEncoding">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Export &lt;span style=&quot; font-weight:600;&quot;&gt;file encoding&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>UTF-8 (all languages)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>UTF-16 (all languages)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>UTF-32 (all languages)</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QToolButton" name="buttonWhatsThis">
+       <property name="popupMode">
+        <enum>QToolButton::InstantPopup</enum>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOK">
+       <property name="whatsThis">
+        <string>Save settings and close the window.</string>
+       </property>
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonApply">
+       <property name="whatsThis">
+        <string>Save settings.</string>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="whatsThis">
+        <string>Close the window and do not save settings.</string>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>buttonOK</tabstop>
+  <tabstop>buttonApply</tabstop>
+  <tabstop>buttonCancel</tabstop>
+  <tabstop>chbAttachNotes</tabstop>
+  <tabstop>cmbNotesPosition</tabstop>
+  <tabstop>editBeforeHighlight</tabstop>
+  <tabstop>editAfterHighlight</tabstop>
+  <tabstop>editHighlightLanguage</tabstop>
+  <tabstop>editNoteLanguge</tabstop>
+  <tabstop>editBookmarkLanguage</tabstop>
+  <tabstop>cmbImportPatternName</tabstop>
+  <tabstop>chbIsDefaultImport</tabstop>
+  <tabstop>buttonImportAddPattern</tabstop>
+  <tabstop>buttonImportDeletePattern</tabstop>
+  <tabstop>editImportDelimiter</tabstop>
+  <tabstop>textImportPattern</tabstop>
+  <tabstop>editImportDateFormat</tabstop>
+  <tabstop>editImportExtension</tabstop>
+  <tabstop>cmbImportEncoding</tabstop>
+  <tabstop>cmbExportPatternName</tabstop>
+  <tabstop>chbIsDefaultExport</tabstop>
+  <tabstop>buttonExportAddPattern</tabstop>
+  <tabstop>buttonExportDeletePattern</tabstop>
+  <tabstop>textExportHeader</tabstop>
+  <tabstop>textExportBody</tabstop>
+  <tabstop>textExportBottom</tabstop>
+  <tabstop>editExportDateFormat</tabstop>
+  <tabstop>editExportExtensions</tabstop>
+  <tabstop>cmbExportEncoding</tabstop>
+  <tabstop>buttonWhatsThis</tabstop>
+  <tabstop>tabsSettings</tabstop>
+ </tabstops>
+ <resources>
+  <include location="mainWin.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonOK</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onButtonOK()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>490</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonApply</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onButtonApply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>413</x>
+     <y>490</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onButtonCancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>494</x>
+     <y>490</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbImportPatternName</sender>
+   <signal>activated(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportPatternActivated(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonImportAddPattern</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportAddPattern()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonImportDeletePattern</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportDeletePattern()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>481</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textImportPattern</sender>
+   <signal>textChanged()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportPatternChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>238</x>
+     <y>195</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editImportDelimiter</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportDelimiterChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>317</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>205</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editImportExtension</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportExtensionChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>197</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbImportEncoding</sender>
+   <signal>activated(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportEncodingChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>471</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>197</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editImportDateFormat</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportDateFormatChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>372</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>197</x>
+     <y>223</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbExportPatternName</sender>
+   <signal>activated(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportPatternActivated(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonExportAddPattern</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportAddPattern()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonExportDeletePattern</sender>
+   <signal>clicked()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportDeletePattern()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>481</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textExportHeader</sender>
+   <signal>textChanged()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportHeaderChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textExportBody</sender>
+   <signal>textChanged()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportBodyChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textExportBottom</sender>
+   <signal>textChanged()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportBottomChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>312</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editExportDateFormat</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportDateFormatChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbExportEncoding</sender>
+   <signal>activated(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportEncodingChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>424</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbAttachNotes</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationAttachNotesChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>217</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editExportExtensions</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportExtensionChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>184</x>
+     <y>424</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbNotesPosition</sender>
+   <signal>activated(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editBeforeHighlight</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>200</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editAfterHighlight</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>470</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbIsDefaultImport</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onImportIsDefaultChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>267</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>41</x>
+     <y>476</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chbIsDefaultExport</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportIsDefaultChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>185</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editHighlightLanguage</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationHighlightLanguageChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>115</x>
+     <y>591</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editNoteLanguge</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationNoteLanguageChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>214</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>103</x>
+     <y>572</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editBookmarkLanguage</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onApplicationBookmarkLanguageChanged(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>540</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onButtonOK()</slot>
+  <slot>onButtonApply()</slot>
+  <slot>onButtonCancel()</slot>
+  <slot>onImportPatternActivated(QString)</slot>
+  <slot>onImportAddPattern()</slot>
+  <slot>onImportDeletePattern()</slot>
+  <slot>onImportPatternChanged()</slot>
+  <slot>onImportDelimiterChanged(QString)</slot>
+  <slot>onImportExtensionChanged(QString)</slot>
+  <slot>onImportEncodingChanged(QString)</slot>
+  <slot>onImportDateFormatChanged(QString)</slot>
+  <slot>onExportPatternActivated(QString)</slot>
+  <slot>onExportAddPattern()</slot>
+  <slot>onExportDeletePattern()</slot>
+  <slot>onExportHeaderChanged()</slot>
+  <slot>onExportBodyChanged()</slot>
+  <slot>onExportBottomChanged()</slot>
+  <slot>onExportDateFormatChanged(QString)</slot>
+  <slot>onExportExtensionChanged(QString)</slot>
+  <slot>onExportEncodingChanged(QString)</slot>
+  <slot>onApplicationAttachNotesChanged(bool)</slot>
+  <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
+  <slot>onImportIsDefaultChanged(bool)</slot>
+  <slot>onExportIsDefaultChanged(bool)</slot>
+  <slot>onApplicationHighlightLanguageChanged(QString)</slot>
+  <slot>onApplicationNoteLanguageChanged(QString)</slot>
+  <slot>onApplicationBookmarkLanguageChanged(QString)</slot>
+ </slots>
+</ui>

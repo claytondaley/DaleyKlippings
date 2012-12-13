@@ -1,0 +1,640 @@
+﻿The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3513-17  | Added on Tuesday, February 08, 2011, 10:47 AM
+
+These “experts” were lopsided: on the occasions when they were right, they attributed it to their own depth of understanding and expertise; when wrong, it was either the situation that was to blame, since it was unusual, or, worse, they did not recognize that they were wrong and spun stories around it. They found it difficult to accept that their grasp was a little short. But this attribute is universal to all our activities: there is something in us designed to protect our self-esteem.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3517-19  | Added on Tuesday, February 08, 2011, 10:49 AM
+
+We humans are the victims of an asymmetry in the perception of random events. We attribute our successes to our skills, and our failures to external events outside our control, namely to randomness. We feel responsible for the good stuff, but not for the bad.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3520-21  | Added on Tuesday, February 08, 2011, 10:52 AM
+
+Ninety-four percent of Swedes believe that their driving skills put them in the top 50 percent of Swedish drivers; 84 percent of Frenchmen feel that their lovemaking abilities put them in the top half of French lovers.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Note Loc. 3521  | Added on Tuesday, February 08, 2011, 10:52 AM
+
+How our arrogance work: 
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 3646  | Added on Tuesday, February 08, 2011, 06:00 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 3652  | Added on Tuesday, February 08, 2011, 07:51 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3890-92  | Added on Wednesday, February 09, 2011, 01:24 PM
+
+There is actually a law in statistics called the law of iterated expectations, which I outline here in its strong form: if I expect to expect something at some date in the future, then I already expect that something at present.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3896-98  | Added on Wednesday, February 09, 2011, 01:25 PM
+
+But there is a weaker form of this law of iterated knowledge. It can be phrased as follows: to understand the future to the point of being able to predict it, you need to incorporate elements from this future itself. If you know about the discovery you are about to make in the future, then you have almost made it.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 3922-23  | Added on Wednesday, February 09, 2011, 01:34 PM
+
+Prediction requires knowing about technologies that will be discovered in the future. But that very knowledge would almost automatically allow us to start developing those technologies right away. Ergo, we do not know what we will know.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 3964  | Added on Wednesday, February 09, 2011, 06:29 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 3981  | Added on Wednesday, February 09, 2011, 08:07 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4340-43  | Added on Thursday, February 10, 2011, 08:26 AM
+
+we humans are supposed to fool ourselves a little bit here and there. According to Trivers’s theory of self-deception, this is supposed to orient us favorably toward the future. But self-deception is not a desirable feature outside of its natural domain. It prevents us from taking some unnecessary risks—but we saw in Chapter 6 how it does not as readily cover a spate of modern risks that we do not fear because they are not vivid, such as investment risks, environmental dangers, or long-term security.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4389-90  | Added on Thursday, February 10, 2011, 10:01 AM
+
+while in theory randomness is an intrinsic property, in practice, randomness is incomplete information, what I called opacity in Chapter 1.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4634-35  | Added on Thursday, February 10, 2011, 10:31 AM
+
+* Dan Gilbert showed in a famous paper, “How Mental Systems Believe,” that we are not natural skeptics and that not believing required an expenditure of mental effort.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 4498  | Added on Thursday, February 10, 2011, 10:40 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4515-21  | Added on Thursday, February 10, 2011, 10:55 AM
+
+I am trying here to generalize to real life the notion of the “barbell” strategy I used as a trader, which is as follows. If you know that you are vulnerable to prediction errors, and if you accept that most “risk measures” are flawed, because of the Black Swan, then your strategy is to be as hyperconservative and hyperaggressive as you can be instead of being mildly aggressive or conservative. Instead of putting your money in “medium risk” investments (how do you know it is medium risk? by listening to tenure-seeking “experts”?), you need to put a portion, say 85 to 90 percent, in extremely safe instruments, like Treasury bills—as safe a class of instruments as you can manage to find on this planet. The remaining 10 to 15 percent you put in extremely speculative bets, as leveraged as possible (like options), preferably venture capital–style portfolios.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4515-21  | Added on Thursday, February 10, 2011, 10:57 AM
+
+I am trying here to generalize to real life the notion of the “barbell” strategy I used as a trader, which is as follows. If you know that you are vulnerable to prediction errors, and if you accept that most “risk measures” are flawed, because of the Black Swan, then your strategy is to be as hyperconservative and hyperaggressive as you can be instead of being mildly aggressive or conservative. Instead of putting your money in “medium risk” investments (how do you know it is medium risk? by listening to tenure-seeking “experts”?), you need to put a portion, say 85 to 90 percent, in extremely safe instruments, like Treasury bills—as safe a class of instruments as you can manage to find on this planet. The remaining 10 to 15 percent you put in extremely speculative bets, as leveraged as possible (like options), preferably venture capital–style portfolios.*
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Note Loc. 4521  | Added on Thursday, February 10, 2011, 10:57 AM
+
+Taleb's Barbell strategy
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4568-69  | Added on Thursday, February 10, 2011, 11:47 AM
+
+My friends Andy Marshall and Andrew Mays at the Department of Defense face the same problem. The impulse on the part of the military is to devote resources to predicting the next problems. These thinkers advocate the opposite: invest in preparedness, not in prediction.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4798-4800  | Added on Thursday, February 10, 2011, 06:09 PM
+
+Luck is the grand equalizer, because almost everyone can benefit from it. The socialist governments protected their monsters and, by doing so, killed potential newcomers in the womb. Everything is transitory. Luck both made and unmade Carthage; it both made and unmade Rome.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 4801-3  | Added on Thursday, February 10, 2011, 06:10 PM
+
+Luck is far more egalitarian than even intelligence. If people were rewarded strictly according to their abilities, things would still be unfair—people don’t choose their abilities. Randomness has the beneficial effect of reshuffling society’s cards, knocking down the big guy.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 4868  | Added on Thursday, February 10, 2011, 08:12 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5385-87  | Added on Thursday, February 10, 2011, 08:45 PM
+
+Everything is made easy, conceptually, when you consider that there are two, and only two, possible paradigms: nonscalable (like the Gaussian) and other (such as Mandebrotian randomness). The rejection of the application of the nonscalable is sufficient, as we will see later, to eliminate a certain vision of the world. This is like negative empiricism: I know a lot by determining what is wrong.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5092-94  | Added on Friday, February 11, 2011, 10:17 AM
+
+I’ve had plenty of cups of coffee in my life (it’s my principal addiction). I have never seen a cup jump two feet from my desk, nor has coffee spilled spontaneously on this manuscript without intervention (even in Russia). Indeed, it will take more than a mild coffee addiction to witness such an event;
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5113  | Added on Friday, February 11, 2011, 10:23 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5092-94  | Added on Friday, February 11, 2011, 10:24 AM
+
+I’ve had plenty of cups of coffee in my life (it’s my principal addiction). I have never seen a cup jump two feet from my desk, nor has coffee spilled spontaneously on this manuscript without intervention (even in Russia). Indeed, it will take more than a mild coffee addiction to witness such an event;
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Note Loc. 5094  | Added on Friday, February 11, 2011, 10:24 AM
+
+I like Taleb's sence of humor
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5160  | Added on Friday, February 11, 2011, 10:39 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5169  | Added on Friday, February 11, 2011, 11:20 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Note Loc. 5094  | Added on Friday, February 11, 2011, 11:27 AM
+
+I like Taleb's sence of humor
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5658-64  | Added on Saturday, February 12, 2011, 10:45 PM
+
+I have just read three “popular science” books that summarize the research in complex systems: Mark Buchanan’s Ubiquity, Philip Ball’s Critical Mass, and Paul Ormerod’s Why Most Things Fail. These three authors present the world of social science as full of power laws, a view with which I most certainly agree. They also claim that there is universality of many of these phenomena, that there is a wonderful similarity between various processes in nature and the behavior of social groups, which I agree with. They back their studies with the various theories on networks and show the wonderful correspondence between the so-called critical phenomena in natural science and the self-organization of social groups. They bring together processes that generate avalanches, social contagions, and what they call informational cascades, which I agree with.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5691  | Added on Sunday, January 10, 2010, 10:51 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5822-25  | Added on Wednesday, February 16, 2011, 10:30 AM
+
+FIGURE 14 By removing the ten biggest one-day moves from the U.S. stock market over the past fifty years, we see a huge difference in returns—and yet conventional finance sees these one-day jumps as mere anomalies.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5823-25  | Added on Wednesday, February 16, 2011, 10:31 AM
+
+By removing the ten biggest one-day moves from the U.S. stock market over the past fifty years, we see a huge difference in returns—and yet conventional finance sees these one-day jumps as mere anomalies.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5829-31  | Added on Wednesday, February 16, 2011, 10:38 AM
+
+One of the influential economists of the day, the late Paul Cootner, wrote, “Mandelbrot, like Prime Minister Churchill before him, promised us not utopia, but blood, sweat, toil, and tears. If he is right, almost all our statistical tools are obsolete [or] meaningless.” I
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 5849-50  | Added on Wednesday, February 16, 2011, 07:57 PM
+
+Alan Greenspan, the chairman of the Federal Reserve bank, supposedly blurted out, “I’d rather have the opinion of a trader than a mathematician.”
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5891  | Added on Wednesday, February 16, 2011, 08:19 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 5948  | Added on Thursday, February 17, 2011, 08:44 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 6105-10  | Added on Friday, February 18, 2011, 09:49 PM
+
+The following remark is one reason I have inordinate respect for Karl Popper; it is one of the few quotations in this book that I am not attacking. The degeneration of philosophical schools in its turn is the consequence of the mistaken belief that one can philosophize without having been compelled to philosophize by problems outside philosophy. … Genuine philosophical problems are always rooted outside philosophy and they die if these roots decay. … [emphasis mine] These roots are easily forgotten by philosophers who “study” philosophy instead of being forced into philosophy by the pressure of nonphilosophical problems.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 6495-6501  | Added on Saturday, February 19, 2011, 08:48 PM
+
+Myhrvold enlightened me about an additional way to interpret and prove how globalization takes us into Extremistan: the notion of species density. Simply, larger environments are more scalable than smaller ones—allowing the biggest to get even bigger, at the expense of the smallest, through the mechanism of preferential attachment we saw in Chapter 14. We have evidence that small islands have many more species per square meter than larger ones, and, of course, than continents. As we travel more on this planet, epidemics will be more acute—we will have a germ population dominated by a few numbers, and the successful killer will spread vastly more effectively. Cultural life will be dominated by fewer persons: we have fewer books per reader in English than in Italian (this includes bad books). Companies will be more uneven in size. And fads will be more acute. So will runs on the banks, of course.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 6528-29  | Added on Saturday, February 19, 2011, 09:05 PM
+
+The organism with the largest number of secondary uses is the one that will gain the most from environmental randomness and epistemic opacity!
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 6558  | Added on Monday, February 21, 2011, 11:23 PM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Bookmark Loc. 6725  | Added on Thursday, February 24, 2011, 10:55 AM
+
+
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 7248-52  | Added on Wednesday, March 02, 2011, 09:12 AM
+
+Well, often, with ten thousand pieces of data, forty years of daily observations, one single observation represents 90 percent of the kurtosis! Sampling error is too large for any statistical inference about how non-Gaussian something is, meaning that if you miss a single number, you miss the whole thing. The instability of the kurtosis implies that a certain class of statistical measures should be totally disallowed. This proves that everything relying on “standard deviation,” “variance,” “least square deviation,” etc., is bogus.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 7255-56  | Added on Wednesday, March 02, 2011, 09:13 AM
+
+Implication: the need to avoid exposure to small probabilities in a certain domain. We simply cannot compute them.
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Highlight Loc. 7327-31  | Added on Wednesday, March 02, 2011, 10:02 PM
+
+Let us look again, from a certain angle, at the problem of “induction.” It becomes one step beyond archaic in a modern environment, making the Black Swan problem even more severe. Simply, in a complex domain, the discussion of induction versus deduction becomes too marginal to the real problems (except for a limited subset of variables, even then); the entire Aristotelian distinction misses an important dimension (similar to the one discussed earlier concerning the atypicality of events in Extremistan). Even other notions such as “cause” take on a different meaning, particularly in the presence of circular causality and interdependence.*
+==========
+The Black Swan: Second Edition: The Impact of the Highly Improbable: With a new section: "On Robustness and Fragility" (Nassim Nicholas Taleb)
+- Note Loc. 8316  | Added on Friday, March 04, 2011, 07:57 PM
+
+Typical distribution with power-law tails
+==========
+Евангелие от Афрания (Кирилл Юрьевич Еськов)
+- Highlight Loc. 452-53  | Added on Friday, March 04, 2011, 09:37 PM
+
+политика, по известному выражению Черчилля, порой укладывает в одну постель весьма необычных партнеров.
+==========
+Евангелие от Афрания (Кирилл Юрьевич Еськов)
+- Highlight Loc. 1764-69  | Added on Saturday, March 05, 2011, 12:10 PM
+
+   А если серьезно, то полное единообразие архивных данных по некоему вопросу – это вообще палка о двух концах: здесь все зависит от исходной посылки. Для воспитанного в демократическом обществе Мак-Дауэлла такое единообразие кажется решающим аргументом за; для меня же (продукта советского тоталитаризма) оно скорее свидетельствует о целенаправленной чистке архивов
+==========
+Евангелие от Афрания (Кирилл Юрьевич Еськов)
+- Highlight Loc. 4193-95  | Added on Saturday, March 05, 2011, 08:52 PM
+
+   Все попытки как-то детализировать облик грядущего выглядят aposteriori смехотворными, если не жалкими. Борис Стругацкий
+==========
+Евангелие от Афрания (Кирилл Юрьевич Еськов)
+- Highlight Loc. 4519-31  | Added on Saturday, March 05, 2011, 09:23 PM
+
+   Эта ситуация «бесконтактного боя» оказалась столь непривычной, что большинство моих соотечественников, похоже, так до сих пор и не осознало элементарного факта: Третья мировая война – была. В этой войне Советский Союз больше сорока лет в одиночку сражался против всего остального мира, и в конце концов, израсходовав свои ресурсы, капитулировал. (Германию с Японией, напомню, в аналогичной ситуации уделали вдребезги и напополам не за сорок, а всего за пять лет.) По условиям этой капитуляции мы лишились не только всех колоний, но и заметной части исконной территории («Беловежские соглашения»), привели свою армию в небоеспособное состояние (так, что та уже который год не может совладать с кучкой кавказских бандитов), выплатили огромные репарации (пресловутые 180 миллиардов, осевшие в заграничных банках на благо тамошней экономике, – это еще сущий пустяк по сравнению с реальной ценою тех мозгов и рук, что утекли от нас на Запад)… Интересно, а как бы вы, ребята, хотели – проигравши Мировую войну?
+==========
+Евангелие от Афрания (Кирилл Юрьевич Еськов)
+- Highlight Loc. 5248-57  | Added on Saturday, March 05, 2011, 09:34 PM
+
+   Существует гипотеза, что заметную роль тут сыграла смена типа инфекций, доминирующего в человеческих популяциях, – побочное следствие одомашнивания скота. Ранее основную роль играли т. н. «медленные» инфекции (типа СПИДа или проказы), издревле адаптированные к человеку и формально не смертельные, но уже годам к двадцати превращающие его в развалину. От домашнего же скота человек получил новые, т. н. «быстрые» инфекции (типа оспы), – заболевший либо тут же умирает, либо выздоравливает, обзаведясь стойким иммунитетом. Понятно, что от «быстрых» инфекций умирали в первую очередь те, кто уже был поражен «медленными»; в результате неолитические эпидемии оспы «вычистили» и тем самым оздоровили человеческие популяции
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 35 | Loc. 511-13  | Added on Monday, March 07, 2011, 04:32 PM
+
+paying people high bonuses can result in high performance when it comes to simple mechanical tasks, but the opposite can happen when you ask them to use their brains—which is usually what companies try to do when they pay executives very high bonuses.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 38 | Loc. 550-51  | Added on Monday, March 07, 2011, 04:46 PM
+
+the prolific author and journalist Upton Sinclair once noted, “It is difficult to get a man to understand something when his salary depends upon his not understanding it.”)
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 46 | Loc. 675-79  | Added on Tuesday, March 08, 2011, 09:59 AM
+
+I do believe that the inverse-U relationship originally suggested by Yerkes and Dodson generally holds, but obviously there are additional forces that could make a difference in performance. These include the characteristics of the task (how easy or difficult it is), the characteristics of the individual (how easily they become stressed), and characteristics related to the individual’s experience with the task (how much practice a person has had with this task and how much effort they need to put into it). Either way, we know two things: it’s difficult to create the optimal incentive structure for people, and higher incentives don’t always lead to the highest performance.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 51 | Loc. 736-38  | Added on Tuesday, March 08, 2011, 08:09 PM
+
+Seen from this perspective, the findings presented in this chapter suggest that our tendency to behave irrationally and in ways that are undesirable might increase when the decisions are more important.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 51 | Loc. 744-48  | Added on Tuesday, March 08, 2011, 08:13 PM
+
+A better approach might be to keep the motivating element of performance-based payment but eliminate some of the nonproductive stress it creates. To achieve this, we could, for example, offer employees smaller and more frequent bonuses. Another approach might be to offer employees a performance-based payment that is averaged over time—say, the previous five years, rather than only the last year. This way, employees in their fifth year would know 80 percent of their bonus in advance (based on the previous four years), and the immediate effect of the present year’s performance would matter less.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 60 | Loc. 861-62  | Added on Tuesday, March 08, 2011, 08:44 PM
+
+“Contrafreeloading,” a term coined by the animal psychologist Glen Jensen, refers to the finding that many animals prefer to earn food rather than simply eating identical but freely accessible food.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 74 | Loc. 1070-71  | Added on Wednesday, March 09, 2011, 08:56 AM
+
+the translation of joy into willingness to work seems to depend to a large degree on how much meaning we can attribute to our own labor.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 76 | Loc. 1108-11  | Added on Wednesday, March 09, 2011, 09:06 AM
+
+The fact that the acknowledged group worked longer and the shredded group worked the least further suggests that when it comes to labor, human motivation is complex. It can’t be reduced to a simple “work for money” trade-off. Instead we should realize that the effect of meaning on labor, as well as the effect of eliminating meaning from labor, are more powerful than we usually expect.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 335 | Loc. 5904-5  | Added on Wednesday, March 09, 2011, 08:26 PM
+
+rIn general, we are often overly focused on endings when we evaluate overall experiences. From this perspective, a cake at the end of a meal is of particular importance.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Note on Page 92 | Loc. 1324  | Added on Wednesday, March 09, 2011, 08:52 PM
+
+Origami instruction
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 104 | Loc. 1488-94  | Added on Thursday, March 10, 2011, 11:29 AM
+
+• The effort that we put into something does not just change the object. It changes us and the way we evaluate that object. • Greater labor leads to greater love. • Our overvaluation of the things we make runs so deep that we assume that others share our biased perspective. • When we cannot complete something into which we have put great effort, we don’t feel so attached to it.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 105 | Loc. 1504-8  | Added on Thursday, March 10, 2011, 11:35 AM
+
+Sadly, in surrendering our effort in these activities, we gain relaxation, but we may actually give up a lot of deep enjoyment because, in fact, it’s often effort that ultimately creates long-term satisfaction. Of course, it might be that others can do better wiring work or gardening (in my case, this is certainly true), but you might ask yourself, “How much more will I enjoy my new television/stereo setup/garden/meal after I work on it?” If you suspect you would enjoy it more, maybe those are cases where investing more effort will pay off.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 107 | Loc. 1527-36  | Added on Thursday, March 10, 2011, 11:44 AM
+
+I remembered an essay by Mark Twain called “Some National Stupidities.” In his essay, Twain praises the German stove and bemoans the fact that Americans continue to rely on monstrous woodstoves that practically require a dedicated full-time staff to keep them running: The slowness of one section of the world about adopting the valuable ideas of another section of it is a curious thing and unaccountable. This form of stupidity is confined to no community, to no nation; it is universal. The fact is the human race is not only slow about borrowing valuable ideas—it sometimes persists in not borrowing them at all. Take the German stove, for instance—the huge white porcelain monument that towers toward the ceiling in the corner of the room, solemn, unsympathetic, and suggestive of death and the grave—where can you find it outside of German countries? I am sure I have never seen it where German was not the language of the region. Yet it is by long odds the best stove and the most convenient and economical that has yet been invented.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 116 | Loc. 1656-58  | Added on Thursday, March 10, 2011, 08:05 PM
+
+Did the jumbling make a difference? You bet! As it turned out, even reordering the words was sufficient for our participants to feel ownership and like the ideas better than the ones given to them. Alas, we also discovered that Mark Twain was right.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 117 | Loc. 1666-68  | Added on Thursday, March 10, 2011, 08:10 PM
+
+In the scientific world, the Not-Invented-Here bias is fondly called the “toothbrush theory.” The idea is that everyone wants a toothbrush, everyone needs one, everyone has one, but no one wants to use anyone else’s.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 120 | Loc. 1709-10  | Added on Thursday, March 10, 2011, 08:22 PM
+
+Acronyms confer a kind of secret insider knowledge; they give people a way to talk about an idea in shorthand. They increase the perceived importance of ideas, and at the same time they also help keep other ideas from entering the inner circle.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 126 | Loc. 1797-1802  | Added on Friday, March 11, 2011, 09:48 AM
+
+The results showed increased activity in the striatum, which is a part of the brain associated with the way we experience reward. In other words, according to the PET scan, it looked as though the decision to punish others was related to a feeling of pleasure. What’s more, those who had a high level of striatum activation punished others to a greater degree. All of this suggests that punishing betrayal, even when it costs us something, has biological underpinnings. And this behavior is, in fact, pleasurable (or at least elicits a reaction similar to pleasure).
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 151 | Loc. 2194-95  | Added on Monday, March 14, 2011, 09:38 AM
+
+Mark Twain said, “Therein lies the defect of revenge: it’s all in the anticipation; the thing itself is a pain, not a pleasure; at least the pain is the biggest end of it.”
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 174 | Loc. 2512-13  | Added on Tuesday, March 15, 2011, 09:50 AM
+
+“Time heals all wounds” precisely because, over time, you will partially adapt to the state of your world.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 177 | Loc. 2542  | Added on Tuesday, March 15, 2011, 09:57 AM
+
+One key to changing the adaptation process is to interrupt it.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 179 | Loc. 2577-80  | Added on Tuesday, March 15, 2011, 10:09 AM
+
+You may think that taking a break during an irritating or boring experience will be good for you, but a break actually decreases your ability to adapt, making the experience seem worse when you have to return to it. When cleaning your house or doing your taxes, the trick is to stick with it until you are done.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 181 | Loc. 2596-2600  | Added on Tuesday, March 15, 2011, 10:16 AM
+
+Here is the trick: instead of thinking about taking a break as a relief from a chore, think about how much harder it will be to resume an activity you dislike. Similarly, if you don’t want to take the plunge and get out of the hot tub to refresh your (or your romantic partner’s) drink, consider the joy of returning to the hot water (not to mention that your friend will not realize that you are doing this to extend your own pleasure and consequently will highly appreciate your “sacrifice”).
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 188 | Loc. 2699-2701  | Added on Wednesday, March 16, 2011, 10:04 AM
+
+Interestingly, when we use our right hand to tickle our right side, we don’t feel any tickling sensation; but when we use our right hands to tickle our left sides, the slight difference in timing between the nerve system on the right and left side of the body can create a low-level unpredictability, and hence we can feel a slight tickling sensation.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 188 | Loc. 2702-7  | Added on Wednesday, March 16, 2011, 10:08 AM
+
+The benefits of randomness range from the personal to the romantic to our work life. As the economist Tibor Scitovsky argued in The Joyless Economy, we have a tendency to take the safe and predictable path at work, and by extension in our personal life, and do the things that provide steady and reliable progress. But, Scitovsky argues, real progress—as well as real pleasure—comes from taking risks and trying very different things. So the next time you have to make a presentation, work with a team, or pick a project to work on, try doing something new. Your attempt at humor or cross-corporate collaboration may fail, but on balance it might make a positive difference.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 215 | Loc. 3060-61  | Added on Thursday, March 17, 2011, 10:20 AM
+
+In fact, without exaggerating too much, I think that the market for single people is one of the most egregious market failures in Western society.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 223 | Loc. 3176-80  | Added on Thursday, March 17, 2011, 07:38 PM
+
+Scott also developed an elaborate system to keep track of his prospective—and rapidly accumulating—potential mates. Being a very smart, analytical fellow, he logged the results in a spreadsheet that listed each woman’s name, the stage of the relationship, and her cumulative score, which was based on her answers to the different questions and her overall potential as his romantic partner. The more women he logged into his spreadsheet, he thought, the better his prospects for finding the woman of his dreams. Scott was extremely disciplined about this process.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Note on Page 223 | Loc. 3180  | Added on Thursday, March 17, 2011, 07:38 PM
+
+After all Scott had > then 10000 girls in his database and eventually the girl he found rejected him
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 224 | Loc. 3203-4  | Added on Thursday, March 17, 2011, 07:40 PM
+
+In other words, dating is about experiencing something with another person in an environment that is a catalyst for the interaction.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 233 | Loc. 3340-49  | Added on Monday, March 21, 2011, 09:59 AM
+
+Likewise, consider the way insurance companies describe their products in terms of deductibles, limits, and co-pays. What does that really mean when we end up having to get treatment for cancer? What does a “maximum liability” tell us about how much we’ll really be out of pocket if we and other people are badly injured in a car accident? Then there’s that wonderful insurance product called an annuity, which is supposed to protect you against running out of money should you live to be a hundred. Theoretically, buying an annuity means that you will be repaid in the form of a fixed salary for life (essentially, Social Security is a sort of annuity system). In principle, annuities make a lot of sense, but sadly, it’s very difficult to compute how much they are worth to us. Worse, the people who sell them are the insurance industry’s equivalent of sleazy used-car salesmen. (Though I’m sure there are exceptions, I haven’t run into them.) They use the difficulty of determining how much annuities are really worth to overcharge their customers. The result is that most annuities are a rip-off and this very important market doesn’t work well at all.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 274 | Loc. 3904-6  | Added on Thursday, March 24, 2011, 10:15 AM
+
+This means that when we face new situations and are about to make decisions that can later be used for self-herding, we should be very careful to make the best possible choices. Our immediate decisions don’t just affect what’s happening at the moment; they can also affect a long sequence of related decisions far into our future.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 276 | Loc. 3928-32  | Added on Thursday, March 24, 2011, 10:19 AM
+
+Together, these results suggest that though women are more likely to reject unfair offers from the get-go, their motives are more positive in nature. By picking the $3:$3 offer over the $0:$3 one, the women were trying to teach their counterpart a lesson about the importance of equality and fairness. Leading by example, they basically told their counterparts, “Doesn’t it feel better to get an equal share of the money?” The men, by contrast, selected the $0:$3 offer over the $3:$3 offer—basically telling their counterparts, “F**k you.”
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 276 | Loc. 3936-40  | Added on Friday, March 25, 2011, 09:27 AM
+
+The most practical news is this: if we do nothing while we are feeling an emotion, there is no short- or long-term harm that can come to us. However, if we react to the emotion by making a DECISION, we may not only regret the immediate outcome, but we may also create a long-lasting pattern of DECISIONS that will continue to misguide us for a long time. Finally, we’ve also learned that our tendency toward self-herding kicks into gear not only when we make the same kinds of DECISIONS but also when we make “neighboring” ones.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 279 | Loc. 3977-81  | Added on Friday, March 25, 2011, 09:37 AM
+
+This means that before committing to any long-term relationship you should first explore your joint behavior in environments that don’t have well-defined social protocols (for example, I think that couples should plan their weddings before they decide to marry and go ahead with the marriage only if they still like each other). It also means that it is worthwhile to keep an eye open for deteriorating patterns of behavior. When we observe early-warning signs, we should take swift action to correct an undesirable course before the unfortunate patterns of dealing with each other fully develop.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 288 | Loc. 4094-99  | Added on Monday, March 28, 2011, 09:44 AM
+
+I think we can summarize our wide range of irrational behaviors with two general lessons and one conclusion: 1. We have many irrational tendencies. 2. We are often unaware of how these irrationalities influence us, which means that we don’t fully understand what drives our behavior. Ergo, We—and by that I mean You, Me, Companies, and Policy Makers—need to doubt our intuitions.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 335 | Loc. 6037-39  | Added on Monday, March 28, 2011, 10:03 AM
+
+dddFor two great books on medical delusions, see Nortin Hadler’s Stabbed in the Back and Worried Sick.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 292 | Loc. 4157-61  | Added on Monday, March 28, 2011, 10:04 AM
+
+THE IMPORTANCE OF experiments as one of the best ways to learn what really works and what does not seems uncontroversial. I don’t see anyone wanting to abolish scientific experiments in favor of relying more heavily on gut feelings and intuitions. But I’m surprised that the importance of experiments isn’t recognized more broadly, especially when it comes to important decisions in business or public policy. Frankly, I am often amazed by the audacity of the assumptions that businesspeople and politicians make, coupled with their seemingly unlimited conviction that their intuition is correct.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 293 | Loc. 4166-70  | Added on Monday, March 28, 2011, 10:08 AM
+
+Imagine how much more profitable a firm might be if, for example, its leaders truly understood the anger of customers and how a sincere apology can ease frustration (as we saw in chapter 5, “The Case for Revenge”). How much more productive might employees be if senior managers understood the importance of taking pride in one’s work (as we saw in chapter 2, “The Meaning of Labor”). And imagine how much more efficient companies could be (not to mention the great PR benefits) if they stopped paying executives exorbitant bonuses and more seriously considered the relationship between payment and performance (as we saw in chapter 1, “Paying More for Less”).
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 294 | Loc. 4180  | Added on Monday, March 28, 2011, 10:11 AM
+
+As Sherlock Holmes noted, “It is a capital mistake to theorize before one has data.”
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 294 | Loc. 4183-87  | Added on Monday, March 28, 2011, 10:13 AM
+
+I hope you also recognize the upside of irrationality—that some of the ways in which we are irrational are also what makes us wonderfully human (our ability to find meaning in work, our ability to fall in love with our creations and ideas, our willingness to trust others, our ability to adapt to new circumstances, our ability to care about others, and so on). Looking at irrationality from this perspective suggests that rather than strive for perfect rationality, we need to appreciate those imperfections that benefit us, recognize the ones we would like to overcome, and design the world around us in a way that takes advantage of our incredible abilities while overcoming some of our limitations.
+==========
+The Upside of Irrationality: The Unexpected Benefits of Defying Logic at Work and at Home (Dan Ariely)
+- Highlight on Page 294 | Loc. 4189-93  | Added on Monday, March 28, 2011, 10:14 AM
+
+One of the best ways to discover our mistakes and the different ways to overcome them is by running experiments, gathering and scrutinizing data, comparing the effect of the experimental and control conditions, and seeing what’s there. As Franklin Delano Roosevelt once said, “The country needs and, unless I mistake its temper, the country demands, bold, persistent experimentation. It is common sense to take a method and try it: If it fails, admit it frankly and try another. But above all, try something.”
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 20 | Loc. 210-16  | Added on Tuesday, April 05, 2011, 10:50 AM
+
+Biologists often talk about the “ecology” of an organism: the tallest oak in the forest is the tallest not just because it grew from the hardiest acorn; it is the tallest also because no other trees blocked its sunlight, the soil around it was deep and rich, no rabbit chewed through its bark as a sapling, and no lumberjack cut it down before it matured. We all know that successful people come from hardy seeds. But do we know enough about the sunlight that warmed them, the soil in which they put down the roots, and the rabbits and lumberjacks they were lucky enough to avoid? This is not a book about tall trees. It’s a book about forests — and hockey is a good place to start because the explanation for who gets to the top of the hockey world is a lot more interesting and complicated than it looks. In fact, it’s downright peculiar.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight Loc. 4536-41  | Added on Tuesday, April 05, 2011, 07:31 PM
+
+∗ The way Canadians select hockey players is a beautiful example of what the sociologist Robert Merton famously called a “self-fulfilling prophecy” — a situation where “a false definition, in the beginning … evokes a new behavior which makes the original false conception come true.” Canadians start with a false definition of who the best nine- and ten-year-old hockey players are. They’re just picking the oldest every year. But the way they treat those “all-stars” ends up making their original false judgment look correct.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 23 | Loc. 235-38  | Added on Tuesday, April 05, 2011, 07:31 PM
+
+The more he looked, the more Barnsley came to believe that what he was seeing was not a chance occurrence but an iron law of Canadian hockey: in any elite group of hockey players — the very best of the best — 40 percent of the players will have been born between January and March, 30 percent between April and June, 20 percent between July and September, and 10 percent between October and December.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 29 | Loc. 298-302  | Added on Tuesday, April 05, 2011, 07:38 PM
+
+Parents with a child born at the end of the calendar year often think about holding their child back before the start of kindergarten: it’s hard for a five-year-old to keep up with a child born many months earlier. But most parents, one suspects, think that whatever disadvantage a younger child faces in kindergarten eventually goes away. But it doesn’t. It’s just like hockey. The small initial advantage that the child born in the early part of the year has over the child born at the end of the year persists. It locks children into patterns of achievement and underachievement, encouragement and discouragement, that stretch on and on for years.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 34 | Loc. 365-69  | Added on Tuesday, April 05, 2011, 07:52 PM
+
+Elementary and middle schools could put the January through April–born students in one class, the May through August in another class, and those born in September through December in the third class. They could let students learn with and compete against other students of the same maturity level. It would be a little bit more complicated administratively. But it wouldn’t necessarily cost that much more money, and it would level the playing field for those who — through no fault of their own — have been dealt a big disadvantage by the educational system.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 39 | Loc. 421-23  | Added on Wednesday, April 06, 2011, 09:43 AM
+
+Achievement is talent plus preparation. The problem with this view is that the closer psychologists look at the careers of the gifted, the smaller the role innate talent seems to play and the bigger the role preparation seems to play.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 40 | Loc. 441-44  | Added on Wednesday, April 06, 2011, 09:47 AM
+
+Their research suggestes that once a musician has enough ability to get into a top music school, the thing that distinguishes one performer from another is how hard he or she works. That’s it. And what’s more, the people at the very top don’t work just harder or even much harder than everyone else. They work much, much harder.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 41 | Loc. 446-48  | Added on Wednesday, April 06, 2011, 09:52 AM
+
+“The emerging picture from such studies is that ten thousand hours of practice is required to achieve the level of mastery associated with being a world-class expert — in anything,” writes the neurologist Daniel Levitin.
+==========
+Outliers (Malcolm Gladwell)
+- Note on Page 41 | Loc. 448  | Added on Wednesday, April 06, 2011, 09:52 AM
+
+Gladwell changes my mind from the first pages of his book
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 43 | Loc. 471-72  | Added on Wednesday, April 06, 2011, 09:58 AM
+
+Practice isn’t the thing you do once you’re good. It’s the thing you do that makes you good.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 81 | Loc. 912-15  | Added on Thursday, April 07, 2011, 09:21 PM
+
+What Hudson is saying is that IQ is a lot like height in basketball. Does someone who is five foot six have a realistic chance of playing professional basketball? Not really. You need to be at least six foot or six one to play at that level, and, all things being equal, it’s probably better to be six two than six one, and better to be six three than six two. But past a certain point, height stops mattering so much.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight Loc. 4589-95  | Added on Thursday, April 07, 2011, 09:30 PM
+
+∗ To get a sense of how absurd the selection process at elite Ivy League schools has become, consider the following statistics. In 2008, 27,462 of the most highly qualified high school seniors in the world applied to Harvard University. Of these students, 2,500 of them scored a perfect 800 on the SAT critical reading test and 3,300 had a perfect score on the SAT math exam. More than 3,300 were ranked first in their high school class. How many did Harvard accept? About 1,600, which is to say they rejected 93 out of every 100 applicants. Is it really possible to say that one student is Harvard material and another isn’t, when both have identical — and perfect — academic records? Of course not. Harvard is being dishonest. Schwartz is right. They should just have a lottery.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 91 | Loc. 1048-51  | Added on Friday, April 08, 2011, 09:58 AM
+
+By the time Terman came out with his fourth volume of Genetic Studies of Genius, the word “genius” had all but vanished. “We have seen,” Terman concluded, with more than a touch of disappointment, “that intellect and achievement are far from perfectly correlated.”
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 102 | Loc. 1185-88  | Added on Friday, April 08, 2011, 08:40 PM
+
+To Sternberg, practical intelligence includes things like “knowing what to say to whom, knowing when to say it, and knowing how to say it for maximum effect.” It is procedural: it is about knowing how to do something without necessarily knowing why you know it or being able to explain it.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 102 | Loc. 1189-90  | Added on Friday, April 08, 2011, 08:41 PM
+
+And, critically, it is a kind of intelligence separate from the sort of analytical ability measured by IQ. To use the technical term, general intelligence and practical intelligence are “orthogonal”: the presence of one doesn’t imply the presence of the other.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 103 | Loc. 1195-97  | Added on Friday, April 08, 2011, 08:42 PM
+
+IQ is a measure, to some degree, of innate ability.∗ But social savvy is knowledge. It’s a set of skills that have to be learned. It has to come from somewhere, and the place where we seem to get these kinds of attitudes and skills is from our families.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 113 | Loc. 1338-42  | Added on Monday, April 11, 2011, 09:52 AM
+
+The plain truth of the Terman study, however, is that in the end almost none of the genius children from the lowest social and economic class ended up making a name for themselves. What did the Cs lack, though? Not something expensive or impossible to find; not something encoded in DNA or hardwired into the circuits of their brains. They lacked something that could have been given to them if we’d only known they needed it: a community around them that prepared them properly for the world. The Cs were squandered talent.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 116 | Loc. 1368-70  | Added on Monday, April 11, 2011, 10:00 AM
+
+But that’s because those others had had help along the way, and Chris Langan never had. It wasn’t an excuse. It was a fact. He’d had to make his way alone, and no one — not rock stars, not professional athletes, not software billionaires, and not even geniuses — ever makes it alone.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 120 | Loc. 1415-16  | Added on Monday, April 11, 2011, 08:46 PM
+
+Successful people don’t do it alone. Where they come from matters. They’re products of particular places and environments.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 135 | Loc. 1594-1602  | Added on Tuesday, April 12, 2011, 09:22 AM
+
+Here is what the economist H. Scott Gordon once wrote about the particular benefits of being one of those people born in a small generation: When he opens his eyes for the first time, it is in a spacious hospital, well-appointed to serve the wave that preceded him. The staff is generous with their time, since they have little to do while they ride out the brief period of calm until the next wave hits. When he comes to school age, the magnificent buildings are already there to receive him; the ample staff of teachers welcomes him with open arms. In high school, the basketball team is not as good as it was but there is no problem getting time on the gymnasium floor. The university is a delightful place; lots of room in the classes and residences, no crowding in the cafeteria, and the professors are solicitous. Then he hits the job market. The supply of new entrants is low, and the demand is high, because there is a large wave coming behind him providing a strong demand for the goods and services of his potential employers.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 150 | Loc. 1785-87  | Added on Tuesday, April 12, 2011, 09:26 PM
+
+Those three things — autonomy, complexity, and a connection between effort and reward — are, most people agree, the three qualities that work has to have if it is to be satisfying. It is not how much money we make that ultimately makes us happy between nine and five. It’s whether our work fulfills us.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 151 | Loc. 1797-98  | Added on Tuesday, April 12, 2011, 09:31 PM
+
+Hard work is a prison sentence only if it does not have meaning. Once it does, it becomes the kind of thing that makes you grab your wife around the waist and dance a jig.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 167 | Loc. 1944-53  | Added on Wednesday, April 13, 2011, 12:58 PM
+
+Cultures of honor tend to take root in highlands and other marginally fertile areas, such as Sicily or the mountainous Basque regions of Spain. If you live on some rocky mountainside, the explanation goes, you can’t farm. You probably raise goats or sheep, and the kind of culture that grows up around being a herdsman is very different from the culture that grows up around growing crops. The survival of a farmer depends on the cooperation of others in the community. But a herdsman is off by himself. Farmers also don’t have to worry that their livelihood will be stolen in the night, because crops can’t easily be stolen unless, of course, a thief wants to go to the trouble of harvesting an entire field on his own. But a herdsman does have to worry. He’s under constant threat of ruin through the loss of his animals. So he has to be aggressive: he has to make it clear, through his words and deeds, that he is not weak. He has to be willing to fight in response to even the slightest challenge to his reputation — and that’s what a “culture of honor” means. It’s a world where a man’s reputation is at the center of his livelihood and self-worth.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 171 | Loc. 1994-97  | Added on Wednesday, April 13, 2011, 02:29 PM
+
+The “culture of honor” hypothesis says that it matters where you’re from, not just in terms of where you grew up or where your parents grew up, but in terms of where your great-grandparents and great-great-grandparents grew up and even where your great-great-great-grandparents grew up. That is a strange and powerful fact. It’s just the beginning, though, because upon closer examination, cultural legacies turn out to be even stranger and more powerful than that.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 183 | Loc. 2130-32  | Added on Wednesday, April 13, 2011, 07:50 PM
+
+The typical commercial jetliner — at this point in its stage of development — is about as dependable as a toaster. Plane crashes are much more likely to be the result of an accumulation of minor difficulties and seemingly trivial malfunctions.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 185 | Loc. 2137-42  | Added on Wednesday, April 13, 2011, 07:53 PM
+
+One of the pilots does something wrong that by itself is not a problem. Then one of them makes another error on top of that, which combined with the first error still does not amount to catastrophe. But then they make a third error on top of that, and then another and another and another and another, and it is the combination of all those errors that leads to disaster. These seven errors, furthermore, are rarely problems of knowledge or flying skill. It’s not that the pilot has to negotiate some critical technical maneuver and fails. The kinds of errors that cause plane crashes are invariably errors of teamwork and communication.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 196 | Loc. 2285-88  | Added on Thursday, April 14, 2011, 10:18 AM
+
+Fischer and Orasanu found that captains overwhelmingly said they would issue a command in that situation: “Turn thirty degrees right.” They were talking to a subordinate. They had no fear of being blunt. The first officers, on the other hand, were talking to their boss, and so they overwhelmingly chose the most mitigated alternative. They hinted.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 198 | Loc. 2308-10  | Added on Thursday, April 14, 2011, 10:25 AM
+
+Mitigation explains one of the great anomalies of plane crashes. In commercial airlines, captains and first officers split the flying duties equally. But historically, crashes have been far more likely to happen when the captain is in the “flying seat.”
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 206 | Loc. 2422-28  | Added on Thursday, April 14, 2011, 04:59 PM
+
+“In low–power distance index countries,” Hofstede wrote in his classic text Culture’s Consequences: power is something of which power holders are almost ashamed and they will try to underplay. I once heard a Swedish (low PDI) university official state that in order to exercise power he tried not to look powerful. Leaders may enhance their informal status by renouncing formal symbols. In (low PDI) Austria, Prime Minister Bruno Kreisky was known to sometimes take the streetcar to work. In 1974, I actually saw the Dutch (low PDI) prime minister, Joop den Uyl, on vacation with his motor home at a camping site in Portugal. Such behavior of the powerful would be very unlikely in high-PDI Belgium or France.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight Loc. 4684-90  | Added on Thursday, April 14, 2011, 05:14 PM
+
+∗ Here are the top five pilot PDIs by country. If you compare this list to the ranking of plane crashes by country, they match up very closely. 1. Brazil 2. South Korea 3. Morocco 4. Mexico 5. Philippines The five lowest pilot PDIs by country are: 15. United States 16. Ireland 17. South Africa 18. Australia 19. New Zealand 
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 217 | Loc. 2562-63  | Added on Thursday, April 14, 2011, 06:11 PM
+
+Western communication has what linguists call a “transmitter orientation” — that is, it is considered the responsibility of the speaker to communicate ideas clearly and unambiguously.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 222 | Loc. 2627-29  | Added on Thursday, April 14, 2011, 06:23 PM
+
+Why is the fact that each of us comes from a culture with its own distinctive mix of strengths and weaknesses, tendencies and predispositions, so difficult to acknowledge? Who we are cannot be separated from where we’re from — and when we ignore that fact, planes crash.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 221 | Loc. 2624-29  | Added on Thursday, April 14, 2011, 06:24 PM
+
+In 1994, when Boeing first published safety data showing a clear correlation between a country’s plane crashes and its score on Hofstede’s Dimensions, the company’s researchers practically tied themselves in knots trying not to cause offense. “We’re not saying there’s anything here, but we think there’s something there” is how Boeing’s chief engineer for airplane safety put it. Why are we so squeamish? Why is the fact that each of us comes from a culture with its own distinctive mix of strengths and weaknesses, tendencies and predispositions, so difficult to acknowledge? Who we are cannot be separated from where we’re from — and when we ignore that fact, planes crash.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 228 | Loc. 2707-13  | Added on Friday, April 15, 2011, 07:44 PM
+
+Take a look at the following list of numbers: 4, 8, 5, 3, 9, 7, 6. Read them out loud. Now look away and spend twenty seconds memorizing that sequence before saying them out loud again. If you speak English, you have about a 50 percent chance of remembering that sequence perfectly. If you’re Chinese, though, you’re almost certain to get it right every time. Why is that? Because as human beings we store digits in a memory loop that runs for about two seconds. We most easily memorize whatever we can say or read within that two-second span. And Chinese speakers get that list of numbers — 4, 8, 5, 3, 9, 7, 6 — right almost every time because, unlike English, their language allows them to fit all those seven numbers into two seconds.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 248 | Loc. 2942-45  | Added on Thursday, April 21, 2011, 10:39 AM
+
+Now, what do you think happens if you compare the questionnaire rankings with the math rankings on the TIMSS? They are exactly the same. In other words, countries whose students are willing to concentrate and sit still long enough and focus on answering every single question in an endless questionnaire are the same countries whose students do the best job of solving math problems.
+==========
+Outliers (Malcolm Gladwell)
+- Highlight on Page 268 | Loc. 3188-91  | Added on Thursday, April 21, 2011, 09:53 PM
+
+Everything we have learned in Outliers says that success follows a predictable course. It is not the brightest who succeed. If it were, Chris Langan would be up there with Einstein. Nor is success simply the sum of the decisions and efforts we make on our own behalf. It is, rather, a gift. Outliers are those who have been given opportunities — and who have had the strength and presence of mind to seize them.
+==========
