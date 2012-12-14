@@ -5,7 +5,7 @@
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
 			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks \n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n\\s*-\\                             \t# \n(?P<Type>(Highlight|Note))         # Clipping type - 'Highlight' or 'Note'\n.*(Loc.|Page)\\                   \t#\n(?P<Location>[\\d-]*)           \t# Location\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t# \n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
-			"Date Format": "",
+			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
 			"Delimiter": "=========="
 		},
 		"KTouch \"My Clippings.txt\", 7 fields, no bookmarks": {
@@ -13,7 +13,7 @@
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "True",
 			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\(]*)\\))?\t# Author name (optional)\n\\s*-\\ Your\\                    \t#\n(?P<Type>(Highlight|Note))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
-			"Date Format": "",
+			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
 			"Delimiter": "=========="
 		}
 	},

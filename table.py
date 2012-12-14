@@ -10,7 +10,7 @@ from PyQt4.QtCore import *
 import codecs as co
 import re
 from datetime import datetime as dt
-import sys
+from django.template.defaultfilters import pprint
 
 from settings import *
 
@@ -212,12 +212,10 @@ class TableModel(QAbstractTableModel):
                             except:
                                 date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
                             line[h] = {Qt.DisplayRole : QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole : date}
-                        elif h == 'Note':
-                            if search.group('Type') == 'Note':
-                                line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
-                        elif h == 'Highlight':
-                            if search.group('Type') == 'Highlight':
-                                line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
+                        elif h == 'Note' and search.group('Type') == 'Note':
+                            line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
+                        elif h == 'Highlight' and search.group('Type') == 'Highlight':
+                            line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
                         else:
                             line[h] = {Qt.DisplayRole : search.group(h), Qt.EditRole : search.group(h)}
                     except:
@@ -260,7 +258,7 @@ class TableModel(QAbstractTableModel):
                         # Now we need to decide if we're checking forward or backwards
                         if self.notesPosition == 'After highlights' and\
                            row > 0 and\
-                           import_data[row][u'Date'][Qt.DisplayRole] == import_data[row - 1][u'Date'][Qt.DisplayRole] and\
+                           any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole])) and\
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
                             # Edit previous row
 
@@ -277,7 +275,7 @@ class TableModel(QAbstractTableModel):
 
                         elif self.notesPosition == 'Before highlights' and\
                              row < len(import_data)-1 and\
-                             import_data[row][u'Date'][Qt.DisplayRole] == import_data[row + 1][u'Date'][Qt.DisplayRole] and\
+                             any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole])) and\
                              import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
                             # Combine with next row, skip next row
 
@@ -304,6 +302,20 @@ class TableModel(QAbstractTableModel):
 
         self.endResetModel()
         return status
+
+    def hyphen_range(self, s):
+        """ Takes a range in form of "a-b" and generate a list of numbers between a and b inclusive.
+        Also accepts comma separated ranges like "a-b,c-d,f" will build a list which will include
+        Numbers from a to b, a to d and f """
+        s=u''.join(s.split()) #removes white space
+        r=set()
+        for x in s.split(','):
+            t=x.split('-')
+            if len(t) not in [1,2]: raise SyntaxError("hash_range is given its argument as "+s+" which seems not correctly formatted.")
+            r.add(int(t[0])) if len(t)==1 else r.update(set(range(int(t[0]),int(t[1])+1)))
+        l=list(r)
+        l.sort()
+        return l
 
     def rowCount(self, index):
         return len(self.tableData)
