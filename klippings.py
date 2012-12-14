@@ -14,6 +14,8 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import codecs as co
 
+import sys
+
 from gui.ui_mainWin import *
 from table import *
 from settings import *
@@ -328,29 +330,41 @@ class MainWin(QMainWindow):
         # sys.stderr.write(u'STATUS: parsing ' + wildcard + u'\n')
         # catch formatting prefixes, recursively call wildcards
         try:
-            # Capture MergedText Tag because it needs special logic to handle prefixes
-            if wildcard[-10:] == 'CustomText':
-                if self.processWildcard(template_name, 'Note', row, dateFormat) == '':
-                    return self.processWildcard(template_name, wildcard[:-10] + 'Text', row, dateFormat)
-                else:
-                    # response = self.settings['Export Settings'][template_name]['Attached Highlights']
-                    response = u'PatternDriven<br/>?P<Note><br/><br/>REGARDING HIGHLIGHT<br/>=========<br/>?P<Highlight><br/>=========<br/>END HIGHLIGHT<br/>  '
-                    response = response.replace(u'?P<%s>' % 'Note', self.processWildcard(template_name, wildcard[:-10] + 'Note', row, dateFormat))
-                    response = response.replace(u'?P<%s>' % 'Highlight', self.processWildcard(template_name, wildcard[:-10] + 'Highlight', row, dateFormat))
-                    return response
-
             # support for prefixes
-            elif wildcard[:11] == 'EvernoteTag':
+            if wildcard[:11] == 'EvernoteTag':
                 replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat).translate(dict((ord(char), u'_') for char in u','))
                 if len(replace_string) > 100:
                     replace_string = replace_string[:97] + '...'
                 if len(replace_string) > 0:
                     replace_string = u'<tag>' + replace_string + u'</tag>'
                 return replace_string
+            elif wildcard[:11] == 'SpanXmlSafe':
+                return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
+                       re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[11:], row, dateFormat)))) +\
+                       u'</span>'
             elif wildcard[:7] == 'XmlSafe':
                 return re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[7:], row, dateFormat))))
+            elif wildcard[:4] == 'Span':
+                return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
+                       self.processWildcard(template_name, wildcard[4:], row, dateFormat) + u'</span>'
+
 
             # return data types
+            elif wildcard[:4] == 'Text':
+                # Condider adding code for bookmarks
+                if self.processWildcard(template_name, 'Note', row, dateFormat) == '':
+                    return self.processWildcard(template_name, wildcard[4:] + 'Highlight', row, dateFormat)
+                elif self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
+                    return self.processWildcard(template_name, wildcard[4:] + 'Note', row, dateFormat)
+                else:
+                    response = self.settings['Export Settings'][template_name]['Notes']
+                    if response == '':
+                        return u'ERROR:  Please configure custom text pattern.'
+                    else:
+                        wildCards = re.findall(r'\?P<(.*?)>', response, re.UNICODE)
+                        for i in wildCards:
+                            response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
+                        return response
             elif wildcard == 'Date':
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
             else:
@@ -523,7 +537,6 @@ class MainWin(QMainWindow):
         self.initiateToolButtons()        
                                                                  
 if __name__ == '__main__':
-    import sys
     import StringIO
 
     log = StringIO.StringIO()

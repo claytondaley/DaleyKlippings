@@ -32,6 +32,7 @@ class Settings(dict):
     exportSettings = {'Default' : '',
                       'Header' : '',
                       'Body' : '',
+                      'Notes' : '',
                       'Bottom' : '',
                       'Date Format' : '',
                       'Extension' : '',
@@ -384,7 +385,10 @@ class SettingsDialog(QDialog):
             
             self.ui.textExportBody.setEnabled(False)
             self.ui.textExportBody.setPlainText('')
-            
+
+            self.ui.textExportNotes.setEnabled(False)
+            self.ui.textExportNotes.setPlainText('')
+
             self.ui.textExportBottom.setEnabled(False)
             self.ui.textExportBottom.setPlainText('')
             
@@ -414,7 +418,11 @@ class SettingsDialog(QDialog):
             self.ui.textExportBody.setEnabled(True)
             body = self.settings['Export Settings'][unicode(item)]['Body']
             self.ui.textExportBody.setPlainText(body)
-            
+
+            self.ui.textExportNotes.setEnabled(True)
+            notes = self.settings['Export Settings'][unicode(item)]['Notes']
+            self.ui.textExportNotes.setPlainText(notes)
+
             self.ui.textExportBottom.setEnabled(True)
             bottom = self.settings['Export Settings'][unicode(item)]['Bottom']
             self.ui.textExportBottom.setPlainText(bottom)
@@ -461,6 +469,7 @@ class SettingsDialog(QDialog):
                 {'Default' : unicode(isDefaultExport),
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
@@ -473,6 +482,7 @@ class SettingsDialog(QDialog):
                             {'Default' : 'False',
                              'Header' : self.settings['Export Settings'][unicode(i)]['Header'],
                              'Body' : self.settings['Export Settings'][unicode(i)]['Body'],
+                             'Notes' : self.settings['Export Settings'][unicode(i)]['Notes'],
                              'Bottom' : self.settings['Export Settings'][unicode(i)]['Bottom'],
                              'Encoding' : self.settings['Export Settings'][unicode(i)]['Encoding'],
                              'Date Format' : self.settings['Export Settings'][unicode(i)]['Date Format'],
@@ -486,6 +496,7 @@ class SettingsDialog(QDialog):
                 {'Header' : unicode(header),
                  'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
@@ -499,11 +510,26 @@ class SettingsDialog(QDialog):
                 {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : unicode(body),
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension' : self.settings['Export Settings'][unicode(item)]['Extension']}  
-            
+                 'Extension' : self.settings['Export Settings'][unicode(item)]['Extension']}
+
+    def onExportNotesChanged(self):
+        item = self.ui.cmbExportPatternName.currentText()
+        if unicode(item) != '':
+            notes = self.ui.textExportNotes.toPlainText()
+            self.settings['Export Settings'][unicode(item)] =\
+                {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
+                 'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
+                 'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : unicode(notes),
+                 'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
+                 'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
+                 'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
+                 'Extension' : self.settings['Export Settings'][unicode(item)]['Extension']}
+
     def onExportBottomChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
@@ -512,6 +538,7 @@ class SettingsDialog(QDialog):
                 {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : unicode(bottom),
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
@@ -524,6 +551,7 @@ class SettingsDialog(QDialog):
                 {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : unicode(dateFormat),
@@ -536,6 +564,7 @@ class SettingsDialog(QDialog):
                 {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : unicode(encoding),
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],
@@ -548,6 +577,7 @@ class SettingsDialog(QDialog):
                 {'Default' : self.settings['Export Settings'][unicode(item)]['Default'],
                  'Header' : self.settings['Export Settings'][unicode(item)]['Header'],
                  'Body' : self.settings['Export Settings'][unicode(item)]['Body'],
+                 'Notes' : self.settings['Export Settings'][unicode(item)]['Notes'],
                  'Bottom' : self.settings['Export Settings'][unicode(item)]['Bottom'],
                  'Encoding' : self.settings['Export Settings'][unicode(item)]['Encoding'],
                  'Date Format' : self.settings['Export Settings'][unicode(item)]['Date Format'],

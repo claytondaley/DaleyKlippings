@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>501</height>
+    <width>1009</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="mainWin.qrc">
+   <iconset>
     <normaloff>:/icons/Bloomy/configure.png</normaloff>:/icons/Bloomy/configure.png</iconset>
   </property>
   <property name="locale">
@@ -30,7 +30,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabApplication">
       <attribute name="title">
@@ -739,7 +739,7 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="3" column="0">
              <widget class="QLabel" name="labelExportBottom">
               <property name="text">
                <string>Bottom:</string>
@@ -749,7 +749,7 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="3" column="1">
              <widget class="QPlainTextEdit" name="textExportBottom">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -769,7 +769,7 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
+            <item row="4" column="0">
              <widget class="QLabel" name="labelExportDateFormat">
               <property name="text">
                <string>Date&lt;br&gt;format:</string>
@@ -779,7 +779,7 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="4" column="1">
              <widget class="QLineEdit" name="editExportDateFormat">
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -905,6 +905,37 @@ p, li { white-space: pre-wrap; }
               </property>
               <property name="placeholderText">
                <string notr="true">dd.MM.yy, hh:mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelExportNotes">
+              <property name="text">
+               <string>Note
+Pattern:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPlainTextEdit" name="textExportNotes">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="whatsThis">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Body &lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;is a pattern to convert notes from the Klippings table into formated text. Wildcards &lt;/span&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;?P&amp;lt;table_header_name&amp;gt;&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; will be replaced by the edited, filtered and sorted table data.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="lineWrapMode">
+               <enum>QPlainTextEdit::NoWrap</enum>
               </property>
              </widget>
             </item>
@@ -1105,8 +1136,8 @@ p, li { white-space: pre-wrap; }
    <slot>onButtonOK()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>332</x>
-     <y>490</y>
+     <x>771</x>
+     <y>757</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -1121,8 +1152,8 @@ p, li { white-space: pre-wrap; }
    <slot>onButtonApply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>413</x>
-     <y>490</y>
+     <x>852</x>
+     <y>757</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -1137,8 +1168,8 @@ p, li { white-space: pre-wrap; }
    <slot>onButtonCancel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>494</x>
-     <y>490</y>
+     <x>933</x>
+     <y>757</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -1169,7 +1200,7 @@ p, li { white-space: pre-wrap; }
    <slot>onImportAddPattern()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>400</x>
+     <x>904</x>
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
@@ -1185,7 +1216,7 @@ p, li { white-space: pre-wrap; }
    <slot>onImportDeletePattern()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>481</x>
+     <x>985</x>
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
@@ -1233,8 +1264,8 @@ p, li { white-space: pre-wrap; }
    <slot>onImportExtensionChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>244</x>
-     <y>436</y>
+     <x>278</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>197</x>
@@ -1249,8 +1280,8 @@ p, li { white-space: pre-wrap; }
    <slot>onImportEncodingChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>471</x>
-     <y>436</y>
+     <x>843</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>197</x>
@@ -1265,8 +1296,8 @@ p, li { white-space: pre-wrap; }
    <slot>onImportDateFormatChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>302</x>
-     <y>372</y>
+     <x>374</x>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>197</x>
@@ -1297,7 +1328,7 @@ p, li { white-space: pre-wrap; }
    <slot>onExportAddPattern()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>400</x>
+     <x>839</x>
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
@@ -1313,7 +1344,7 @@ p, li { white-space: pre-wrap; }
    <slot>onExportDeletePattern()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>481</x>
+     <x>920</x>
      <y>63</y>
     </hint>
     <hint type="destinationlabel">
@@ -1355,14 +1386,30 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
   <connection>
+   <sender>textExportNotes</sender>
+   <signal>textChanged()</signal>
+   <receiver>settingsDialog</receiver>
+   <slot>onExportNotesChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>textExportBottom</sender>
    <signal>textChanged()</signal>
    <receiver>settingsDialog</receiver>
    <slot>onExportBottomChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>240</x>
-     <y>312</y>
+     <x>308</x>
+     <y>610</y>
     </hint>
     <hint type="destinationlabel">
      <x>218</x>
@@ -1377,8 +1424,8 @@ p, li { white-space: pre-wrap; }
    <slot>onExportDateFormatChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>240</x>
-     <y>359</y>
+     <x>308</x>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>218</x>
@@ -1393,8 +1440,8 @@ p, li { white-space: pre-wrap; }
    <slot>onExportEncodingChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>371</x>
-     <y>424</y>
+     <x>851</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>218</x>
@@ -1425,8 +1472,8 @@ p, li { white-space: pre-wrap; }
    <slot>onExportExtensionChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>184</x>
-     <y>424</y>
+     <x>225</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>218</x>
@@ -1473,7 +1520,7 @@ p, li { white-space: pre-wrap; }
    <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>470</x>
+     <x>656</x>
      <y>133</y>
     </hint>
     <hint type="destinationlabel">
@@ -1489,7 +1536,7 @@ p, li { white-space: pre-wrap; }
    <slot>onImportIsDefaultChanged(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>267</x>
+     <x>771</x>
      <y>53</y>
     </hint>
     <hint type="destinationlabel">
@@ -1505,11 +1552,11 @@ p, li { white-space: pre-wrap; }
    <slot>onExportIsDefaultChanged(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>269</x>
+     <x>775</x>
      <y>49</y>
     </hint>
     <hint type="destinationlabel">
-     <x>544</x>
+     <x>451</x>
      <y>185</y>
     </hint>
    </hints>
@@ -1580,6 +1627,7 @@ p, li { white-space: pre-wrap; }
   <slot>onExportDeletePattern()</slot>
   <slot>onExportHeaderChanged()</slot>
   <slot>onExportBodyChanged()</slot>
+  <slot>onExportNotesChanged()</slot>
   <slot>onExportBottomChanged()</slot>
   <slot>onExportDateFormatChanged(QString)</slot>
   <slot>onExportExtensionChanged(QString)</slot>

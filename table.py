@@ -4,6 +4,7 @@
 """
 Table data model, proxy model, data edit delegates, parsing routine, default constants
 """
+from PyQt4 import Qt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -224,13 +225,8 @@ class TableModel(QAbstractTableModel):
                         emptyHeaders += 1
                         if emptyHeaders == len(self.tableData.headers):
                             raise
-                # Attach note to the coressponding highlight, if it is not
-                # the first entry and set in settings
-                rows = len(import_data)
-
                 #self.tableData[rows] = line
                 import_data.append(line)
-
 
             except:
                 # Inform about invalid note
@@ -258,12 +254,15 @@ class TableModel(QAbstractTableModel):
                         # Now we need to decide if we're checking forward or backwards
                         if self.notesPosition == 'After highlights' and\
                            row > 0 and\
+                           import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
                            any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole])) and\
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
                             # Edit previous row
 
-                            self.tableData[len(self.tableData)-1][u'Highlight'] = self.tableData[len(self.tableData)-1][u'Text']
-                            self.tableData[len(self.tableData)-1][u'Note'] = import_data[row][u'Text']
+                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.DisplayRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
+                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole]
+                            self.tableData[len(self.tableData)-1][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
+                            self.tableData[len(self.tableData)-1][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
                             self.tableData[len(self.tableData)-1][u'Type'] = import_data[row][u'Type']
 
                             # merging process preserved for backwards compatibility
@@ -275,12 +274,15 @@ class TableModel(QAbstractTableModel):
 
                         elif self.notesPosition == 'Before highlights' and\
                              row < len(import_data)-1 and\
+                             import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
                              any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole])) and\
                              import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
                             # Combine with next row, skip next row
 
-                            import_data[row][u'Highlight'] = import_data[row + 1][u'Text']
-                            import_data[row][u'Note'] = import_data[row][u'Text']
+                            import_data[row][u'Highlight'][Qt.DisplayRole] = import_data[row + 1][u'Text'][Qt.DisplayRole]
+                            import_data[row][u'Highlight'][Qt.EditRole] = import_data[row + 1][u'Text'][Qt.EditRole]
+                            import_data[row][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
+                            import_data[row][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
 
                             # merging process preserved for backwards compatibility
                             highlight = '%s%s%s' % (self.delimiters['Before'],
