@@ -277,6 +277,7 @@ class Ui_settingsDialog(object):
         self.textExportHeader.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportHeader.setObjectName(_fromUtf8("textExportHeader"))
         self.gridLayout_2.addWidget(self.textExportHeader, 0, 1, 1, 1)
+
         self.labelExportBody = QtGui.QLabel(self.boxExportPattern)
         self.labelExportBody.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportBody.setObjectName(_fromUtf8("labelExportBody"))
@@ -290,10 +291,25 @@ class Ui_settingsDialog(object):
         self.textExportBody.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportBody.setObjectName(_fromUtf8("textExportBody"))
         self.gridLayout_2.addWidget(self.textExportBody, 1, 1, 1, 1)
+
+        self.labelExportNotes = QtGui.QLabel(self.boxExportPattern)
+        self.labelExportNotes.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.labelExportNotes.setObjectName(_fromUtf8("labelExportNotes"))
+        self.gridLayout_2.addWidget(self.labelExportNotes, 2, 0, 1, 1)
+        self.textExportNotes = QtGui.QPlainTextEdit(self.boxExportPattern)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.textExportNotes.sizePolicy().hasHeightForWidth())
+        self.textExportNotes.setSizePolicy(sizePolicy)
+        self.textExportNotes.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
+        self.textExportNotes.setObjectName(_fromUtf8("textExportNotes"))
+        self.gridLayout_2.addWidget(self.textExportNotes, 2, 1, 1, 1)
+
         self.labelExportBottom = QtGui.QLabel(self.boxExportPattern)
         self.labelExportBottom.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportBottom.setObjectName(_fromUtf8("labelExportBottom"))
-        self.gridLayout_2.addWidget(self.labelExportBottom, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.labelExportBottom, 3, 0, 1, 1)
         self.textExportBottom = QtGui.QPlainTextEdit(self.boxExportPattern)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -302,15 +318,16 @@ class Ui_settingsDialog(object):
         self.textExportBottom.setSizePolicy(sizePolicy)
         self.textExportBottom.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportBottom.setObjectName(_fromUtf8("textExportBottom"))
-        self.gridLayout_2.addWidget(self.textExportBottom, 2, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.textExportBottom, 3, 1, 1, 1)
+
         self.labelExportDateFormat = QtGui.QLabel(self.boxExportPattern)
         self.labelExportDateFormat.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportDateFormat.setObjectName(_fromUtf8("labelExportDateFormat"))
-        self.gridLayout_2.addWidget(self.labelExportDateFormat, 3, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.labelExportDateFormat, 4, 0, 1, 1)
         self.editExportDateFormat = QtGui.QLineEdit(self.boxExportPattern)
         self.editExportDateFormat.setPlaceholderText(_fromUtf8("dd.MM.yy, hh:mm"))
         self.editExportDateFormat.setObjectName(_fromUtf8("editExportDateFormat"))
-        self.gridLayout_2.addWidget(self.editExportDateFormat, 3, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.editExportDateFormat, 4, 1, 1, 1)
         self.horizontalLayout_10.addLayout(self.gridLayout_2)
         self.verticalLayout_4.addWidget(self.boxExportPattern)
         self.boxExportFileSettings = QtGui.QGroupBox(self.tabExport)
@@ -392,6 +409,7 @@ class Ui_settingsDialog(object):
         QtCore.QObject.connect(self.buttonExportDeletePattern, QtCore.SIGNAL(_fromUtf8("clicked()")), settingsDialog.onExportDeletePattern)
         QtCore.QObject.connect(self.textExportHeader, QtCore.SIGNAL(_fromUtf8("textChanged()")), settingsDialog.onExportHeaderChanged)
         QtCore.QObject.connect(self.textExportBody, QtCore.SIGNAL(_fromUtf8("textChanged()")), settingsDialog.onExportBodyChanged)
+        QtCore.QObject.connect(self.textExportNotes, QtCore.SIGNAL(_fromUtf8("textChanged()")), settingsDialog.onExportNotesChanged)
         QtCore.QObject.connect(self.textExportBottom, QtCore.SIGNAL(_fromUtf8("textChanged()")), settingsDialog.onExportBottomChanged)
         QtCore.QObject.connect(self.editExportDateFormat, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), settingsDialog.onExportDateFormatChanged)
         QtCore.QObject.connect(self.cmbExportEncoding, QtCore.SIGNAL(_fromUtf8("activated(QString)")), settingsDialog.onExportEncodingChanged)
@@ -430,7 +448,8 @@ class Ui_settingsDialog(object):
         settingsDialog.setTabOrder(self.buttonExportAddPattern, self.buttonExportDeletePattern)
         settingsDialog.setTabOrder(self.buttonExportDeletePattern, self.textExportHeader)
         settingsDialog.setTabOrder(self.textExportHeader, self.textExportBody)
-        settingsDialog.setTabOrder(self.textExportBody, self.textExportBottom)
+        settingsDialog.setTabOrder(self.textExportBody, self.textExportNotes)
+        settingsDialog.setTabOrder(self.textExportNotes, self.textExportBottom)
         settingsDialog.setTabOrder(self.textExportBottom, self.editExportDateFormat)
         settingsDialog.setTabOrder(self.editExportDateFormat, self.editExportExtensions)
         settingsDialog.setTabOrder(self.editExportExtensions, self.cmbExportEncoding)
@@ -658,8 +677,20 @@ class Ui_settingsDialog(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Header</span><span style=\" font-size:8pt;\"> is the data to write in the beginning of the export file.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelExportHeader.setText(QtGui.QApplication.translate("settingsDialog", "Header:", None, QtGui.QApplication.UnicodeUTF8))
+        self.textExportHeader.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Header</span><span style=\" font-size:8pt;\"> is the data to write in the beginning of the export file.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.labelExportBody.setText(QtGui.QApplication.translate("settingsDialog", "Body:", None, QtGui.QApplication.UnicodeUTF8))
         self.textExportBody.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Body </span><span style=\" font-size:8pt;\">is a pattern to convert notes from the Klippings table into formated text. Wildcards </span><span style=\" font-size:8pt; font-weight:600;\">?P&lt;table_header_name&gt;</span><span style=\" font-size:8pt;\"> will be replaced by the edited, filtered and sorted table data.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelExportNotes.setText(QtGui.QApplication.translate("settingsDialog", "Attached\nNotes:", None, QtGui.QApplication.UnicodeUTF8))
+        self.textExportNotes.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
