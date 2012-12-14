@@ -10,6 +10,7 @@ from PyQt4.QtCore import *
 import codecs as co
 import re
 from datetime import datetime as dt
+import sys
 
 from settings import *
 
@@ -211,6 +212,12 @@ class TableModel(QAbstractTableModel):
                             except:
                                 date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
                             line[h] = {Qt.DisplayRole : QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole : date}
+                        elif h == 'Note':
+                            if search.group('Type') == 'Note':
+                                line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
+                        elif h == 'Highlight':
+                            if search.group('Type') == 'Highlight':
+                                line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
                         else:
                             line[h] = {Qt.DisplayRole : search.group(h), Qt.EditRole : search.group(h)}
                     except:
@@ -257,10 +264,9 @@ class TableModel(QAbstractTableModel):
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
                             # Edit previous row
 
-                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.DisplayRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
-                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole]
-                            self.tableData[len(self.tableData)-1][u'Note'][Qt.DisplayRole] = self.tableData[len(self.tableData)][u'Text'][Qt.DisplayRole]
-                            self.tableData[len(self.tableData)-1][u'Note'][Qt.EditRole] = self.tableData[len(self.tableData)][u'Text'][Qt.EditRole]
+                            self.tableData[len(self.tableData)-1][u'Highlight'] = self.tableData[len(self.tableData)-1][u'Text']
+                            self.tableData[len(self.tableData)-1][u'Note'] = import_data[row][u'Text']
+                            self.tableData[len(self.tableData)-1][u'Type'] = import_data[row][u'Type']
 
                             # merging process preserved for backwards compatibility
                             highlight = '%s%s%s' % (self.delimiters['Before'],
@@ -270,15 +276,13 @@ class TableModel(QAbstractTableModel):
                             self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
 
                         elif self.notesPosition == 'Before highlights' and\
-                             row < len(import_data) and\
+                             row < len(import_data)-1 and\
                              import_data[row][u'Date'][Qt.DisplayRole] == import_data[row + 1][u'Date'][Qt.DisplayRole] and\
                              import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
                             # Combine with next row, skip next row
 
-                            import_data[row][u'Highlight'][Qt.DisplayRole] = import_data[row + 1][u'Text'][Qt.DisplayRole]
-                            import_data[row][u'Highlight'][Qt.EditRole] = import_data[row + 1][u'Text'][Qt.EditRole]
-                            import_data[row][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
-                            import_data[row][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
+                            import_data[row][u'Highlight'] = import_data[row + 1][u'Text']
+                            import_data[row][u'Note'] = import_data[row][u'Text']
 
                             # merging process preserved for backwards compatibility
                             highlight = '%s%s%s' % (self.delimiters['Before'],
@@ -289,12 +293,12 @@ class TableModel(QAbstractTableModel):
 
                             self.tableData.append(import_data[row])
                             skip = True
-                            # create modified row and append
-
-                    else: # if row is note
-                        #self.tableData[rows] = line
+                        else:
+                            self.tableData.append(import_data[row])
+                    else:
                         self.tableData.append(import_data[row])
-        else: # if attach notes flag is on
+
+        else: # if attach notes flag is not on
             for row in import_data:
                 self.tableData.append(row)
 
