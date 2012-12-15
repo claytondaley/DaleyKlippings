@@ -323,8 +323,31 @@ class MainWin(QMainWindow):
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:
+            # Upgraded Text tag must be pre-processed since prefixes are only applied to unAttached notes and highlights
+            if wildcard[-4:] == 'Text':
+                # Consider adding code for bookmarks
+                if self.processWildcard(template_name, 'Type', row, dateFormat) == 'Bookmark':
+                    return u''
+                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Highlight':
+                    return self.processWildcard(template_name, wildcard[:-4] + 'Highlight', row, dateFormat)
+                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and \
+                     self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
+                    return self.processWildcard(template_name, wildcard[:-4] + 'Note', row, dateFormat)
+                else:
+                    response = self.settings['Export Settings'][template_name]['Notes']
+                    if response == '':
+                        return u'ERROR:  Please configure custom text pattern.'
+                    else:
+                        wildCards = re.findall(r'\?P<(.*?)>', response, re.UNICODE)
+                        for i in wildCards:
+                            if 'Text' in i: # This prevents recursion
+                                response = response.replace(u'?P<%s>' % i, u'')
+                            else:
+                                response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
+                        return response
+
             # support for prefixes
-            if wildcard[:11] == 'EvernoteTag':
+            elif wildcard[:11] == 'EvernoteTag':
                 replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat).translate(dict((ord(char), u'_') for char in u','))
                 if len(replace_string) > 100:
                     replace_string = replace_string[:97] + '...'
@@ -341,26 +364,7 @@ class MainWin(QMainWindow):
                 return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
                        self.processWildcard(template_name, wildcard[4:], row, dateFormat) + u'</span>'
 
-
             # return data types
-            elif wildcard[:4] == 'Text':
-                # Condider adding code for bookmarks
-                if self.processWildcard(template_name, 'Note', row, dateFormat) == '':
-                    return self.processWildcard(template_name, wildcard[4:] + 'Highlight', row, dateFormat)
-                elif self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
-                    return self.processWildcard(template_name, wildcard[4:] + 'Note', row, dateFormat)
-                else:
-                    response = self.settings['Export Settings'][template_name]['Notes']
-                    if response == '':
-                        return u'ERROR:  Please configure custom text pattern.'
-                    else:
-                        wildCards = re.findall(r'\?P<(.*?)>', response, re.UNICODE)
-                        for i in wildCards:
-                            if 'Text' in i: # This prevents recursion
-                                response = response.replace(u'?P<%s>' % i, u'')
-                            else:
-                                response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
-                        return response
             elif wildcard == 'Date':
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
             else:

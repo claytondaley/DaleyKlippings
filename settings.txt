@@ -8,14 +8,6 @@
 			"Date Format": "dddd, MMMM d, yyyy, hh:mm A",
 			"Delimiter": "=========="
 		},
-		"KTouch 5.1.2, 7 fields, no bookmarks, time WITH seconds": {
-			"Extension": "",
-			"Encoding": "UTF-8 (all languages)",
-			"Default": "True",
-			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\(]*)\\))?\t# Author name (optional)\n\\s*-\\ Your\\                    \t#\n(?P<Type>(Highlight|Note))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
-			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
-			"Delimiter": "=========="
-		},
 		"Kindle3, 5 fields, no bookmarks": {
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
@@ -23,11 +15,19 @@
 			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks \n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n\\s*-\\                             \t# \n(?P<Type>(Highlight|Note))         # Clipping type - 'Highlight' or 'Note'\n.*(Loc.|Page)\\                   \t#\n(?P<Location>[\\d-]*)           \t# Location\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t# \n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
 			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
 			"Delimiter": "=========="
+		},
+		"KTouch 5.1.2, 7 fields, no bookmarks, time WITH seconds": {
+			"Extension": "",
+			"Encoding": "UTF-8 (all languages)",
+			"Default": "True",
+			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\(]*)\\))?\t# Author name (optional)\n\\s*-\\ Your\\                    \t#\n(?P<Type>(Highlight|Note))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
+			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
+			"Delimiter": "=========="
 		}
 	},
 	"Export Settings": {
 		"Evernote": {
-			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t<div title=\"EverKlipperV0.1\">\n\t\t<div>Source:  ?P<SpanXmlSafeBook></div>\n\t\t<div>Author(s):  ?P<SpanXmlSafeAuthor></div>\n\t\t<div>Page(s):  ?P<SpanXmlSafePage></div>\n\t\t<div>Location:  ?P<SpanXmlSafeLocation></div>\n\t\t<div><br/></div>\n\t\t<div>?P<TextSpanXmlSafe></div>\n\t</div>\n\t</en-note>\n]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>",
+			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t<div title=\"EverKlipperV0.1\">\n\t\t<div>Source:  ?P<SpanXmlSafeBook></div>\n\t\t<div>Author(s):  ?P<SpanXmlSafeAuthor></div>\n\t\t<div>Page(s):  ?P<SpanXmlSafePage></div>\n\t\t<div>Location:  ?P<SpanXmlSafeLocation></div>\n\t\t<div><br/></div>\n\t\t<div>?P<SpanXmlSafeText></div>\n\t</div>\n\t</en-note>\n]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>",
 			"Header": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-export SYSTEM \"http://xml.evernote.com/pub/evernote-export.dtd\">\n<en-export export-date=\"20121211T220218Z\" application=\"Evernote/Windows\" version=\"4.x\">\n",
 			"Extension": "enex",
 			"Bottom": "</en-export>",
