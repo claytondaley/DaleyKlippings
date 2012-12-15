@@ -30,7 +30,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabApplication">
       <attribute name="title">
@@ -61,15 +61,26 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelNotesPosition">
               <property name="text">
-               <string>Notes position:</string>
+               <string>Notes found:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QComboBox" name="cmbNotesPosition">
-              <property name="whatsThis">
-               <string>Choose here notes position: before or after highlights.</string>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
+              <property name="whatsThis">
+               <string>Choose here where notes are found: before highlight, after highlights, or automatic search.</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Automatic (default)</string>
+               </property>
+              </item>
               <item>
                <property name="text">
                 <string>Before highlights</string>
@@ -82,44 +93,8 @@
               </item>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelHighlightDelimiters">
-              <property name="text">
-               <string>Highlights delimeters:</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="labelBefore">
-                <property name="text">
-                 <string>before</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="editBeforeHighlight">
-                <property name="whatsThis">
-                 <string>Symbols just before a highlight to separate it from notes.</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="labelAfter">
-                <property name="text">
-                 <string>after</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="editAfterHighlight">
-                <property name="whatsThis">
-                 <string>Symbols just after a highlight to separate it from notes.</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             <layout class="QHBoxLayout" name="horizontalLayout_3"/>
             </item>
            </layout>
           </item>
@@ -1098,8 +1073,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>buttonCancel</tabstop>
   <tabstop>chbAttachNotes</tabstop>
   <tabstop>cmbNotesPosition</tabstop>
-  <tabstop>editBeforeHighlight</tabstop>
-  <tabstop>editAfterHighlight</tabstop>
   <tabstop>editHighlightLanguage</tabstop>
   <tabstop>editNoteLanguge</tabstop>
   <tabstop>editBookmarkLanguage</tabstop>
@@ -1490,38 +1463,6 @@ p, li { white-space: pre-wrap; }
     <hint type="sourcelabel">
      <x>269</x>
      <y>102</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>218</x>
-     <y>248</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>editBeforeHighlight</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>settingsDialog</receiver>
-   <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>200</x>
-     <y>129</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>218</x>
-     <y>248</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>editAfterHighlight</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>settingsDialog</receiver>
-   <slot>onApplicationAttachNotesSettingsChanged(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>656</x>
-     <y>133</y>
     </hint>
     <hint type="destinationlabel">
      <x>218</x>

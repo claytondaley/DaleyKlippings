@@ -181,8 +181,6 @@ class TableModel(QAbstractTableModel):
         self.settings = Settings()
         self.attachNotes = self.settings['Application Settings']['Attach Notes']['Attach Notes']
         self.notesPosition = self.settings['Application Settings']['Attach Notes']['Notes Position']
-        self.delimiters = {'Before' : self.settings['Application Settings']['Attach Notes']['Delimiter Before Highlights'],
-                           'After' : self.settings['Application Settings']['Attach Notes']['Delimiter After Highlights']}
 
         try:
             myClippings = co.open(fileName, 'r', encoding).read()
@@ -251,50 +249,40 @@ class TableModel(QAbstractTableModel):
                 else:
                     if import_data[row][u'Type'][Qt.DisplayRole] == (self.settings['Application Settings']['Language']['Note'], 'Note')[self.settings['Application Settings']['Language']['Note'] == '']:
                         # We've found a notes row
-                        # Now we need to decide if we're checking forward or backwards
-                        if self.notesPosition == 'After highlights' and\
+                        # Automatic prefers a before match so we start there
+                        # If the before match fails (or if the user chooses "After highlights"), we try the after match
+                        if (self.notesPosition == 'Before highlights' or self.notesPosition == 'Automatic (default)') and\
+                           row < len(import_data)-1 and\
+                           import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
+                           any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole])) and\
+                           import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
+
+                            import_data[row][u'Highlight'] = import_data[row + 1][u'Text']
+                            import_data[row][u'Note'] = import_data[row][u'Text']
+                            self.tableData.append(import_data[row])
+                            skip = True
+
+                        elif (self.notesPosition == 'After highlights' or self.notesPosition == 'Automatic (default)') and\
                            row > 0 and\
                            import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
                            any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole])) and\
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
-                            # Edit previous row
 
-                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.DisplayRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
-                            self.tableData[len(self.tableData)-1][u'Highlight'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole]
-                            self.tableData[len(self.tableData)-1][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
-                            self.tableData[len(self.tableData)-1][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
-                            self.tableData[len(self.tableData)-1][u'Type'] = import_data[row][u'Type']
+                            # In case the auto matcher already matched and skipped the previous highlight
+                            if self.tableData[len(self.tableData)-1][u'Type'][Qt.DisplayRole] == 'Highlight':
+                                # If not, edit the highlight's entry in tableData
+                                self.tableData[len(self.tableData)-1][u'Highlight'] = self.tableData[len(self.tableData)-1][u'Text']
+                                self.tableData[len(self.tableData)-1][u'Note'] = import_data[row][u'Text']
+                                self.tableData[len(self.tableData)-1][u'Type'] = import_data[row][u'Type']
+                            else:
+                                # If so, attach the highlight to the new note as well
+                                import_data[row][u'Highlight'] = import_data[row - 1][u'Text']
+                                import_data[row][u'Note'] = import_data[row][u'Text']
+                                self.tableData.append(import_data[row])
 
-                            # merging process preserved for backwards compatibility
-                            highlight = '%s%s%s' % (self.delimiters['Before'],
-                                                    import_data[row - 1][u'Text'][Qt.DisplayRole],
-                                                    self.delimiters['After'])
-                            self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole] = '%s%s' % (import_data[row][u'Text'][Qt.DisplayRole], highlight)
-                            self.tableData[len(self.tableData)-1][u'Text'][Qt.EditRole] = self.tableData[len(self.tableData)-1][u'Text'][Qt.DisplayRole]
-
-                        elif self.notesPosition == 'Before highlights' and\
-                             row < len(import_data)-1 and\
-                             import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
-                             any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole])) and\
-                             import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
-                            # Combine with next row, skip next row
-
-                            import_data[row][u'Highlight'][Qt.DisplayRole] = import_data[row + 1][u'Text'][Qt.DisplayRole]
-                            import_data[row][u'Highlight'][Qt.EditRole] = import_data[row + 1][u'Text'][Qt.EditRole]
-                            import_data[row][u'Note'][Qt.DisplayRole] = import_data[row][u'Text'][Qt.DisplayRole]
-                            import_data[row][u'Note'][Qt.EditRole] = import_data[row][u'Text'][Qt.EditRole]
-
-                            # merging process preserved for backwards compatibility
-                            highlight = '%s%s%s' % (self.delimiters['Before'],
-                                                    import_data[row + 1][u'Text'][Qt.DisplayRole],
-                                                    self.delimiters['After'])
-                            import_data[row][u'Text'][Qt.DisplayRole] = '%s%s' % (import_data[row][u'Text'][Qt.DisplayRole], highlight)
-                            import_data[row][u'Text'][Qt.EditRole] = import_data[row][u'Text'][Qt.DisplayRole]
-
-                            self.tableData.append(import_data[row])
-                            skip = True
                         else:
                             self.tableData.append(import_data[row])
+
                     else:
                         self.tableData.append(import_data[row])
 

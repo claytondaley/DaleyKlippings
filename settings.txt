@@ -8,7 +8,7 @@
 			"Date Format": "dddd, MMMM d, yyyy, hh:mm A",
 			"Delimiter": "=========="
 		},
-		"Kindle3 \"My Clippings.txt\", 5 fields, no bookmarks": {
+		"Kindle3, 5 fields, no bookmarks": {
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
@@ -40,9 +40,7 @@
 	"Application Settings": {
 		"Attach Notes": {
 			"Attach Notes": "True",
-			"Notes Position": "Before highlights",
-			"Delimiter Before Highlights": "B4Del",
-			"Delimiter After Highlights": "AfDel"
+			"Notes Position": "Automatic (default)"
 		},
 		"Language": {
 			"Note": "",

@@ -8,6 +8,7 @@ Settings dialog
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import codecs as co
+from django.template.defaultfilters import pprint
 import simplejson as sj
 import re
 from os import name as osname
@@ -39,9 +40,7 @@ class Settings(dict):
                       'Encoding' : ''}
     
     applicationSettings = {'Attach Notes' : {'Attach Notes' : '',
-                                             'Notes Position' : '',
-                                             'Delimiter Before Highlights' : '',
-                                             'Delimiter After Highlights' : ''},
+                                             'Notes Position' : ''},
                            'Language' : {'Highlight' : '',
                                          'Note' : '',
                                          'Bookmark' : ''}}
@@ -56,7 +55,7 @@ class Settings(dict):
         except:
             #QMessageBox.warning(parent, 'File not found', 'File "settings.txt" is not found')
             pass
-        
+
         self.update(self.settings)
 
 class SettingsDialog(QDialog):
@@ -198,10 +197,6 @@ class SettingsDialog(QDialog):
                 self.ui.chbAttachNotes.setCheckState(Qt.Unchecked)
             self.ui.cmbNotesPosition.setCurrentIndex(self.ui.cmbNotesPosition.findText(
                 self.settings['Application Settings']['Attach Notes']['Notes Position']))
-            self.ui.editBeforeHighlight.setText(
-                self.settings['Application Settings']['Attach Notes']['Delimiter Before Highlights'])
-            self.ui.editAfterHighlight.setText(
-                self.settings['Application Settings']['Attach Notes']['Delimiter After Highlights'])
         except:
             # Create empty keys in the dictionary
             self.settings['Application Settings']['Attach Notes'] = self.settings.applicationSettings['Attach Notes']
@@ -588,21 +583,13 @@ class SettingsDialog(QDialog):
     def onApplicationAttachNotesChanged(self, state):
         # Turn off Notes Attach options if it is disabled
         self.ui.cmbNotesPosition.setEnabled(state)
-        self.ui.editBeforeHighlight.setEnabled(state)
-        self.ui.editAfterHighlight.setEnabled(state)
-        
         self.settings['Application Settings']['Attach Notes']['Attach Notes'] = unicode(state)
-        
+
     def onApplicationAttachNotesSettingsChanged(self, text):
         sender = self.sender()
         if sender == self.ui.cmbNotesPosition:
             self.settings['Application Settings']['Attach Notes']['Notes Position'] = unicode(text)
-            print text
-        elif sender == self.ui.editBeforeHighlight:
-            self.settings['Application Settings']['Attach Notes']['Delimiter Before Highlights'] = unicode(text)
-        elif sender == self.ui.editAfterHighlight:
-            self.settings['Application Settings']['Attach Notes']['Delimiter After Highlights'] = unicode(text)
-            
+
     def onApplicationHighlightLanguageChanged(self, text):
         self.settings['Application Settings']['Language']['Highlight'] = unicode(text)
         
