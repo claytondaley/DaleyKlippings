@@ -447,7 +447,7 @@ class Ui_settingsDialog(object):
         self.groupNotesAttachments.setTitle(QtGui.QApplication.translate("settingsDialog", "Notes", None, QtGui.QApplication.UnicodeUTF8))
         self.chbAttachNotes.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Highlights and related notes are stored separately in \'My Clippings.txt\'. Check the box if you want to unify them in a one table row.", None, QtGui.QApplication.UnicodeUTF8))
         self.chbAttachNotes.setText(QtGui.QApplication.translate("settingsDialog", "Attach notes to highlights they are attributed to:", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelNotesPosition.setText(QtGui.QApplication.translate("settingsDialog", "Notes position:", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelNotesPosition.setText(QtGui.QApplication.translate("settingsDialog", "Notes found:", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbNotesPosition.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Choose here where notes are found: before highlight, after highlights, or automatic search.", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbNotesPosition.setItemText(0, QtGui.QApplication.translate("settingsDialog", "Automatic (default)", None, QtGui.QApplication.UnicodeUTF8))
         self.cmbNotesPosition.setItemText(1, QtGui.QApplication.translate("settingsDialog", "Before highlights", None, QtGui.QApplication.UnicodeUTF8))
