@@ -11,7 +11,6 @@ from PyQt4.QtCore import *
 import codecs as co
 import re
 from datetime import datetime as dt
-from django.template.defaultfilters import pprint
 
 from settings import *
 

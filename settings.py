@@ -8,7 +8,6 @@ Settings dialog
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import codecs as co
-from django.template.defaultfilters import pprint
 import simplejson as sj
 import re
 from os import name as osname
