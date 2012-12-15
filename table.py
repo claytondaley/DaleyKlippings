@@ -311,7 +311,7 @@ class TableModel(QAbstractTableModel):
         return len(self.tableData)
     
     def columnCount(self, index):
-        return len(self.tableData.headers)
+        return len(self.tableData.headers)-1 # Subtract 1 to hide Text from UI
     
     def data(self, index, role):
         row = index.row()

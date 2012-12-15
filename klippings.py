@@ -63,7 +63,7 @@ class MainWin(QMainWindow):
         
         self.proxyModel.setFilterCaseSensitivity(False)
         self.proxyModel.setFilterKeyColumn(-1)
-        
+
         # Initiate table context menu
         self.ui.tableView.addAction(self.ui.actionDeleteRow)
         self.ui.tableView.addAction(self.ui.actionResizeRowsToContents)
@@ -168,7 +168,7 @@ class MainWin(QMainWindow):
         Slot for importAction and appendAction signals
         """
         
-        # Look for user defind default import action and use it to import data
+        # Look for user defined default import action and use it to import data
         for i in self.settings['Import Settings']:
             # try-except to ensure compatibility with old settings files (no Default key)
             try:
@@ -187,24 +187,28 @@ class MainWin(QMainWindow):
                                 return
             except:
                 print 'No Default key in %s' % unicode(i)
-        
-        # Use App defaul import procedure otherwise
+
+        # Defaults removed, show error box instead
+        no_pattern = QMessageBox()
+        no_pattern.critical(self,u'Import Pattern',u'No import pattern defined.\nPlease configure one under Settings.')
+
+        # Use App default import procedure otherwise
         # Set My clippings.txt file
-        fileName = QFileDialog.getOpenFileName(self, '', '', "'My clippings.txt' file (*.txt)")
-        if fileName == '' : return
+        #fileName = QFileDialog.getOpenFileName(self, '', '', "'My clippings.txt' file (*.txt)")
+        #if fileName == '' : return
         
-        sender = self.sender()
-        if sender == self.ui.actionImport:
-            status = self.tableModel.parse(unicode(fileName), False)
-        elif sender == self.ui.actionAppend:
-            status = self.tableModel.parse(unicode(fileName), True)
+        #sender = self.sender()
+        #if sender == self.ui.actionImport:
+            #status = self.tableModel.parse(unicode(fileName), False)
+        #elif sender == self.ui.actionAppend:
+            #status = self.tableModel.parse(unicode(fileName), True)
                     
-        print status
-        self.ui.statusBar.showMessage(status, 3000)
+        #print status
+        #self.ui.statusBar.showMessage(status, 3000)
             
         # Set up row indicator text
-        self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(), 
-                                                      self.tableModel.rowCount(None)))
+        #self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
+                                                      #self.tableModel.rowCount(None)))
         
     def onImportCustom(self):
         """
@@ -250,7 +254,7 @@ class MainWin(QMainWindow):
         Slot for exportAction signal
         """
         
-        # Look for user defind default import action and use it to import data
+        # Look for user defined default export action and use it to export data
         for i in self.settings['Export Settings']:
             # try-except to ensure compatibility with old settings files (no Default key)
             try:
@@ -263,16 +267,19 @@ class MainWin(QMainWindow):
             except:
                 print 'No Default key in %s' % unicode(i)
 
-        
+        # Defaults removed, show error box instead
+        no_pattern = QMessageBox()
+        no_pattern.critical(self,u'Export Pattern',u'No export pattern defined.\nPlease configure one under Settings.')
+
         # Use App default import procedure otherwise
-        fileName = QFileDialog.getSaveFileNameAndFilter(self, '', '', "'My clippings.txt', UTF-8 (*.txt);;" +\
-                                                                      'Tab separated values, UTF-16LE (*.csv)')
-        if fileName[1] == 'My clippings txt, UTF-8 (*.txt)':
-            self.saveTxt(unicode(fileName[0]))
+        #fileName = QFileDialog.getSaveFileNameAndFilter(self, '', '', "'My clippings.txt', UTF-8 (*.txt);;" +\
+                                                                      #'Tab separated values, UTF-16LE (*.csv)')
+        #if fileName[1] == "'My clippings.txt', UTF-8 (*.txt)":
+            #self.saveTxt(unicode(fileName[0]))
         #elif fileName[1] == 'CSV, UTF-16LE (*.csv)':
             #self.saveCsvComma(unicode(fileName[0]))
-        elif fileName[1] == 'Tab separated values, UTF-16LE (*.csv)':
-            self.saveCsvTab(unicode(fileName[0]))
+        #elif fileName[1] == 'Tab separated values, UTF-16LE (*.csv)':
+            #self.saveCsvTab(unicode(fileName[0]))
 
     def onExportCustom(self):
         """
@@ -301,21 +308,9 @@ class MainWin(QMainWindow):
         fileOut.write(header)
 
         for row in range(self.proxyModel.rowCount()):
-            # Proxy model model stores all the data in QVariant format,
-            # so additional conversion to string is required
-            #fileOut.write(body %\
-                 #({HEADERS[0] : self.proxyModel.data(self.proxyModel.index(row, 0), Qt.DisplayRole).toString(),
-                   #HEADERS[1] : self.proxyModel.data(self.proxyModel.index(row, 1), Qt.DisplayRole).toString(),
-                   #HEADERS[2] : self.proxyModel.data(self.proxyModel.index(row, 2), Qt.DisplayRole).toString(),
-                   #HEADERS[3] : self.proxyModel.data(self.proxyModel.index(row, 3), 
-                                                     #Qt.EditRole).toDateTime().toString(dateFormat),
-                   #HEADERS[4] : self.proxyModel.data(self.proxyModel.index(row, 4), Qt.DisplayRole).toString()}))
-            
-            # The top code is replaced to work when not enought variables to replace
             bodyLine = body
             for i in wildCards:
                 bodyLine = bodyLine.replace(u'?P<%s>' % i, self.processWildcard(name, i, row, dateFormat))
-
             fileOut.write(bodyLine)
         
         fileOut.write(bottom)
@@ -327,8 +322,6 @@ class MainWin(QMainWindow):
         self.ui.statusBar.showMessage(status, 3000)
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
-        # sys.stderr.write(u'STATUS: parsing ' + wildcard + u'\n')
-        # catch formatting prefixes, recursively call wildcards
         try:
             # support for prefixes
             if wildcard[:11] == 'EvernoteTag':
@@ -363,7 +356,10 @@ class MainWin(QMainWindow):
                     else:
                         wildCards = re.findall(r'\?P<(.*?)>', response, re.UNICODE)
                         for i in wildCards:
-                            response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
+                            if 'Text' in i: # This prevents recursion
+                                response = response.replace(u'?P<%s>' % i, u'')
+                            else:
+                                response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
                         return response
             elif wildcard == 'Date':
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
@@ -426,7 +422,7 @@ class MainWin(QMainWindow):
         sender.setEnabled(False)
         self.onFilterInput(self.ui.filterEdit.text())
 
-            
+
     def saveTxt(self, fileName):
         """
         Save file in My clippings.txt format
@@ -435,13 +431,26 @@ class MainWin(QMainWindow):
         for row in range(self.proxyModel.rowCount()):
             # Proxy model model stores all the data in QVariant format,
             # so additional conversion to string is required
+            if self.proxyModel.data(self.proxyModel.index(row, 2), Qt.DisplayRole).toString() == 'Highlight':
+                text = self.proxyModel.data(self.proxyModel.index(row, 6), Qt.DisplayRole).toString()
+            elif self.proxyModel.data(self.proxyModel.index(row, 2), Qt.DisplayRole).toString() == 'Note':
+                if self.proxyModel.data(self.proxyModel.index(row, 6), Qt.DisplayRole).toString() == '':
+                    text = self.proxyModel.data(self.proxyModel.index(row, 7), Qt.DisplayRole).toString()
+                else:
+                    text = u'NOTE\r\n----\r\n' + \
+                           self.proxyModel.data(self.proxyModel.index(row, 7), Qt.DisplayRole).toString() + \
+                           u'\r\n\r\nHIGHLIGHT\r\n---------\r\n' + \
+                           self.proxyModel.data(self.proxyModel.index(row, 6), Qt.DisplayRole).toString()
+            else:
+                text = u''
+
             fileOut.write(unicode('%s\r\n- %s Loc. %s  | Added on %s\r\n\r\n%s\r\n==========\r\n' %\
                  (self.proxyModel.data(self.proxyModel.index(row, 0), Qt.DisplayRole).toString(),
                   self.proxyModel.data(self.proxyModel.index(row, 2), Qt.DisplayRole).toString(),
                   self.proxyModel.data(self.proxyModel.index(row, 4), Qt.DisplayRole).toString(),
                   self.proxyModel.data(self.proxyModel.index(row, 5),
                                        Qt.EditRole).toDateTime().toString('dddd, MMMM dd, yyyy, hh:mm AP'),
-                  self.proxyModel.data(self.proxyModel.index(row, 6), Qt.DisplayRole).toString())))
+                  text)))
         fileOut.close()
         
         status = '<%s> Data are exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'), 
@@ -464,7 +473,7 @@ class MainWin(QMainWindow):
                  self.proxyModel.data(self.proxyModel.index(row, 2), Qt.DisplayRole).toString(),
                  self.proxyModel.data(self.proxyModel.index(row, 4), Qt.DisplayRole).toString(),
                  self.proxyModel.data(self.proxyModel.index(row, 5), Qt.DisplayRole).toString(),
-                 self.proxyModel.data(self.proxyModel.index(row, 6), Qt.DisplayRole).toString())))
+                 self.proxyModel.data(self.proxyModel.index(row, 8), Qt.DisplayRole).toString())))
         fileOut.close()
         status = '<%s> Data are exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'), 
                                             QDir.dirName(QDir(fileName)))
