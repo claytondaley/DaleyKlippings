@@ -8,7 +8,7 @@ Settings dialog
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import codecs as co
-import simplejson as sj
+import json as sj
 import re
 from os import name as osname
 
