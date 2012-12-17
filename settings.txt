@@ -1,6 +1,6 @@
 {
 	"Import Settings": {
-		"KTouch, 7 fields, no bookmarks, time WITHOUT seconds": {
+		"KTouch, no bookmarks, time WITHOUT seconds": {
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
@@ -16,7 +16,7 @@
 			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
 			"Delimiter": "=========="
 		},
-		"KTouch 5.1.2, 7 fields, no bookmarks, time WITH seconds": {
+		"KTouch 5.1.2, no bookmarks, time WITH seconds": {
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "True",
