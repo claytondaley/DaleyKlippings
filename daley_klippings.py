@@ -5,7 +5,7 @@
 Main DaleyKlippings window
 """
 
-__ver__ = '0.2'
+__ver__ = '0.3'
 ## Features: 
 ## - default import & export patterns
 ## - language settings for highlight, note & bookmark terms
