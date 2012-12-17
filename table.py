@@ -250,14 +250,20 @@ class TableModel(QAbstractTableModel):
                         if (self.notesPosition == 'Before highlights' or self.notesPosition == 'Automatic (default)') and\
                            row < len(import_data)-1 and\
                            import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
-                           (True if import_data[row][u'Location'][Qt.DisplayRole] is None and
-                                    import_data[row + 1][u'Location'][Qt.DisplayRole] is None
-                            else any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for\
-                           s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole]))) and\
-                           (True if import_data[row][u'Page'][Qt.DisplayRole] is None and
-                                    import_data[row + 1][u'Page'][Qt.DisplayRole] is None
-                            else any(int(import_data[row][u'Page'][Qt.DisplayRole]) == s for\
-                               s in self.hyphen_range(import_data[row + 1][u'Page'][Qt.DisplayRole]))) and\
+                           any(\
+                               (int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Location'][Qt.DisplayRole]))\
+                               == s for s in
+                               ([int(u'-1')] if import_data[row + 1][u'Location'][Qt.DisplayRole] is None else\
+                                self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole]))
+                              ) and\
+                           any(\
+                               (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Page'][Qt.DisplayRole]))
+                               == s for s in
+                               ([int(u'-1')] if import_data[row + 1][u'Page'][Qt.DisplayRole] is None else\
+                                self.hyphen_range(import_data[row + 1][u'Page'][Qt.DisplayRole]))
+                              ) and\
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
 
                             import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
@@ -268,14 +274,20 @@ class TableModel(QAbstractTableModel):
                         elif (self.notesPosition == 'After highlights' or self.notesPosition == 'Automatic (default)') and\
                            row > 0 and\
                            import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and\
-                             (True if import_data[row-1][u'Location'][Qt.DisplayRole] is None and
-                                      import_data[row][u'Location'][Qt.DisplayRole] is None
-                              else any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s \
-                                 for s in self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole]))) and\
-                             (True if import_data[row-1][u'Page'][Qt.DisplayRole] is None and
-                                      import_data[row][u'Page'][Qt.DisplayRole] is None
-                              else any(int(import_data[row][u'Page'][Qt.DisplayRole]) == s\
-                                 for s in self.hyphen_range(import_data[row - 1][u'Page'][Qt.DisplayRole]))) and\
+                             any(\
+                                 (int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
+                                  int(import_data[row][u'Location'][Qt.DisplayRole]))\
+                                 == s for s in
+                                     ([int(u'-1')] if import_data[row - 1][u'Location'][Qt.DisplayRole] is None else\
+                                      self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole]))
+                             ) and\
+                             any(\
+                                 (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
+                                  int(import_data[row][u'Page'][Qt.DisplayRole]))
+                                 == s for s in
+                                     ([int(u'-1')] if import_data[row - 1][u'Page'][Qt.DisplayRole] is None else\
+                                      self.hyphen_range(import_data[row - 1][u'Page'][Qt.DisplayRole]))
+                             ) and\
                              import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][Qt.DisplayRole]:
 
                             # In case the auto matcher already matched and skipped the previous highlight
