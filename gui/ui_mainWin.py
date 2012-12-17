@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_mainWin(object):
     def setupUi(self, mainWin):
         mainWin.setObjectName(_fromUtf8("mainWin"))
-        mainWin.resize(633, 535)
+        mainWin.resize(1000, 600)
         mainWin.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/Bloomy/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
