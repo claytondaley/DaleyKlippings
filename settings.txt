@@ -57,12 +57,12 @@
 			"Date Format": "yyyy-MM-dd HH:mm"
 		},
 		"Evernote": {
-			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t<div title=\"EverKlipperV0.3\">\n\t\t<div>Source:  ?P<SpanXmlSafeBook></div>\n\t\t<div>Author(s):  ?P<SpanXmlSafeAuthor></div>\n\t\t<div>Page(s):  ?P<SpanXmlSafePage></div>\n\t\t<div>Location:  ?P<SpanXmlSafeLocation></div>\n\t\t<div><br/></div>\n\t\t<div>?P<SpanXmlSafeText></div>\n\t</div>\n\t</en-note>\n]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByDaleyKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>",
+			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t<div title=\"EverKlipperV0.4\">\n\t\t<div>Source:  ?P<XmlSafeSpanBook></div>\n\t\t<div>Author(s):  ?P<XmlSafeSpanAuthor></div>\n\t\t<div>Page(s):  ?P<XmlSafeSpanPage></div>\n\t\t<div>Location:  ?P<XmlSafeSpanLocation></div>\n\t\t<div><br/></div>\n\t\t<div>?P<XmlSafeSpanText></div>\n\t</div>\n\t</en-note>\n]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByDaleyKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>",
 			"Header": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-export SYSTEM \"http://xml.evernote.com/pub/evernote-export.dtd\">\n<en-export export-date=\"20121211T220218Z\" application=\"Evernote/Windows\" version=\"4.x\">\n",
 			"Extension": "enex",
 			"Bottom": "</en-export>",
 			"Default": "True",
-			"Notes": "<div>?P<SpanXmlSafeNote></div>\n<div><br/></div>\n<div>REGARDING HIGHLIGHT</div>\n<div>=========</div>\n<div>?P<SpanXmlSafeHighlight></div>\n<div>=========</div>\n<div>END HIGHLIGHT</div>",
+			"Notes": "<div>?P<XmlSafeSpanNote></div>\n<div><br/></div>\n<div>REGARDING HIGHLIGHT</div>\n<div>=========</div>\n<div>?P<XmlSafeSpanHighlight></div>\n<div>=========</div>\n<div>END HIGHLIGHT</div>",
 			"Encoding": "UTF-8 (all languages)",
 			"Date Format": "yyyyMMddThhmmssZ"
 		},

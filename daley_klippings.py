@@ -5,7 +5,7 @@
 Main DaleyKlippings window
 """
 
-__ver__ = '0.3'
+__ver__ = '0.4'
 ## Features: 
 ## - default import & export patterns
 ## - language settings for highlight, note & bookmark terms
@@ -329,9 +329,9 @@ class MainWin(QMainWindow):
                 return re.sub(u'"',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:7] == 'TabSafe':
                 return re.sub(u'\t',"     ",self.processWildcard(template_name, wildcard[7:], row, dateFormat))
-            elif wildcard[:11] == 'SpanXmlSafe':
+            elif wildcard[:11] == 'XmlSafeSpan':
                 return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
-                       re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[11:], row, dateFormat)))) +\
+                       self.processWildcard(template_name, u'XmlSafe' + wildcard[11:], row, dateFormat) +\
                        u'</span>'
             elif wildcard[:7] == 'XmlSafe':
                 return re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[7:], row, dateFormat))))
@@ -343,8 +343,11 @@ class MainWin(QMainWindow):
                 if wildcard[8:11].isdigit():
                     truncate_len = int(wildcard[8:11])
                     replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
-                    if len(replace_string) > truncate_len and truncate_len> 3:
-                        replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len-3)] + '...'
+                    if len(replace_string) > truncate_len:
+                        if truncate_len > 3:
+                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len-3)] + '...'
+                        else:
+                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len)]
                     if len(replace_string) > 0:
                         return replace_string
                 else:
