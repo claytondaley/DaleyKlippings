@@ -319,12 +319,16 @@ class MainWin(QMainWindow):
 
             # support for prefixes
             elif wildcard[:11] == 'EvernoteTag':
-                replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat).translate(dict((ord(char), u'_') for char in u','))
-                if len(replace_string) > 100:
-                    replace_string = replace_string[:97] + '...'
+                replace_string = self.processWildcard(template_name, 'Ellipsis100CommaSafe' + wildcard[11:], row, dateFormat)
                 if len(replace_string) > 0:
                     replace_string = u'<tag>' + replace_string + u'</tag>'
                 return replace_string
+            elif wildcard[:9] == 'CommaSafe':
+                return re.sub(u',',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+            elif wildcard[:9] == 'QuoteSafe':
+                return re.sub(u'"',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+            elif wildcard[:7] == 'TabSafe':
+                return re.sub(u'\t',"     ",self.processWildcard(template_name, wildcard[7:], row, dateFormat))
             elif wildcard[:11] == 'SpanXmlSafe':
                 return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
                        re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[11:], row, dateFormat)))) +\
@@ -335,7 +339,29 @@ class MainWin(QMainWindow):
                 return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
                        self.processWildcard(template_name, wildcard[4:], row, dateFormat) + u'</span>'
 
-            # return data types
+            elif wildcard[:8] == 'Ellipsis':
+                if wildcard[8:11].isdigit():
+                    truncate_len = int(wildcard[8:11])
+                    replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
+                    if len(replace_string) > truncate_len and truncate_len> 3:
+                        replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len-3)] + '...'
+                    if len(replace_string) > 0:
+                        return replace_string
+                else:
+                    return ''
+            elif wildcard[:8] == 'Truncate':
+                if wildcard[8:11].isdigit():
+                    truncate_len = int(wildcard[8:11])
+                    replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
+                    if len(replace_string) > truncate_len and truncate_len> 3:
+                        replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:truncate_len]
+                    if len(replace_string) > 0:
+                        return replace_string
+                else:
+                    return ''
+
+
+                    # return data types
             elif wildcard == 'Date':
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
             else:
