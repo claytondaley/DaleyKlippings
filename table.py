@@ -21,8 +21,7 @@ HEADERS = (u'Book',
            u'Location',
            u'Date',
            u'Highlight',
-           u'Note',
-           u'Text')
+           u'Note')
 DEFAULT_DELIMITER = '=' * 10
 DEFAULT_PATTERN = ur"""
                 ^\s*                           	# 
@@ -38,7 +37,6 @@ DEFAULT_PATTERN = ur"""
                 \s*                            	# 
                 (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
                 (Inactive (?P<%s>.*?))?         # Eats up Note Header
-                (?P<%s>.*?)                     # Text preserved for backwards compatibility
                 \s*$ 		                #
                 """ % HEADERS
 DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE
@@ -190,7 +188,7 @@ class TableModel(QAbstractTableModel):
         if clip[-1].strip() == '' : clip.pop(-1)
         pattern = re.compile(notePattern, DEFAULT_RE_OPTIONS)
 
-        import_data = Clippings() # If we need to modify the original table data, set up a new Clippings
+        import_data = Clippings()
         clipNo = 0
         for c in clip:
             clipNo += 1
@@ -222,7 +220,6 @@ class TableModel(QAbstractTableModel):
                         emptyHeaders += 1
                         if emptyHeaders == len(self.tableData.headers):
                             raise
-                #self.tableData[rows] = line
                 import_data.append(line)
 
             except:
@@ -248,7 +245,7 @@ class TableModel(QAbstractTableModel):
                 else:
                     if import_data[row][u'Type'][Qt.DisplayRole] == (self.settings['Application Settings']['Language']['Note'], 'Note')[self.settings['Application Settings']['Language']['Note'] == '']:
                         # We've found a notes row
-                        # Automatic prefers a before match so we start there
+                        # Automatic prefers notes before highlights so we start there
                         # If the before match fails (or if the user chooses "After highlights"), we try the after match
                         if (self.notesPosition == 'Before highlights' or self.notesPosition == 'Automatic (default)') and\
                            row < len(import_data)-1 and\
@@ -256,8 +253,8 @@ class TableModel(QAbstractTableModel):
                            any(int(import_data[row][u'Location'][Qt.DisplayRole]) == s for s in self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole])) and\
                            import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][Qt.DisplayRole]:
 
-                            import_data[row][u'Highlight'] = import_data[row + 1][u'Text']
-                            import_data[row][u'Note'] = import_data[row][u'Text']
+                            import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
+                            import_data[row][u'Location'] = import_data[row + 1][u'Location']
                             self.tableData.append(import_data[row])
                             skip = True
 
@@ -270,13 +267,11 @@ class TableModel(QAbstractTableModel):
                             # In case the auto matcher already matched and skipped the previous highlight
                             if self.tableData[len(self.tableData)-1][u'Type'][Qt.DisplayRole] == 'Highlight':
                                 # If not, edit the highlight's entry in tableData
-                                self.tableData[len(self.tableData)-1][u'Highlight'] = self.tableData[len(self.tableData)-1][u'Text']
-                                self.tableData[len(self.tableData)-1][u'Note'] = import_data[row][u'Text']
+                                self.tableData[len(self.tableData)-1][u'Note'] = import_data[row][u'Note']
                                 self.tableData[len(self.tableData)-1][u'Type'] = import_data[row][u'Type']
                             else:
                                 # If so, attach the highlight to the new note as well
-                                import_data[row][u'Highlight'] = import_data[row - 1][u'Text']
-                                import_data[row][u'Note'] = import_data[row][u'Text']
+                                import_data[row][u'Highlight'] = import_data[row - 1][u'Highlight']
                                 self.tableData.append(import_data[row])
 
                         else:
@@ -296,6 +291,8 @@ class TableModel(QAbstractTableModel):
         """ Takes a range in form of "a-b" and generate a list of numbers between a and b inclusive.
         Also accepts comma separated ranges like "a-b,c-d,f" will build a list which will include
         Numbers from a to b, a to d and f """
+        if s is None:
+            return []
         s=u''.join(s.split()) #removes white space
         r=set()
         for x in s.split(','):
@@ -310,7 +307,7 @@ class TableModel(QAbstractTableModel):
         return len(self.tableData)
     
     def columnCount(self, index):
-        return len(self.tableData.headers)-1 # Subtract 1 to hide Text from UI
+        return len(self.tableData.headers)
     
     def data(self, index, role):
         row = index.row()
