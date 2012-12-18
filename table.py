@@ -317,8 +317,8 @@ class TableModel(QAbstractTableModel):
                      u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' '*50
         else:
             output = u'%d out of %d clippings were successfully processed' % (len(import_data),clipNo) + \
-                     u'.\r\n\r\nIf "Attach Notes" is turned on, fewer lines may show up in the interface.' + u' '*50\
-        output = output + u'\r\n\r\nFor more details, click the "Show Details" button' + u' '*50
+                     u'.\r\n\r\nIf "Attach Notes" is turned on, fewer lines may show up in the interface.' + u' ' * 50
+        output = output + u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
         import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', output)
         import_complete.addButton(QMessageBox.Ok)
         import_complete.setEscapeButton(QMessageBox.Ok) # does not work
