@@ -1,3 +1,4 @@
-/.idea/workspace.xml
+/.idea
+/.idea/*.*
 /log.txt
 *.pyc
