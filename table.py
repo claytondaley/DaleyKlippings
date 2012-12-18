@@ -224,15 +224,15 @@ class TableModel(QAbstractTableModel):
 
             except:
                 # Inform about invalid note
-                status += u' Warning: note %d is empty or in wrong format: \r\n%s\r\n' % (clipNo,
+                status += u'\r\nWarning: note %d is empty or in wrong format: \r\n%s\r\n' % (clipNo,
                                                                                           c.strip())
                 continue
 
-        status = u'<%s> From file "%s" %d out of %d notes are successfully processed\r\n%s' % (QTime.currentTime().toString('hh:mm:ss'),
-                                                                                               QDir.dirName(QDir(fileName)),
-                                                                                               len(import_data),
-                                                                                               clipNo,
-                                                                                               status)
+        status = u'<%s> From file "%s" %d out of %d clippings were successfully processed.\r\n%s' % (QTime.currentTime().toString('hh:mm:ss'),
+                                                                                                     QDir.dirName(QDir(fileName)),
+                                                                                                     len(import_data),
+                                                                                                     clipNo,
+                                                                                                     status)
 
         # The original approach did this as lines were imported.  Since Kindle now puts the note before the highlight,
         # we need to post-process the data.
@@ -309,6 +309,21 @@ class TableModel(QAbstractTableModel):
         else: # if attach notes flag is not on
             for row in import_data:
                 self.tableData.append(row)
+
+        # Pop Import Status Box
+        if len(import_data) == 0 and clipNo > 0:
+            output = u'0 out of %d clippings were imported.  ' % clipNo + \
+                     u'Please verify that you selected the right file or try a different Import Pattern.' + u' '*50 + \
+                     u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' '*50
+        else:
+            output = u'%d out of %d clippings were successfully processed' % (len(import_data),clipNo) + \
+                     u'.\r\n\r\nIf "Attach Notes" is turned on, fewer lines may show up in the interface.' + u' '*50\
+        output = output + u'\r\n\r\nFor more details, click the "Show Details" button' + u' '*50
+        import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', output)
+        import_complete.addButton(QMessageBox.Ok)
+        import_complete.setEscapeButton(QMessageBox.Ok) # does not work
+        import_complete.setDetailedText(status)
+        import_complete.exec_()
 
         self.endResetModel()
         return status

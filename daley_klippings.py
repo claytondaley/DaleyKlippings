@@ -190,46 +190,52 @@ class MainWin(QMainWindow):
 
         # Defaults removed, show error box instead
         no_pattern = QMessageBox()
-        no_pattern.critical(self,u'Import Pattern',u'No import pattern defined.\nPlease configure one under Settings.')
+        no_pattern.critical(self,u'Import Pattern',u'No import pattern defined\nor no default is set. Please\n'+
+                                                   'configure an import pattern\n under Settings.')
 
     def onImportCustom(self):
         """
         Slot for custom import actions triggered signals
         """
-        sender = self.sender()
-        #print sender.parent()
-        if sender.parent() == self.menuButtonImport:
-            actions = self.customImportActions
-            append = False
-        elif sender.parent() == self.menuButtonAppend:
-            actions = self.customAppendActions
-            append = True
+        try:
+            sender = self.sender()
+            #print sender.parent()
+            if sender.parent() == self.menuButtonImport:
+                actions = self.customImportActions
+                append = False
+            elif sender.parent() == self.menuButtonAppend:
+                actions = self.customAppendActions
+                append = True
 
-        for i in actions:
-            if sender == i:
-                name = unicode(i.text())
-                delimeter = self.settings['Import Settings'][name]['Delimiter']
-                if delimeter == '' : delimeter = '\r\n'
-                pattern = self.settings['Import Settings'][name]['Pattern']
-                dateFormat = {'Qt' : self.settings['Import Settings'][name]['Date Format'],
-                              'Python' : None}
-                if dateFormat['Qt'] == '' : dateFormat = DEFAULT_DATE_FORMAT
-                encoding = self.settings['Import Settings'][name]['Encoding'].split(' ')[0]
-                if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
-                extension = self.settings['Import Settings'][name]['Extension'].split(',')
-                if extension[0] == '' : extension = DEFAULT_EXTENSION
-                break
-        fileName = QFileDialog.getOpenFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-        if fileName == '' : return
+            for i in actions:
+                if sender == i:
+                    name = unicode(i.text())
+                    delimeter = self.settings['Import Settings'][name]['Delimiter']
+                    if delimeter == '' : delimeter = '\r\n'
+                    pattern = self.settings['Import Settings'][name]['Pattern']
+                    dateFormat = {'Qt' : self.settings['Import Settings'][name]['Date Format'],
+                                  'Python' : None}
+                    if dateFormat['Qt'] == '' : dateFormat = DEFAULT_DATE_FORMAT
+                    encoding = self.settings['Import Settings'][name]['Encoding'].split(' ')[0]
+                    if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
+                    extension = self.settings['Import Settings'][name]['Extension'].split(',')
+                    if extension[0] == '' : extension = DEFAULT_EXTENSION
+                    break
+            fileName = QFileDialog.getOpenFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
+            if fileName == '' : return
 
-        status = self.tableModel.parse(unicode(fileName), append, False, delimeter, pattern, dateFormat, encoding)
-        
-        print status
-        self.ui.statusBar.showMessage(status, 3000)
-        
-        # Set up row indicator text
-        self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(), 
-                                                      self.tableModel.rowCount(None)))
+            status = self.tableModel.parse(unicode(fileName), append, False, delimeter, pattern, dateFormat, encoding)
+
+            print status
+            self.ui.statusBar.showMessage(status, 3000)
+
+            # Set up row indicator text
+            self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
+                                                          self.tableModel.rowCount(None)))
+        except Exception as error:
+            import_error = QMessageBox()
+            import_error.warning(self,u'Import Error',u'Error during import.\r\n\r\n' + error.message)
+
     def onExport(self):
         """
         Slot for exportAction signal
@@ -256,41 +262,52 @@ class MainWin(QMainWindow):
         """
         Slot for custom export actions triggered signals
         """
-        sender = self.sender()
-        for i in self.customExportActions:
-            if sender == i:
-                name = unicode(i.text())
-                header = self.settings['Export Settings'][name]['Header']
-                body = self.settings['Export Settings'][name]['Body']
-                bottom = self.settings['Export Settings'][name]['Bottom']
-                dateFormat = self.settings['Export Settings'][name]['Date Format']
-                if dateFormat == '' : dateFormat = 'dd.MM.yy, hh:mm'
-                encoding = self.settings['Export Settings'][name]['Encoding'].split(' ')[0]
-                if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
-                extension = self.settings['Export Settings'][name]['Extension'].split(',')
-                if extension[0] == '' : extension = DEFAULT_EXTENSION
-                break
-        fileName = QFileDialog.getSaveFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-        if fileName == '' : return
+        try:
+            sender = self.sender()
+            for i in self.customExportActions:
+                if sender == i:
+                    name = unicode(i.text())
+                    header = self.settings['Export Settings'][name]['Header']
+                    body = self.settings['Export Settings'][name]['Body']
+                    bottom = self.settings['Export Settings'][name]['Bottom']
+                    dateFormat = self.settings['Export Settings'][name]['Date Format']
+                    if dateFormat == '' : dateFormat = 'dd.MM.yy, hh:mm'
+                    encoding = self.settings['Export Settings'][name]['Encoding'].split(' ')[0]
+                    if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
+                    extension = self.settings['Export Settings'][name]['Extension'].split(',')
+                    if extension[0] == '' : extension = DEFAULT_EXTENSION
+                    break
+            fileName = QFileDialog.getSaveFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
+            if fileName == '' : return
 
-        wildCards = re.findall(r'\?P<(.*?)>', body, re.UNICODE)
-        
-        fileOut = co.open(unicode(fileName), 'w', encoding, 'replace')
-        fileOut.write(header)
+            wildCards = re.findall(r'\?P<(.*?)>', body, re.UNICODE)
 
-        for row in range(self.proxyModel.rowCount()):
-            bodyLine = body
-            for i in wildCards:
-                bodyLine = bodyLine.replace(u'?P<%s>' % i, self.processWildcard(name, i, row, dateFormat))
-            fileOut.write(bodyLine)
-        
-        fileOut.write(bottom)
-        fileOut.close()
-        
-        status = '<%s> Data are exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'), 
-                                                   QDir.dirName(QDir(fileName)))
-        print status
-        self.ui.statusBar.showMessage(status, 3000)
+            fileOut = co.open(unicode(fileName), 'w', encoding, 'replace')
+            fileOut.write(header)
+
+            for row in range(self.proxyModel.rowCount()):
+                bodyLine = body
+                for i in wildCards:
+                    bodyLine = bodyLine.replace(u'?P<%s>' % i, self.processWildcard(name, i, row, dateFormat))
+                fileOut.write(bodyLine)
+
+            fileOut.write(bottom)
+            fileOut.close()
+
+            status = '<%s> Data has been exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'),
+                                                       QDir.dirName(QDir(fileName)))
+
+            # Pop Export Status Box
+            export_complete = QMessageBox(QMessageBox.Information, u'Export Complete', u'Export Complete' + u' ' * 100)
+            export_complete.setInformativeText(u'Data has been exported to "%s"' % QDir.dirName(QDir(fileName)))
+            export_complete.exec_()
+
+            print status
+            self.ui.statusBar.showMessage(status, 3000)
+
+        except Exception as error:
+            export_error = QMessageBox()
+            export_error.warning(self,u'Export Error',u'Error during export.\r\n\r\n' + error.message)
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:
@@ -301,7 +318,7 @@ class MainWin(QMainWindow):
                     return u''
                 elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Highlight':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Highlight', row, dateFormat)
-                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and \
+                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and\
                      self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Note', row, dateFormat)
                 else:
@@ -323,8 +340,12 @@ class MainWin(QMainWindow):
                 if len(replace_string) > 0:
                     replace_string = u'<tag>' + replace_string + u'</tag>'
                 return replace_string
+            elif wildcard[:11] == 'QuoteEscape':
+                return re.sub(u'"',u'""',self.processWildcard(template_name, wildcard[11:], row, dateFormat))
+            elif wildcard[:11] == 'CommaEscape':
+                return re.sub(u',',u'\,',self.processWildcard(template_name, wildcard[11:], row, dateFormat))
             elif wildcard[:9] == 'CommaSafe':
-                return re.sub(u',',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+                return re.sub(u',',u"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:9] == 'QuoteSafe':
                 return re.sub(u'"',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:7] == 'TabSafe':
@@ -362,7 +383,6 @@ class MainWin(QMainWindow):
                         return replace_string
                 else:
                     return ''
-
 
                     # return data types
             elif wildcard == 'Date':
@@ -470,8 +490,8 @@ class MainWin(QMainWindow):
         
     def onSettingsChanged(self, settings):
         self.settings = sj.loads(unicode(settings))
-        self.initiateToolButtons()        
-                                                                 
+        self.initiateToolButtons()
+
 if __name__ == '__main__':
     import StringIO
 
