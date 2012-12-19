@@ -203,10 +203,18 @@ class TableModel(QAbstractTableModel):
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
+                            print u'Pattern: ' + dateFormat['Qt']
+                            print u'Target: '
+                            print QDateTime.toString(QDateTime.currentDateTime(),dateFormat['Qt'])
+                            print u'Actual: '
+                            print search.group(h)
                             try:
                                 date = QDateTime(dt.strptime(search.group(h), dateFormat['Python']))
                             except:
-                                date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
+                                if u'%' in dateFormat['Qt']:
+                                    date = QDateTime(dt.strptime(search.group(h), dateFormat['Qt']))
+                                else:
+                                    date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
                             line[h] = {Qt.DisplayRole : QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole : date}
                         elif h == 'Note' and search.group('Type') == 'Note':
                             line[h] = {Qt.DisplayRole : search.group('Text'), Qt.EditRole : search.group('Text')}
