@@ -344,9 +344,7 @@ class TableModel(QAbstractTableModel):
             t=x.split('-')
             if len(t) not in [1,2]: raise SyntaxError("hash_range is given its argument as "+s+" which seems not correctly formatted.")
             if len(t) == 2 and len(t[0])>len(t[1]):
-#                print u'Range was ' + t[0] + u' to ' + t[1]
                 t[1] = t[0][:(len(t[0])-len(t[1]))] + t[1]
-#                print u'Range is now ' + t[0] + u' to ' + t[1]
             r.add(int(t[0])) if len(t)==1 else r.update(set(range(int(t[0]),int(t[1])+1)))
         l=list(r)
         l.sort()
