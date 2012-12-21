@@ -179,10 +179,31 @@ class TableModel(QAbstractTableModel):
         self.attachNotes = self.settings['Application Settings']['Attach Notes']['Attach Notes']
         self.notesPosition = self.settings['Application Settings']['Attach Notes']['Notes Position']
 
+        default_encoding = True
+
         try:
             myClippings = co.open(fileName, 'r', encoding).read()
-        except:
-            myClippings = co.open(fileName, 'r', DEFAULT_ENCODIG[1]).read()
+        except Exception as e:
+            try:
+                myClippings = co.open(fileName, 'r', DEFAULT_ENCODIG[1]).read()
+                default_encoding = False
+            except UnicodeError:
+                myClippings = co.open(fileName, 'r', 'Windows-1252').read()
+                default_encoding = False
+            except:
+                bad_encoding = QMessageBox()
+                informational_text = u'We were unable to import your file using either (1) the encoding selected on the'\
+                                     u'import pattern or (2) several default encodings.  Please configure a different '\
+                                     u'encoding for your Import Pattern.  This can be changed by going to Settings, ' \
+                                     u'choosing the Import tab, selecting the import pattern you use from the main ' \
+                                     u'drop-donw, and selecting a different encoding from the Encoding drop-down in ' \
+                                     u'the lower right. Many patterns will work, but will garble or remove characters ' \
+                                     u'like quote and apostrophe.  Please review the results of the import to ensure ' \
+                                     u'that you have selected the correct encoding.  Make sure you click OK or Accept' \
+                                     u'to lock in the new selection.'
+                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
+                raise e
+
 
         clip = myClippings.split(delimiter)
         if clip[-1].strip() == '' : clip.pop(-1)
@@ -240,6 +261,7 @@ class TableModel(QAbstractTableModel):
         # The original approach did this as lines were imported.  Since Kindle now puts the note before the highlight,
         # we need to post-process the data.
 
+        matched = 0
         if self.attachNotes == 'True':
             skip = False # This makes it easy to skip subsequent rows
             for row in range(len(import_data)):
@@ -272,6 +294,7 @@ class TableModel(QAbstractTableModel):
                             import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
                             import_data[row][u'Location'] = import_data[row + 1][u'Location']
                             self.tableData.append(import_data[row])
+                            matched += 1
                             skip = True
 
                         elif (self.notesPosition == 'After highlights' or self.notesPosition == 'Automatic (default)') and\
@@ -302,6 +325,7 @@ class TableModel(QAbstractTableModel):
                                 # If so, attach the highlight to the new note as well
                                 import_data[row][u'Highlight'] = import_data[row - 1][u'Highlight']
                                 self.tableData.append(import_data[row])
+                            matched += 1
 
                         else:
                             self.tableData.append(import_data[row])
@@ -319,9 +343,17 @@ class TableModel(QAbstractTableModel):
                      u'Please verify that you selected the right file or try a different Import Pattern.' + u' '*50 + \
                      u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' '*50
         else:
-            output = u'%d out of %d clippings were successfully processed' % (len(import_data),clipNo) + \
-                     u'.\r\n\r\nIf "Attach Notes" is turned on, fewer lines may show up in the interface.' + u' ' * 50
-        output = output + u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
+            output = u'%d out of %d clippings were successfully processed' % (len(import_data),clipNo) + u' ' * 50
+            if self.attachNotes == 'True':
+                output += u'.\r\n - We were able to match %d Note%s with a Highlight' % (matched, ('s' if matched > 1 else '')) + u' ' * 50
+                if matched > 0:
+                    output += u'.\r\n - As a result, fewer lines will show up in the interface.' + u' ' * 50
+            if not default_encoding:
+                output += u'\r\n\r\nNOTE:  The encoding selected for your import pattern did not work.  However, we were ' \
+                          u'able to import using one of our default patterns.  Please review your data and make sure ' \
+                          u'it has imported properly.  If it has not, please select a different import pattern on the ' \
+                          u'Import Tab of Settings.'
+        output += u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
         import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', output)
         import_complete.addButton(QMessageBox.Ok)
         import_complete.setEscapeButton(QMessageBox.Ok) # does not work
@@ -340,7 +372,6 @@ class TableModel(QAbstractTableModel):
         s=u''.join(s.split()) #removes white space
         r=set()
         for x in s.split(','):
-            print u'Parsing ' + x
             t=x.split('-')
             if len(t) not in [1,2]: raise SyntaxError("hash_range is given its argument as "+s+" which seems not correctly formatted.")
             if len(t) == 2 and len(t[0])>len(t[1]):

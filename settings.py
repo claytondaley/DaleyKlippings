@@ -150,7 +150,8 @@ class SettingsDialog(QDialog):
                      'UTF-16-BE (all languages (BMP only))',
                      'UTF-16-LE (all languages (BMP only))',
                      'UTF-7 (all languages)',
-                     'UTF-8-SIG (all languages)']
+                     'UTF-8-SIG (all languages)',
+                     'Windows-1252']
     
     def __init__(self, parent = None):
         QDialog.__init__(self, parent)
