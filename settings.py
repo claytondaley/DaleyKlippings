@@ -10,13 +10,15 @@ from PyQt4.QtCore import *
 import codecs as co
 import simplejson as sj
 import re
+import sys
 from os import name as osname
+from os import path, environ
 
 from gui.ui_settingsDialog import *
 import table
 
 class Settings(dict):
-    
+
     # Structure of the settings file
     settings = {'Import Settings' : {},
                 'Export Settings' : {},
@@ -43,11 +45,11 @@ class Settings(dict):
                            'Language' : {'Highlight' : '',
                                          'Note' : '',
                                          'Bookmark' : ''}}
-    
+
     def __init__(self, parent = None):
         dict.__init__(self)
+
         try:
-            # Load settings from file
             settingsFile = co.open('settings.txt', 'r', 'utf-8')
             self.settings = sj.loads(settingsFile.read())
             settingsFile.close()
