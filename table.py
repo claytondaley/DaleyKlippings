@@ -228,6 +228,7 @@ class TableModel(QAbstractTableModel):
                                 date = QDateTime(dt.strptime(search.group(h), dateFormat['Python']))
                             except:
                                 if u'%' in dateFormat['Qt']:
+                                    print "Date is parsed by python for: " + search.group(h)
                                     date = QDateTime(dt.strptime(search.group(h), dateFormat['Qt']))
                                 else:
                                     date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
