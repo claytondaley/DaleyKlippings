@@ -224,11 +224,11 @@ class TableModel(QAbstractTableModel):
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
+                            #print "Date is: " + search.group(h)
                             try:
                                 date = QDateTime(dt.strptime(search.group(h), dateFormat['Python']))
                             except:
                                 if u'%' in dateFormat['Qt']:
-                                    print "Date is parsed by python for: " + search.group(h)
                                     date = QDateTime(dt.strptime(search.group(h), dateFormat['Qt']))
                                 else:
                                     date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
