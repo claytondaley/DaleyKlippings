@@ -1,5 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+########################################################################
+#  DaleyKlippings
+#  Copyright (C) 2012-13 Clayton Daley III
+#  daleyklippings@gmail.com
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation version 3.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+########################################################################
 
 """
 Main DaleyKlippings window
@@ -345,7 +363,7 @@ class MainWin(QMainWindow):
             elif wildcard[:11] == 'CommaEscape':
                 return re.sub(u',',u'\,',self.processWildcard(template_name, wildcard[11:], row, dateFormat))
             elif wildcard[:9] == 'CommaSafe':
-                return re.sub(u',',u"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+                return re.sub(u',',u"_",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:9] == 'QuoteSafe':
                 return re.sub(u'"',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:7] == 'TabSafe':
