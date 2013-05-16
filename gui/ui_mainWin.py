@@ -262,7 +262,7 @@ class Ui_mainWin(object):
         mainWin.setTabOrder(self.filterEdit, self.filterCaseBox)
 
     def retranslateUi(self, mainWin):
-        mainWin.setWindowTitle(QtGui.QApplication.translate("mainWin", "Klippings", None, QtGui.QApplication.UnicodeUTF8))
+        mainWin.setWindowTitle(QtGui.QApplication.translate("mainWin", "DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
         self.toolButtonImport.setToolTip(QtGui.QApplication.translate("mainWin", "Import notes", None, QtGui.QApplication.UnicodeUTF8))
         self.toolButtonImport.setStatusTip(QtGui.QApplication.translate("mainWin", "Import...", None, QtGui.QApplication.UnicodeUTF8))
         self.toolButtonImport.setText(QtGui.QApplication.translate("mainWin", "&Import", None, QtGui.QApplication.UnicodeUTF8))
@@ -289,8 +289,8 @@ class Ui_mainWin(object):
         self.actionExit.setStatusTip(QtGui.QApplication.translate("mainWin", "Exit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+X", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("mainWin", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setToolTip(QtGui.QApplication.translate("mainWin", "Info about Klippings", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setStatusTip(QtGui.QApplication.translate("mainWin", "About Klippings", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout.setToolTip(QtGui.QApplication.translate("mainWin", "Info about DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout.setStatusTip(QtGui.QApplication.translate("mainWin", "About DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExport.setText(QtGui.QApplication.translate("mainWin", "&Export...", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExport.setToolTip(QtGui.QApplication.translate("mainWin", "Export edited highlights, notes, and bookmarks", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExport.setStatusTip(QtGui.QApplication.translate("mainWin", "Export notes...", None, QtGui.QApplication.UnicodeUTF8))

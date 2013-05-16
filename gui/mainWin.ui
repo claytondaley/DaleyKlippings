@@ -14,7 +14,7 @@
    <enum>Qt::CustomContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>Klippings</string>
+   <string>DaleyKlippings</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -320,7 +320,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1116</width>
+     <width>1100</width>
      <height>21</height>
     </rect>
    </property>
