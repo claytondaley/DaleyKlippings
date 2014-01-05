@@ -58,7 +58,7 @@ DEFAULT_PATTERN = ur"""
                 (Inactive (?P<%s>.*?))?         # Eats up Note Header
                 \s*$ 		                #
                 """ % HEADERS
-DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE
+DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE | re.DOTALL
 DEFAULT_DATE_FORMAT = {'Qt' : 'dddd, MMMM dd, yyyy, hh:mm AP',
                        'Python' : '%A, %B %d, %Y, %I:%M %p'}
 DEFAULT_ENCODIG = ['utf-8', 'utf-16']
