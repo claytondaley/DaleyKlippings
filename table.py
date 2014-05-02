@@ -233,7 +233,6 @@ class TableModel(QAbstractTableModel):
         if clip[-1].strip() == '': clip.pop(-1)
         pattern = re.compile(notePattern, DEFAULT_RE_OPTIONS)
 
-
         import_data = Clippings()
         clipNo = 0
         for c in clip:
@@ -279,26 +278,14 @@ class TableModel(QAbstractTableModel):
                 continue
 
         status = u'<%s> From file "%s" %d out of %d clippings were successfully processed.\r\n%s' % (
-        QTime.currentTime().toString('hh:mm:ss'),
-        QDir.dirName(QDir(fileName)),
-        len(import_data),
-        clipNo,
-        status)
+            QTime.currentTime().toString('hh:mm:ss'),
+            QDir.dirName(QDir(fileName)),
+            len(import_data),
+            clipNo,
+            status)
 
         # The original approach did this as lines were imported.  Since Kindle now puts the note before the highlight,
         # we need to post-process the data.
-        #
-        # This new code uses page/loc ranges to match a highlight to one or more related notes.  If lines do not have
-        # page values, we want to fall back on adjacency.  Default Python sort behavior
-        # (https://wiki.python.org/moin/HowTo/Sorting) ensures that adjacency is preserved even if we sort:
-        #
-        # > Starting with Python 2.2, sorts are guaranteed to be stable. That means that when multiple records have
-        # > the same key, their original order is preserved.
-
-        # Setup temporary containers
-        highlights = []
-        notes = []
-        bookmarks = []
 
         matched = 0
         if self.attachNotes == 'True':
@@ -346,10 +333,11 @@ class TableModel(QAbstractTableModel):
                             skip = True
 
                         elif (
-                                self.notesPosition == 'After highlights' or self.notesPosition == 'Automatic (default)') and \
-                                        row > 0 and \
-                                        import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
-                                any( \
+                                self.notesPosition == 'After highlights'
+                                or self.notesPosition == 'Automatic (default)') and \
+                                row > 0 and \
+                                import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
+                                any(
                                                 (
                                                 int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
                                                 int(import_data[row][u'Location'][Qt.DisplayRole])) \
@@ -359,7 +347,7 @@ class TableModel(QAbstractTableModel):
                                                          self.hyphen_range(
                                                                  import_data[row - 1][u'Location'][Qt.DisplayRole]))
                                 ) and \
-                                any( \
+                                any(
                                                 (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
                                                  int(import_data[row][u'Page'][Qt.DisplayRole]))
                                                 == s for s in
