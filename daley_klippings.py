@@ -38,39 +38,41 @@ from gui.ui_mainWin import *
 from table import *
 from settings import *
 
+
 class MainWin(QMainWindow):
     """
     Main DaleyKlippings window class
     """
-    def __init__(self, parent = None):
+
+    def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
-        
+
         # Initiate settings
         self.settings = Settings()
-        
+
         # Initiate GUI
         self.ui = Ui_mainWin()
         self.ui.setupUi(self)
         self.ui.statusBar.addPermanentWidget(self.ui.rowIndicator)
         self.ui.tableView.horizontalHeader().setSortIndicator(-1, Qt.DescendingOrder)
-        
+
         # Temporary options (next version)
         self.ui.actionHelp.setVisible(False)
-        
+
         # Initiate toolbar
         self.initiateToolButtons()
         self.ui.toolBar.insertWidget(self.ui.actionFilter, self.ui.toolButtonImport)
         self.ui.toolBar.insertWidget(self.ui.actionFilter, self.ui.toolButtonAppend)
         self.ui.toolBar.insertWidget(self.ui.actionFilter, self.ui.toolButtonExport)
         self.ui.toolBar.insertSeparator(self.ui.actionFilter)
-        
+
         # Screen filter line
         self.ui.filterCloseButton.setVisible(False)
         self.ui.filterOptionButton.setVisible(False)
         self.ui.filterEdit.setVisible(False)
         self.ui.filterCaseBox.setVisible(False)
         self.ui.filterLine.setVisible(False)
-           
+
         # Initiate data model
         self.tableModel = TableModel()
         self.proxyModel = QSortFilterProxyModel()
@@ -78,7 +80,7 @@ class MainWin(QMainWindow):
         self.proxyModel.setSortRole(Qt.EditRole)
         self.proxyModel.setDynamicSortFilter(True)
         self.ui.tableView.setModel(self.proxyModel)
-        
+
         self.proxyModel.setFilterCaseSensitivity(False)
         self.proxyModel.setFilterKeyColumn(-1)
 
@@ -86,7 +88,7 @@ class MainWin(QMainWindow):
         self.ui.tableView.addAction(self.ui.actionDeleteRow)
         self.ui.tableView.addAction(self.ui.actionResizeRowsToContents)
         self.ui.tableView.addAction(self.ui.actionResizeRows)
-        
+
         # Initiate filterOptionButton menu
         self.menuFilterOption = QMenu()
         self.actionFilterAll = QAction('All columns', self)
@@ -102,8 +104,8 @@ class MainWin(QMainWindow):
             self.actionFilterHeaders[h].setCheckable(True)
             self.menuFilterOption.addAction(self.actionFilterHeaders[h])
             self.connect(self.actionFilterHeaders[h], SIGNAL('triggered(bool)'), self.onFilterOptionTriggered)
-        self.ui.filterOptionButton.setMenu(self.menuFilterOption)            
-        
+        self.ui.filterOptionButton.setMenu(self.menuFilterOption)
+
         # Initiate delegates
         typeDelegate = ComboBoxDeligate(self)
         locationDelegate = LocationEditDelegate(self)
@@ -111,10 +113,10 @@ class MainWin(QMainWindow):
         self.ui.tableView.setItemDelegateForColumn(1, typeDelegate)
         self.ui.tableView.setItemDelegateForColumn(2, locationDelegate)
         self.ui.tableView.setItemDelegateForColumn(5, dateDelegate)
-        
+
         # Scroll table to the current cell after sorting
         self.connect(self.proxyModel, SIGNAL('layoutChanged()'), self.onLayoutChanged)
-        
+
     def initiateToolButtons(self):
         # Import Button
         self.menuButtonImport = QMenu()
@@ -139,7 +141,7 @@ class MainWin(QMainWindow):
             self.connect(self.customAppendActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
         self.menuButtonAppend.addActions(self.customAppendActions)
         self.ui.toolButtonAppend.setMenu(self.menuButtonAppend)
-        
+
         # Export Button
         self.menuButtonExport = QMenu()
         self.menuButtonExport.addAction(self.ui.actionExport)
@@ -150,7 +152,7 @@ class MainWin(QMainWindow):
             self.connect(self.customExportActions[-1], SIGNAL('triggered(bool)'), self.onExportCustom)
         self.menuButtonExport.addActions(self.customExportActions)
         self.ui.toolButtonExport.setMenu(self.menuButtonExport)
-             
+
     def onDeleteRow(self):
         """
         Delete row in the table
@@ -160,32 +162,33 @@ class MainWin(QMainWindow):
         # Sort indexes in back order because the model is changed after the first
         # item is deleted. So to keep relevant indexes of the selected rows it is
         # needed to delete rows starting from the last selected row in the table
-        indexes.sort(reverse = True)
+        indexes.sort(reverse=True)
 
         for i in indexes:
             self.proxyModel.removeRows(i.row(), 1, QModelIndex())
-            
+
         # Set up row indicator text
-        self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(), 
+        self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
                                                       self.tableModel.rowCount(None)))
 
     def onResizeRowsToContents(self):
         self.ui.tableView.resizeRowsToContents()
-        
+
     def onResizeRows(self):
-        height = QInputDialog.getInteger(self, 'Rows height', 'Input a new rows height (min = 20 pts)', value = 30, min = 20, max = 1000)
+        height = QInputDialog.getInteger(self, 'Rows height', 'Input a new rows height (min = 20 pts)', value=30,
+                                         min=20, max=1000)
         if height[1] == True:
             for i in range(self.proxyModel.rowCount()):
                 self.ui.tableView.setRowHeight(i, height[0])
-        
+
     def onLayoutChanged(self):
         self.ui.tableView.scrollTo(self.ui.tableView.currentIndex())
-        
+
     def onImport(self):
         """
         Slot for importAction and appendAction signals
         """
-        
+
         # Look for user defined default import action and use it to import data
         for i in self.settings['Import Settings']:
             # try-except to ensure compatibility with old settings files (no Default key)
@@ -208,8 +211,8 @@ class MainWin(QMainWindow):
 
         # Defaults removed, show error box instead
         no_pattern = QMessageBox()
-        no_pattern.critical(self,u'Import Pattern',u'No import pattern defined\nor no default is set. Please\n'+
-                                                   'configure an import pattern\n under Settings.')
+        no_pattern.critical(self, u'Import Pattern', u'No import pattern defined\nor no default is set. Please\n' +
+                                                     'configure an import pattern\n under Settings.')
 
     def onImportCustom(self):
         """
@@ -229,18 +232,19 @@ class MainWin(QMainWindow):
                 if sender == i:
                     name = unicode(i.text())
                     delimeter = self.settings['Import Settings'][name]['Delimiter']
-                    if delimeter == '' : delimeter = '\r\n'
+                    if delimeter == '': delimeter = '\r\n'
                     pattern = self.settings['Import Settings'][name]['Pattern']
-                    dateFormat = {'Qt' : self.settings['Import Settings'][name]['Date Format'],
-                                  'Python' : None}
-                    if dateFormat['Qt'] == '' : dateFormat = DEFAULT_DATE_FORMAT
+                    dateFormat = {'Qt': self.settings['Import Settings'][name]['Date Format'],
+                                  'Python': None}
+                    if dateFormat['Qt'] == '': dateFormat = DEFAULT_DATE_FORMAT
                     encoding = self.settings['Import Settings'][name]['Encoding'].split(' ')[0]
-                    if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
+                    if encoding == '': encoding = DEFAULT_ENCODIG[0]  #UTF-8
                     extension = self.settings['Import Settings'][name]['Extension'].split(',')
-                    if extension[0] == '' : extension = DEFAULT_EXTENSION
+                    if extension[0] == '': extension = DEFAULT_EXTENSION
                     break
-            fileName = QFileDialog.getOpenFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-            if fileName == '' : return
+            fileName = QFileDialog.getOpenFileName(self, '', '',
+                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
+            if fileName == '': return
 
             status = self.tableModel.parse(unicode(fileName), append, False, delimeter, pattern, dateFormat, encoding)
 
@@ -252,13 +256,13 @@ class MainWin(QMainWindow):
                                                           self.tableModel.rowCount(None)))
         except Exception as error:
             import_error = QMessageBox()
-            import_error.warning(self,u'Import Error',u'Error during import.\r\n\r\n' + error.message)
+            import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
 
     def onExport(self):
         """
         Slot for exportAction signal
         """
-        
+
         # Look for user defined default export action and use it to export data
         for i in self.settings['Export Settings']:
             # try-except to ensure compatibility with old settings files (no Default key)
@@ -274,7 +278,8 @@ class MainWin(QMainWindow):
 
         # Defaults removed, show error box instead
         no_pattern = QMessageBox()
-        no_pattern.critical(self,u'Export Pattern',u'No export pattern defined.\nPlease configure one under Settings.')
+        no_pattern.critical(self, u'Export Pattern',
+                            u'No export pattern defined.\nPlease configure one under Settings.')
 
     def onExportCustom(self):
         """
@@ -289,14 +294,15 @@ class MainWin(QMainWindow):
                     body = self.settings['Export Settings'][name]['Body']
                     bottom = self.settings['Export Settings'][name]['Bottom']
                     dateFormat = self.settings['Export Settings'][name]['Date Format']
-                    if dateFormat == '' : dateFormat = 'dd.MM.yy, hh:mm'
+                    if dateFormat == '': dateFormat = 'dd.MM.yy, hh:mm'
                     encoding = self.settings['Export Settings'][name]['Encoding'].split(' ')[0]
-                    if encoding == '' : encoding = DEFAULT_ENCODIG[0] #UTF-8
+                    if encoding == '': encoding = DEFAULT_ENCODIG[0]  #UTF-8
                     extension = self.settings['Export Settings'][name]['Extension'].split(',')
-                    if extension[0] == '' : extension = DEFAULT_EXTENSION
+                    if extension[0] == '': extension = DEFAULT_EXTENSION
                     break
-            fileName = QFileDialog.getSaveFileName(self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-            if fileName == '' : return
+            fileName = QFileDialog.getSaveFileName(self, '', '',
+                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
+            if fileName == '': return
 
             wildCards = re.findall(r'\?P<(.*?)>', body, re.UNICODE)
 
@@ -313,7 +319,7 @@ class MainWin(QMainWindow):
             fileOut.close()
 
             status = '<%s> Data has been exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'),
-                                                       QDir.dirName(QDir(fileName)))
+                                                              QDir.dirName(QDir(fileName)))
 
             # Pop Export Status Box
             export_complete = QMessageBox(QMessageBox.Information, u'Export Complete', u'Export Complete' + u' ' * 100)
@@ -325,7 +331,7 @@ class MainWin(QMainWindow):
 
         except Exception as error:
             export_error = QMessageBox()
-            export_error.warning(self,u'Export Error',u'Error during export.\r\n\r\n' + error.message)
+            export_error.warning(self, u'Export Error', u'Error during export.\r\n\r\n' + error.message)
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:
@@ -336,8 +342,8 @@ class MainWin(QMainWindow):
                     return u''
                 elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Highlight':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Highlight', row, dateFormat)
-                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and\
-                     self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
+                elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and \
+                                self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Note', row, dateFormat)
                 else:
                     response = self.settings['Export Settings'][template_name]['Notes']
@@ -346,36 +352,40 @@ class MainWin(QMainWindow):
                     else:
                         wildCards = re.findall(r'\?P<(.*?)>', response, re.UNICODE)
                         for i in wildCards:
-                            if 'Text' in i: # This prevents recursion
+                            if 'Text' in i:  # This prevents recursion
                                 response = response.replace(u'?P<%s>' % i, u'')
                             else:
-                                response = response.replace(u'?P<%s>' % i, self.processWildcard(template_name, i, row, dateFormat))
+                                response = response.replace(u'?P<%s>' % i,
+                                                            self.processWildcard(template_name, i, row, dateFormat))
                         return response
 
             # support for prefixes
             elif wildcard[:11] == 'EvernoteTag':
-                replace_string = self.processWildcard(template_name, 'Ellipsis100CommaSafe' + wildcard[11:], row, dateFormat)
+                replace_string = self.processWildcard(template_name, 'Ellipsis100CommaSafe' + wildcard[11:], row,
+                                                      dateFormat)
                 if len(replace_string) > 0:
                     replace_string = u'<tag>' + replace_string + u'</tag>'
                 return replace_string
             elif wildcard[:11] == 'QuoteEscape':
-                return re.sub(u'"',u'""',self.processWildcard(template_name, wildcard[11:], row, dateFormat))
+                return re.sub(u'"', u'""', self.processWildcard(template_name, wildcard[11:], row, dateFormat))
             elif wildcard[:11] == 'CommaEscape':
-                return re.sub(u',',u'\,',self.processWildcard(template_name, wildcard[11:], row, dateFormat))
+                return re.sub(u',', u'\,', self.processWildcard(template_name, wildcard[11:], row, dateFormat))
             elif wildcard[:9] == 'CommaSafe':
-                return re.sub(u',',u"_",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+                return re.sub(u',', u"_", self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:9] == 'QuoteSafe':
-                return re.sub(u'"',"'",self.processWildcard(template_name, wildcard[9:], row, dateFormat))
+                return re.sub(u'"', "'", self.processWildcard(template_name, wildcard[9:], row, dateFormat))
             elif wildcard[:7] == 'TabSafe':
-                return re.sub(u'\t',"     ",self.processWildcard(template_name, wildcard[7:], row, dateFormat))
+                return re.sub(u'\t', "     ", self.processWildcard(template_name, wildcard[7:], row, dateFormat))
             elif wildcard[:11] == 'XmlSafeSpan':
-                return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
-                       self.processWildcard(template_name, u'XmlSafe' + wildcard[11:], row, dateFormat) +\
+                return u'<span title="value_' + wildcard[11:].lower() + u'">' + \
+                       self.processWildcard(template_name, u'XmlSafe' + wildcard[11:], row, dateFormat) + \
                        u'</span>'
             elif wildcard[:7] == 'XmlSafe':
-                return re.sub("<","&lt;", re.sub(">","&gt;",re.sub("&","&amp;",self.processWildcard(template_name, wildcard[7:], row, dateFormat))))
+                return re.sub("<", "&lt;", re.sub(">", "&gt;", re.sub("&", "&amp;",
+                                                                      self.processWildcard(template_name, wildcard[7:],
+                                                                                           row, dateFormat))))
             elif wildcard[:4] == 'Span':
-                return u'<span title="value_' + wildcard[11:].lower() + u'">' +\
+                return u'<span title="value_' + wildcard[11:].lower() + u'">' + \
                        self.processWildcard(template_name, wildcard[4:], row, dateFormat) + u'</span>'
 
             elif wildcard[:8] == 'Ellipsis':
@@ -384,9 +394,11 @@ class MainWin(QMainWindow):
                     replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
                     if len(replace_string) > truncate_len:
                         if truncate_len > 3:
-                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len-3)] + '...'
+                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[
+                                             :(truncate_len - 3)] + '...'
                         else:
-                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:(truncate_len)]
+                            replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[
+                                             :(truncate_len)]
                     if len(replace_string) > 0:
                         return replace_string
                 else:
@@ -395,8 +407,9 @@ class MainWin(QMainWindow):
                 if wildcard[8:11].isdigit():
                     truncate_len = int(wildcard[8:11])
                     replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
-                    if len(replace_string) > truncate_len and truncate_len> 3:
-                        replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[:truncate_len]
+                    if len(replace_string) > truncate_len and truncate_len > 3:
+                        replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[
+                                         :truncate_len]
                     if len(replace_string) > 0:
                         return replace_string
                 else:
@@ -404,9 +417,11 @@ class MainWin(QMainWindow):
 
                     # return data types
             elif wildcard == 'Date':
-                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.EditRole).toDateTime().toString(dateFormat))
+                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
+                                                    Qt.EditRole).toDateTime().toString(dateFormat))
             else:
-                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole).toString())
+                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
+                                                    Qt.DisplayRole).toString())
         except:
             return u''
 
@@ -419,33 +434,33 @@ class MainWin(QMainWindow):
         self.ui.filterEdit.setVisible(not self.ui.filterEdit.isVisible())
         self.ui.filterCaseBox.setVisible(not self.ui.filterCaseBox.isVisible())
         self.ui.filterLine.setVisible(not self.ui.filterLine.isVisible())
-        
+
         self.ui.filterEdit.setFocus()
         # Move the lines somewhere:
 
-        
+
         # Clear filter
         if self.sender() == self.ui.filterCloseButton: self.ui.filterEdit.clear()
-        
+
     def onFilterInput(self, filterText):
         """
         Slot for filterInput textChanged(QString) signal
         """
         self.proxyModel.setFilterWildcard(filterText)
-        
+
         # Set up row indicator text
         self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(), self.tableModel.rowCount(None)))
         if self.proxyModel.rowCount() == 0 and self.tableModel.rowCount(None) != 0:
-            self.ui.filterEdit.setStyleSheet('background-color: qlineargradient(spread:pad, ' +\
-                                             'x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 88, 88, 255), ' +\
+            self.ui.filterEdit.setStyleSheet('background-color: qlineargradient(spread:pad, ' + \
+                                             'x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 88, 88, 255), ' + \
                                              'stop:1 rgba(255, 255, 255, 255));;')
         else:
             self.ui.filterEdit.setStyleSheet("background-color: rgb(255, 255, 255);")
-        
+
     def onFilterCaseState(self, state):
         self.proxyModel.setFilterCaseSensitivity(bool(state))
         self.onFilterInput(self.ui.filterEdit.text())
-        
+
     def onFilterOptionTriggered(self, state):
         sender = self.sender()
         for h in self.tableModel.tableData.headers:
@@ -455,7 +470,7 @@ class MainWin(QMainWindow):
         if sender != self.actionFilterAll:
             self.actionFilterAll.setEnabled(True)
             self.actionFilterAll.setChecked(False)
-            
+
             self.ui.filterOptionButton.setChecked(True)
             self.proxyModel.setFilterKeyColumn(self.tableModel.tableData.headers.index(sender.text()))
         else:
@@ -468,7 +483,7 @@ class MainWin(QMainWindow):
         about = QMessageBox(self)
         about.setTextFormat(Qt.RichText)
         about.setStandardButtons(QMessageBox.Ok | QMessageBox.Save)
-        
+
         about.setWindowTitle(u'About...')
         about.setWindowIcon(QIcon(u':/icons/Bloomy/infoabout.png'))
         about.setText(u'<b>DaleyKlippings (ver. %s) — Kindle clippings viewer</b>' % __ver__)
@@ -496,19 +511,21 @@ class MainWin(QMainWindow):
             except:
                 QMessageBox.critical(self, u'Error', u'Can\'t save the file')
                 print u'<%s> Unsuccessful attempt to save the log' % (QTime.currentTime().toString('hh:mm:ss'))
-                
+
     def onHelp(self):
         import webbrowser
+
         webbrowser.open_new_tab('https://daleyclippings.claytondaley.com/klippings/')
-        
+
     def onSettings(self):
         settingsDialog = SettingsDialog(self)
         self.connect(settingsDialog, SIGNAL('settigsChanged(QString)'), self.onSettingsChanged)
         settingsDialog.show()
-        
+
     def onSettingsChanged(self, settings):
         self.settings = sj.loads(unicode(settings))
         self.initiateToolButtons()
+
 
 if __name__ == '__main__':
     import StringIO

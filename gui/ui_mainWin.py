@@ -33,6 +33,7 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
+
 class Ui_mainWin(object):
     def setupUi(self, mainWin):
         mainWin.setObjectName(_fromUtf8("mainWin"))
@@ -246,14 +247,16 @@ class Ui_mainWin(object):
         QtCore.QObject.connect(self.filterEdit, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), mainWin.onFilterInput)
         QtCore.QObject.connect(self.filterCloseButton, QtCore.SIGNAL(_fromUtf8("clicked()")), mainWin.onFilter)
         QtCore.QObject.connect(self.actionAppend, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onImport)
-        QtCore.QObject.connect(self.filterCaseBox, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")), mainWin.onFilterCaseState)
+        QtCore.QObject.connect(self.filterCaseBox, QtCore.SIGNAL(_fromUtf8("stateChanged(int)")),
+                               mainWin.onFilterCaseState)
         QtCore.QObject.connect(self.actionHelp, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onHelp)
         QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onSettings)
         QtCore.QObject.connect(self.toolButtonImport, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionImport.trigger)
         QtCore.QObject.connect(self.toolButtonExport, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionExport.trigger)
         QtCore.QObject.connect(self.toolButtonAppend, QtCore.SIGNAL(_fromUtf8("clicked()")), self.actionAppend.trigger)
         QtCore.QObject.connect(self.actionDeleteRow, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onDeleteRow)
-        QtCore.QObject.connect(self.actionResizeRowsToContents, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onResizeRowsToContents)
+        QtCore.QObject.connect(self.actionResizeRowsToContents, QtCore.SIGNAL(_fromUtf8("triggered()")),
+                               mainWin.onResizeRowsToContents)
         QtCore.QObject.connect(self.actionResizeRows, QtCore.SIGNAL(_fromUtf8("triggered()")), mainWin.onResizeRows)
         QtCore.QMetaObject.connectSlotsByName(mainWin)
         mainWin.setTabOrder(self.tableView, self.filterCloseButton)
@@ -262,61 +265,117 @@ class Ui_mainWin(object):
         mainWin.setTabOrder(self.filterEdit, self.filterCaseBox)
 
     def retranslateUi(self, mainWin):
-        mainWin.setWindowTitle(QtGui.QApplication.translate("mainWin", "DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonImport.setToolTip(QtGui.QApplication.translate("mainWin", "Import notes", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonImport.setStatusTip(QtGui.QApplication.translate("mainWin", "Import...", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonImport.setText(QtGui.QApplication.translate("mainWin", "&Import", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonAppend.setToolTip(QtGui.QApplication.translate("mainWin", "Append highlights, notes, and bookmarks", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonAppend.setStatusTip(QtGui.QApplication.translate("mainWin", "Append...", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonAppend.setText(QtGui.QApplication.translate("mainWin", "&Append", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonExport.setToolTip(QtGui.QApplication.translate("mainWin", "Export notes", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonExport.setStatusTip(QtGui.QApplication.translate("mainWin", "Export...", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolButtonExport.setText(QtGui.QApplication.translate("mainWin", "&Export", None, QtGui.QApplication.UnicodeUTF8))
-        self.filterEdit.setPlaceholderText(QtGui.QApplication.translate("mainWin", "Filter", None, QtGui.QApplication.UnicodeUTF8))
-        self.filterCloseButton.setText(QtGui.QApplication.translate("mainWin", "...", None, QtGui.QApplication.UnicodeUTF8))
-        self.filterCaseBox.setText(QtGui.QApplication.translate("mainWin", "Case &sensitive", None, QtGui.QApplication.UnicodeUTF8))
-        self.filterOptionButton.setText(QtGui.QApplication.translate("mainWin", "▼", None, QtGui.QApplication.UnicodeUTF8))
-        self.rowIndicator.setText(QtGui.QApplication.translate("mainWin", "Rows: 0/0", None, QtGui.QApplication.UnicodeUTF8))
+        mainWin.setWindowTitle(
+            QtGui.QApplication.translate("mainWin", "DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonImport.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Import notes", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonImport.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Import...", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonImport.setText(
+            QtGui.QApplication.translate("mainWin", "&Import", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonAppend.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Append highlights, notes, and bookmarks", None,
+                                         QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonAppend.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Append...", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonAppend.setText(
+            QtGui.QApplication.translate("mainWin", "&Append", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonExport.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Export notes", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonExport.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Export...", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolButtonExport.setText(
+            QtGui.QApplication.translate("mainWin", "&Export", None, QtGui.QApplication.UnicodeUTF8))
+        self.filterEdit.setPlaceholderText(
+            QtGui.QApplication.translate("mainWin", "Filter", None, QtGui.QApplication.UnicodeUTF8))
+        self.filterCloseButton.setText(
+            QtGui.QApplication.translate("mainWin", "...", None, QtGui.QApplication.UnicodeUTF8))
+        self.filterCaseBox.setText(
+            QtGui.QApplication.translate("mainWin", "Case &sensitive", None, QtGui.QApplication.UnicodeUTF8))
+        self.filterOptionButton.setText(
+            QtGui.QApplication.translate("mainWin", "▼", None, QtGui.QApplication.UnicodeUTF8))
+        self.rowIndicator.setText(
+            QtGui.QApplication.translate("mainWin", "Rows: 0/0", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("mainWin", "&File", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_Help.setTitle(QtGui.QApplication.translate("mainWin", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.toolBar.setWindowTitle(QtGui.QApplication.translate("mainWin", "Show tool bar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImport.setText(QtGui.QApplication.translate("mainWin", "&Import...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImport.setToolTip(QtGui.QApplication.translate("mainWin", "Import highlights, notes, and bookmarks", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImport.setStatusTip(QtGui.QApplication.translate("mainWin", "Load clippings...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImport.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolBar.setWindowTitle(
+            QtGui.QApplication.translate("mainWin", "Show tool bar", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImport.setText(
+            QtGui.QApplication.translate("mainWin", "&Import...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImport.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Import highlights, notes, and bookmarks", None,
+                                         QtGui.QApplication.UnicodeUTF8))
+        self.actionImport.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Load clippings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImport.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
         self.actionExit.setText(QtGui.QApplication.translate("mainWin", "E&xit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setToolTip(QtGui.QApplication.translate("mainWin", "Close application", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setStatusTip(QtGui.QApplication.translate("mainWin", "Exit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExit.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+X", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExit.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Close application", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExit.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Exit", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExit.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+X", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbout.setText(QtGui.QApplication.translate("mainWin", "About", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setToolTip(QtGui.QApplication.translate("mainWin", "Info about DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout.setStatusTip(QtGui.QApplication.translate("mainWin", "About DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExport.setText(QtGui.QApplication.translate("mainWin", "&Export...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExport.setToolTip(QtGui.QApplication.translate("mainWin", "Export edited highlights, notes, and bookmarks", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExport.setStatusTip(QtGui.QApplication.translate("mainWin", "Export notes...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExport.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+E", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFilter.setText(QtGui.QApplication.translate("mainWin", "&Filter", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFilter.setToolTip(QtGui.QApplication.translate("mainWin", "Filter the table", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFilter.setStatusTip(QtGui.QApplication.translate("mainWin", "Filter...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionFilter.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+F", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAppend.setText(QtGui.QApplication.translate("mainWin", "&Append...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAppend.setToolTip(QtGui.QApplication.translate("mainWin", "Append current list of hilghlights, notes, and bookmarks", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAppend.setStatusTip(QtGui.QApplication.translate("mainWin", "Append clippings...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAppend.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+A", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Info about DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "About DaleyKlippings", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExport.setText(
+            QtGui.QApplication.translate("mainWin", "&Export...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExport.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Export edited highlights, notes, and bookmarks", None,
+                                         QtGui.QApplication.UnicodeUTF8))
+        self.actionExport.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Export notes...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionExport.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+E", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionFilter.setText(
+            QtGui.QApplication.translate("mainWin", "&Filter", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionFilter.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Filter the table", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionFilter.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Filter...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionFilter.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+F", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAppend.setText(
+            QtGui.QApplication.translate("mainWin", "&Append...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAppend.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Append current list of hilghlights, notes, and bookmarks", None,
+                                         QtGui.QApplication.UnicodeUTF8))
+        self.actionAppend.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Append clippings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAppend.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+A", None, QtGui.QApplication.UnicodeUTF8))
         self.actionHelp.setText(QtGui.QApplication.translate("mainWin", "&Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setIconText(QtGui.QApplication.translate("mainWin", "Help", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setToolTip(QtGui.QApplication.translate("mainWin", "Open help webpage in your brouser", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setStatusTip(QtGui.QApplication.translate("mainWin", "Help webpage...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionHelp.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+H", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setText(QtGui.QApplication.translate("mainWin", "&Settings...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setToolTip(QtGui.QApplication.translate("mainWin", "Configure settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setStatusTip(QtGui.QApplication.translate("mainWin", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDeleteRow.setText(QtGui.QApplication.translate("mainWin", "&Delete selected rows", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDeleteRow.setShortcut(QtGui.QApplication.translate("mainWin", "Del", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionResizeRowsToContents.setText(QtGui.QApplication.translate("mainWin", "&Resize rows to contents", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionResizeRowsToContents.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionResizeRows.setText(QtGui.QApplication.translate("mainWin", "Re&size rows...", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionResizeRows.setShortcut(QtGui.QApplication.translate("mainWin", "Ctrl+Alt+R", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionHelp.setIconText(
+            QtGui.QApplication.translate("mainWin", "Help", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionHelp.setToolTip(QtGui.QApplication.translate("mainWin", "Open help webpage in your brouser", None,
+                                                                QtGui.QApplication.UnicodeUTF8))
+        self.actionHelp.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Help webpage...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionHelp.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+H", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setText(
+            QtGui.QApplication.translate("mainWin", "&Settings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setToolTip(
+            QtGui.QApplication.translate("mainWin", "Configure settings", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setStatusTip(
+            QtGui.QApplication.translate("mainWin", "Settings...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSettings.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDeleteRow.setText(
+            QtGui.QApplication.translate("mainWin", "&Delete selected rows", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDeleteRow.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Del", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionResizeRowsToContents.setText(
+            QtGui.QApplication.translate("mainWin", "&Resize rows to contents", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionResizeRowsToContents.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionResizeRows.setText(
+            QtGui.QApplication.translate("mainWin", "Re&size rows...", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionResizeRows.setShortcut(
+            QtGui.QApplication.translate("mainWin", "Ctrl+Alt+R", None, QtGui.QApplication.UnicodeUTF8))
+
 
 import mainWin_rc

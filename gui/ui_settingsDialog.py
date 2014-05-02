@@ -1,28 +1,9 @@
 # -*- coding: utf-8 -*-
-########################################################################
-#  DaleyKlippings
-#  Copyright (C) 2012-13 Clayton Daley III
-#  daleyklippings@gmail.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation version 3.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-########################################################################
 
-
-# Form implementation generated from reading ui file 'D:\Kindle\gui\settingsDialog.ui'
+# Form implementation generated from reading ui file 'settingsDialog.ui'
 #
-# Created: Tue Aug 14 13:52:37 2012
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Fri May 02 14:34:14 2014
+#      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,12 +12,21 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_settingsDialog(object):
     def setupUi(self, settingsDialog):
         settingsDialog.setObjectName(_fromUtf8("settingsDialog"))
-        settingsDialog.resize(505, 501)
+        settingsDialog.resize(1009, 768)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/icons/Bloomy/configure.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         settingsDialog.setWindowIcon(icon)
@@ -64,9 +54,8 @@ class Ui_settingsDialog(object):
         self.labelNotesPosition = QtGui.QLabel(self.groupNotesAttachments)
         self.labelNotesPosition.setObjectName(_fromUtf8("labelNotesPosition"))
         self.gridLayout_3.addWidget(self.labelNotesPosition, 0, 0, 1, 1)
-
         self.cmbNotesPosition = QtGui.QComboBox(self.groupNotesAttachments)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cmbNotesPosition.sizePolicy().hasHeightForWidth())
@@ -76,7 +65,9 @@ class Ui_settingsDialog(object):
         self.cmbNotesPosition.addItem(_fromUtf8(""))
         self.cmbNotesPosition.addItem(_fromUtf8(""))
         self.gridLayout_3.addWidget(self.cmbNotesPosition, 0, 1, 1, 1)
-
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.gridLayout_3.addLayout(self.horizontalLayout_3, 1, 1, 1, 1)
         self.verticalLayout_3.addLayout(self.gridLayout_3)
         self.verticalLayout_5.addWidget(self.groupNotesAttachments)
         self.groupLanguage = QtGui.QGroupBox(self.tabApplication)
@@ -89,25 +80,39 @@ class Ui_settingsDialog(object):
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.groupLanguage)
         self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
         self.formLayout = QtGui.QFormLayout()
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
         self.formLayout.setObjectName(_fromUtf8("formLayout"))
+        self.labelDefaultLanguage = QtGui.QLabel(self.groupLanguage)
+        self.labelDefaultLanguage.setObjectName(_fromUtf8("labelDefaultLanguage"))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.labelDefaultLanguage)
+        self.editDefaultLanguage = QtGui.QComboBox(self.groupLanguage)
+        self.editDefaultLanguage.setObjectName(_fromUtf8("editDefaultLanguage"))
+        self.editDefaultLanguage.addItem(_fromUtf8(""))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.editDefaultLanguage)
+        self.lineEdit = QtGui.QLineEdit(self.groupLanguage)
+        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.lineEdit)
         self.labelHighlightLanguage = QtGui.QLabel(self.groupLanguage)
         self.labelHighlightLanguage.setObjectName(_fromUtf8("labelHighlightLanguage"))
-        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.labelHighlightLanguage)
+        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.labelHighlightLanguage)
         self.editHighlightLanguage = QtGui.QLineEdit(self.groupLanguage)
         self.editHighlightLanguage.setObjectName(_fromUtf8("editHighlightLanguage"))
-        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.editHighlightLanguage)
+        self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.editHighlightLanguage)
         self.labelNoteLanguge = QtGui.QLabel(self.groupLanguage)
         self.labelNoteLanguge.setObjectName(_fromUtf8("labelNoteLanguge"))
-        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.labelNoteLanguge)
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.labelNoteLanguge)
         self.editNoteLanguge = QtGui.QLineEdit(self.groupLanguage)
         self.editNoteLanguge.setObjectName(_fromUtf8("editNoteLanguge"))
-        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.editNoteLanguge)
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.editNoteLanguge)
         self.labelBookmarkLanguage = QtGui.QLabel(self.groupLanguage)
         self.labelBookmarkLanguage.setObjectName(_fromUtf8("labelBookmarkLanguage"))
-        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.labelBookmarkLanguage)
+        self.formLayout.setWidget(4, QtGui.QFormLayout.LabelRole, self.labelBookmarkLanguage)
         self.editBookmarkLanguage = QtGui.QLineEdit(self.groupLanguage)
         self.editBookmarkLanguage.setObjectName(_fromUtf8("editBookmarkLanguage"))
-        self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.editBookmarkLanguage)
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.editBookmarkLanguage)
+        self.labelRangeDivider = QtGui.QLabel(self.groupLanguage)
+        self.labelRangeDivider.setObjectName(_fromUtf8("labelRangeDivider"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.labelRangeDivider)
         self.verticalLayout_6.addLayout(self.formLayout)
         self.verticalLayout_5.addWidget(self.groupLanguage)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -286,7 +291,6 @@ class Ui_settingsDialog(object):
         self.textExportHeader.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportHeader.setObjectName(_fromUtf8("textExportHeader"))
         self.gridLayout_2.addWidget(self.textExportHeader, 0, 1, 1, 1)
-
         self.labelExportBody = QtGui.QLabel(self.boxExportPattern)
         self.labelExportBody.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportBody.setObjectName(_fromUtf8("labelExportBody"))
@@ -300,21 +304,6 @@ class Ui_settingsDialog(object):
         self.textExportBody.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportBody.setObjectName(_fromUtf8("textExportBody"))
         self.gridLayout_2.addWidget(self.textExportBody, 1, 1, 1, 1)
-
-        self.labelExportNotes = QtGui.QLabel(self.boxExportPattern)
-        self.labelExportNotes.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.labelExportNotes.setObjectName(_fromUtf8("labelExportNotes"))
-        self.gridLayout_2.addWidget(self.labelExportNotes, 2, 0, 1, 1)
-        self.textExportNotes = QtGui.QPlainTextEdit(self.boxExportPattern)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(self.textExportNotes.sizePolicy().hasHeightForWidth())
-        self.textExportNotes.setSizePolicy(sizePolicy)
-        self.textExportNotes.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
-        self.textExportNotes.setObjectName(_fromUtf8("textExportNotes"))
-        self.gridLayout_2.addWidget(self.textExportNotes, 2, 1, 1, 1)
-
         self.labelExportBottom = QtGui.QLabel(self.boxExportPattern)
         self.labelExportBottom.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportBottom.setObjectName(_fromUtf8("labelExportBottom"))
@@ -328,7 +317,6 @@ class Ui_settingsDialog(object):
         self.textExportBottom.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
         self.textExportBottom.setObjectName(_fromUtf8("textExportBottom"))
         self.gridLayout_2.addWidget(self.textExportBottom, 3, 1, 1, 1)
-
         self.labelExportDateFormat = QtGui.QLabel(self.boxExportPattern)
         self.labelExportDateFormat.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.labelExportDateFormat.setObjectName(_fromUtf8("labelExportDateFormat"))
@@ -337,6 +325,19 @@ class Ui_settingsDialog(object):
         self.editExportDateFormat.setPlaceholderText(_fromUtf8("dd.MM.yy, hh:mm"))
         self.editExportDateFormat.setObjectName(_fromUtf8("editExportDateFormat"))
         self.gridLayout_2.addWidget(self.editExportDateFormat, 4, 1, 1, 1)
+        self.labelExportNotes = QtGui.QLabel(self.boxExportPattern)
+        self.labelExportNotes.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.labelExportNotes.setObjectName(_fromUtf8("labelExportNotes"))
+        self.gridLayout_2.addWidget(self.labelExportNotes, 2, 0, 1, 1)
+        self.textExportNotes = QtGui.QPlainTextEdit(self.boxExportPattern)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.textExportNotes.sizePolicy().hasHeightForWidth())
+        self.textExportNotes.setSizePolicy(sizePolicy)
+        self.textExportNotes.setLineWrapMode(QtGui.QPlainTextEdit.NoWrap)
+        self.textExportNotes.setObjectName(_fromUtf8("textExportNotes"))
+        self.gridLayout_2.addWidget(self.textExportNotes, 2, 1, 1, 1)
         self.horizontalLayout_10.addLayout(self.gridLayout_2)
         self.verticalLayout_4.addWidget(self.boxExportPattern)
         self.boxExportFileSettings = QtGui.QGroupBox(self.tabExport)
@@ -427,7 +428,7 @@ class Ui_settingsDialog(object):
         QtCore.QObject.connect(self.cmbNotesPosition, QtCore.SIGNAL(_fromUtf8("activated(QString)")), settingsDialog.onApplicationAttachNotesSettingsChanged)
         QtCore.QObject.connect(self.chbIsDefaultImport, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), settingsDialog.onImportIsDefaultChanged)
         QtCore.QObject.connect(self.chbIsDefaultExport, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), settingsDialog.onExportIsDefaultChanged)
-        QtCore.QObject.connect(self.editHighlightLanguage, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")),settingsDialog.onApplicationHighlightLanguageChanged)
+        QtCore.QObject.connect(self.editHighlightLanguage, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), settingsDialog.onApplicationHighlightLanguageChanged)
         QtCore.QObject.connect(self.editNoteLanguge, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), settingsDialog.onApplicationNoteLanguageChanged)
         QtCore.QObject.connect(self.editBookmarkLanguage, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), settingsDialog.onApplicationBookmarkLanguageChanged)
         QtCore.QMetaObject.connectSlotsByName(settingsDialog)
@@ -435,7 +436,7 @@ class Ui_settingsDialog(object):
         settingsDialog.setTabOrder(self.buttonApply, self.buttonCancel)
         settingsDialog.setTabOrder(self.buttonCancel, self.chbAttachNotes)
         settingsDialog.setTabOrder(self.chbAttachNotes, self.cmbNotesPosition)
-        settingsDialog.setTabOrder( self.cmbNotesPosition, self.editHighlightLanguage)
+        settingsDialog.setTabOrder(self.cmbNotesPosition, self.editHighlightLanguage)
         settingsDialog.setTabOrder(self.editHighlightLanguage, self.editNoteLanguge)
         settingsDialog.setTabOrder(self.editNoteLanguge, self.editBookmarkLanguage)
         settingsDialog.setTabOrder(self.editBookmarkLanguage, self.cmbImportPatternName)
@@ -453,8 +454,7 @@ class Ui_settingsDialog(object):
         settingsDialog.setTabOrder(self.buttonExportAddPattern, self.buttonExportDeletePattern)
         settingsDialog.setTabOrder(self.buttonExportDeletePattern, self.textExportHeader)
         settingsDialog.setTabOrder(self.textExportHeader, self.textExportBody)
-        settingsDialog.setTabOrder(self.textExportBody, self.textExportNotes)
-        settingsDialog.setTabOrder(self.textExportNotes, self.textExportBottom)
+        settingsDialog.setTabOrder(self.textExportBody, self.textExportBottom)
         settingsDialog.setTabOrder(self.textExportBottom, self.editExportDateFormat)
         settingsDialog.setTabOrder(self.editExportDateFormat, self.editExportExtensions)
         settingsDialog.setTabOrder(self.editExportExtensions, self.cmbExportEncoding)
@@ -462,63 +462,69 @@ class Ui_settingsDialog(object):
         settingsDialog.setTabOrder(self.buttonWhatsThis, self.tabsSettings)
 
     def retranslateUi(self, settingsDialog):
-        settingsDialog.setWindowTitle(QtGui.QApplication.translate("settingsDialog", "Settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupNotesAttachments.setTitle(QtGui.QApplication.translate("settingsDialog", "Notes", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbAttachNotes.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Highlights and related notes are stored separately in \'My Clippings.txt\'. Check the box if you want to unify them in a one table row.", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbAttachNotes.setText(QtGui.QApplication.translate("settingsDialog", "Attach notes to highlights they are attributed to:", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelNotesPosition.setText(QtGui.QApplication.translate("settingsDialog", "Notes found:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbNotesPosition.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Choose here where notes are found: before highlight, after highlights, or automatic search.", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbNotesPosition.setItemText(0, QtGui.QApplication.translate("settingsDialog", "Automatic (default)", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbNotesPosition.setItemText(1, QtGui.QApplication.translate("settingsDialog", "Before highlights", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbNotesPosition.setItemText(2, QtGui.QApplication.translate("settingsDialog", "After highlights", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupLanguage.setTitle(QtGui.QApplication.translate("settingsDialog", "Language", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelHighlightLanguage.setText(QtGui.QApplication.translate("settingsDialog", "Highlight:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editHighlightLanguage.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Highlight in \'MyClippings.txt\' file language (e.g. Выделение)", None, QtGui.QApplication.UnicodeUTF8))
-        self.editHighlightLanguage.setPlaceholderText(QtGui.QApplication.translate("settingsDialog", "Highlight", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelNoteLanguge.setText(QtGui.QApplication.translate("settingsDialog", "Note:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editNoteLanguge.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Note in \'MyClippings.txt\' file language (e.g. Заметка)", None, QtGui.QApplication.UnicodeUTF8))
-        self.editNoteLanguge.setPlaceholderText(QtGui.QApplication.translate("settingsDialog", "Note", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelBookmarkLanguage.setText(QtGui.QApplication.translate("settingsDialog", "Bookmark:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editBookmarkLanguage.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Bookmark in \'MyClippings.txt\' file language (e.g. Закладка)", None, QtGui.QApplication.UnicodeUTF8))
-        self.editBookmarkLanguage.setPlaceholderText(QtGui.QApplication.translate("settingsDialog", "Bookmark", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabApplication), QtGui.QApplication.translate("settingsDialog", "Application", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelImportPatternName.setText(QtGui.QApplication.translate("settingsDialog", "Name:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbImportPatternName.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        settingsDialog.setWindowTitle(_translate("settingsDialog", "Settings", None))
+        self.groupNotesAttachments.setTitle(_translate("settingsDialog", "Notes", None))
+        self.chbAttachNotes.setWhatsThis(_translate("settingsDialog", "Highlights and related notes are stored separately in \'My Clippings.txt\'. Check the box if you want to unify them in a one table row.", None))
+        self.chbAttachNotes.setText(_translate("settingsDialog", "Attach notes to highlights they are attributed to:", None))
+        self.labelNotesPosition.setText(_translate("settingsDialog", "Notes found:", None))
+        self.cmbNotesPosition.setWhatsThis(_translate("settingsDialog", "Choose here where notes are found: before highlight, after highlights, or automatic search.", None))
+        self.cmbNotesPosition.setItemText(0, _translate("settingsDialog", "Automatic (default)", None))
+        self.cmbNotesPosition.setItemText(1, _translate("settingsDialog", "Before highlights", None))
+        self.cmbNotesPosition.setItemText(2, _translate("settingsDialog", "After highlights", None))
+        self.groupLanguage.setTitle(_translate("settingsDialog", "Language", None))
+        self.labelDefaultLanguage.setText(_translate("settingsDialog", "Date Interpreter", None))
+        self.editDefaultLanguage.setWhatsThis(_translate("settingsDialog", "Language used to interpret dates.", None))
+        self.editDefaultLanguage.setItemText(0, _translate("settingsDialog", "English (default)", None))
+        self.lineEdit.setWhatsThis(_translate("settingsDialog", "Text used to separate two values in a page/location range.", None))
+        self.lineEdit.setPlaceholderText(_translate("settingsDialog", "-", None))
+        self.labelHighlightLanguage.setText(_translate("settingsDialog", "Highlight:", None))
+        self.editHighlightLanguage.setWhatsThis(_translate("settingsDialog", "Highlight in \'MyClippings.txt\' file language (e.g. Выделение)", None))
+        self.editHighlightLanguage.setPlaceholderText(_translate("settingsDialog", "Highlight", None))
+        self.labelNoteLanguge.setText(_translate("settingsDialog", "Note:", None))
+        self.editNoteLanguge.setWhatsThis(_translate("settingsDialog", "Note in \'MyClippings.txt\' file language (e.g. Заметка)", None))
+        self.editNoteLanguge.setPlaceholderText(_translate("settingsDialog", "Note", None))
+        self.labelBookmarkLanguage.setText(_translate("settingsDialog", "Bookmark:", None))
+        self.editBookmarkLanguage.setWhatsThis(_translate("settingsDialog", "Bookmark in \'MyClippings.txt\' file language (e.g. Закладка)", None))
+        self.editBookmarkLanguage.setPlaceholderText(_translate("settingsDialog", "Bookmark", None))
+        self.labelRangeDivider.setText(_translate("settingsDialog", "Range Divider", None))
+        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabApplication), _translate("settingsDialog", "Application", None))
+        self.labelImportPatternName.setText(_translate("settingsDialog", "Name:", None))
+        self.cmbImportPatternName.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Import</span><span style=\" font-size:8pt; font-weight:600;\"> pattern name</span><span style=\" font-size:8pt;\">, that will be shown in the Import button context menu.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbIsDefaultImport.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Make current import pattern default Import & Append buttons action", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbIsDefaultImport.setText(QtGui.QApplication.translate("settingsDialog", "Default", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonImportAddPattern.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Import</span><span style=\" font-size:8pt; font-weight:600;\"> pattern name</span><span style=\" font-size:8pt;\">, that will be shown in the Import button context menu.</span></p></body></html>", None))
+        self.chbIsDefaultImport.setWhatsThis(_translate("settingsDialog", "Make current import pattern default Import & Append buttons action", None))
+        self.chbIsDefaultImport.setText(_translate("settingsDialog", "Default", None))
+        self.buttonImportAddPattern.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Add new <span style=\" font-weight:600;\">import pattern</span>.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonImportAddPattern.setText(QtGui.QApplication.translate("settingsDialog", "Add...", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonImportDeletePattern.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Add new <span style=\" font-weight:600;\">import pattern</span>.</p></body></html>", None))
+        self.buttonImportAddPattern.setText(_translate("settingsDialog", "Add...", None))
+        self.buttonImportDeletePattern.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Delete the active <span style=\" font-weight:600;\">import pattern</span>.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonImportDeletePattern.setText(QtGui.QApplication.translate("settingsDialog", "Delete", None, QtGui.QApplication.UnicodeUTF8))
-        self.boxImportPattern.setTitle(QtGui.QApplication.translate("settingsDialog", "Notes pattern", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelImportDelimiter.setText(QtGui.QApplication.translate("settingsDialog", "Notes<br>delimiter:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editImportDelimiter.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Delete the active <span style=\" font-weight:600;\">import pattern</span>.</p></body></html>", None))
+        self.buttonImportDeletePattern.setText(_translate("settingsDialog", "Delete", None))
+        self.boxImportPattern.setTitle(_translate("settingsDialog", "Notes pattern", None))
+        self.labelImportDelimiter.setText(_translate("settingsDialog", "Notes<br>delimiter:", None))
+        self.editImportDelimiter.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Delimiter</span> is an array of characters used to divide notes in a file. If the field is empty, carrier return and line feed characters are used.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelImportPattern.setText(QtGui.QApplication.translate("settingsDialog", "Notes<br>pattern:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textImportPattern.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Delimiter</span> is an array of characters used to divide notes in a file. If the field is empty, carrier return and line feed characters are used.</p></body></html>", None))
+        self.labelImportPattern.setText(_translate("settingsDialog", "Notes<br>pattern:", None))
+        self.textImportPattern.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Notes pattern</span> is a regular expression used to divide notes into an array of named groups. Groups names must be the same as names of the Klippings table header: <span style=\" font-weight:600;\">(?P&lt;</span><span style=\" font-weight:600; font-style:italic;\">table_header_name</span><span style=\" font-weight:600;\">&gt;</span><span style=\" font-weight:600; font-style:italic;\">regular_expression</span><span style=\" font-weight:600;\">)</span>.</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Patterns must be in <span style=\" font-weight:600;\">raw string notation</span>, <span style=\" font-weight:600;\">VERBOSE</span> and<span style=\" font-weight:600;\"> UNICODE</span> options are on. (<a href=\"http://docs.python.org/library/re.html\"><span style=\" text-decoration: underline; color:#0000ff;\">more</span></a>)</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelImportDateFormat.setText(QtGui.QApplication.translate("settingsDialog", "Date<br>format:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editImportDateFormat.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Patterns must be in <span style=\" font-weight:600;\">raw string notation</span>, <span style=\" font-weight:600;\">VERBOSE</span> and<span style=\" font-weight:600;\"> UNICODE</span> options are on. (<a href=\"http://docs.python.org/library/re.html\"><span style=\" text-decoration: underline; color:#0000ff;\">more</span></a>)</p></body></html>", None))
+        self.labelImportDateFormat.setText(_translate("settingsDialog", "Date<br>format:", None))
+        self.editImportDateFormat.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
@@ -636,74 +642,62 @@ class Ui_settingsDialog(object):
 "<td>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ap</span></p></td>\n"
 "<td>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">use am/pm display. </span><span style=\" font-size:8pt; font-style:italic;\">ap</span><span style=\" font-size:8pt;\"> will be replaced by either &quot;am&quot; or &quot;pm&quot;.</span></p></td></tr></table></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.boxImportFileSettings.setTitle(QtGui.QApplication.translate("settingsDialog", "File settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelImportExtension.setText(QtGui.QApplication.translate("settingsDialog", "Extensions:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editImportExtension.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">use am/pm display. </span><span style=\" font-size:8pt; font-style:italic;\">ap</span><span style=\" font-size:8pt;\"> will be replaced by either &quot;am&quot; or &quot;pm&quot;.</span></p></td></tr></table></body></html>", None))
+        self.boxImportFileSettings.setTitle(_translate("settingsDialog", "File settings", None))
+        self.labelImportExtension.setText(_translate("settingsDialog", "Extensions:", None))
+        self.editImportExtension.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">File extensions</span> seprated by commas.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labeImportlEncoding.setText(QtGui.QApplication.translate("settingsDialog", "Encoding:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbImportEncoding.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">File extensions</span> seprated by commas.</p></body></html>", None))
+        self.labeImportlEncoding.setText(_translate("settingsDialog", "Encoding:", None))
+        self.cmbImportEncoding.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Source <span style=\" font-weight:600;\">file encoding.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabImport), QtGui.QApplication.translate("settingsDialog", "Import", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportPatternName.setText(QtGui.QApplication.translate("settingsDialog", "Name:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbExportPatternName.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Source <span style=\" font-weight:600;\">file encoding.</span></p></body></html>", None))
+        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabImport), _translate("settingsDialog", "Import", None))
+        self.labelExportPatternName.setText(_translate("settingsDialog", "Name:", None))
+        self.cmbExportPatternName.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern name</span><span style=\" font-size:8pt;\">, that will be shown in the Export button context menu.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbIsDefaultExport.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Make current export pattern default Export button action", None, QtGui.QApplication.UnicodeUTF8))
-        self.chbIsDefaultExport.setText(QtGui.QApplication.translate("settingsDialog", "Default", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonExportAddPattern.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern name</span><span style=\" font-size:8pt;\">, that will be shown in the Export button context menu.</span></p></body></html>", None))
+        self.chbIsDefaultExport.setWhatsThis(_translate("settingsDialog", "Make current export pattern default Export button action", None))
+        self.chbIsDefaultExport.setText(_translate("settingsDialog", "Default", None))
+        self.buttonExportAddPattern.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Add new </span><span style=\" font-size:8pt; font-weight:600;\">export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern</span><span style=\" font-size:8pt;\">.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonExportAddPattern.setText(QtGui.QApplication.translate("settingsDialog", "Add...", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonExportDeletePattern.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Add new </span><span style=\" font-size:8pt; font-weight:600;\">export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern</span><span style=\" font-size:8pt;\">.</span></p></body></html>", None))
+        self.buttonExportAddPattern.setText(_translate("settingsDialog", "Add...", None))
+        self.buttonExportDeletePattern.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Delete the active </span><span style=\" font-size:8pt; font-weight:600;\">export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern</span><span style=\" font-size:8pt;\">.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonExportDeletePattern.setText(QtGui.QApplication.translate("settingsDialog", "Delete", None, QtGui.QApplication.UnicodeUTF8))
-        self.boxExportPattern.setTitle(QtGui.QApplication.translate("settingsDialog", "Notes pattern", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportHeader.setText(QtGui.QApplication.translate("settingsDialog", "Header:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textExportHeader.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Delete the active </span><span style=\" font-size:8pt; font-weight:600;\">export</span><span style=\" font-size:8pt; font-weight:600;\"> pattern</span><span style=\" font-size:8pt;\">.</span></p></body></html>", None))
+        self.buttonExportDeletePattern.setText(_translate("settingsDialog", "Delete", None))
+        self.boxExportPattern.setTitle(_translate("settingsDialog", "Notes pattern", None))
+        self.labelExportHeader.setText(_translate("settingsDialog", "Header:", None))
+        self.textExportHeader.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Header</span><span style=\" font-size:8pt;\"> is the data to write in the beginning of the export file.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportHeader.setText(QtGui.QApplication.translate("settingsDialog", "Header:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textExportHeader.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Header</span><span style=\" font-size:8pt;\"> is the data to write in the beginning of the export file.</span></p></body></html>", None))
+        self.labelExportBody.setText(_translate("settingsDialog", "Body:", None))
+        self.textExportBody.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Header</span><span style=\" font-size:8pt;\"> is the data to write in the beginning of the export file.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportBody.setText(QtGui.QApplication.translate("settingsDialog", "Body:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textExportBody.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Body </span><span style=\" font-size:8pt;\">is a pattern to convert notes from the Klippings table into formated text. Wildcards </span><span style=\" font-size:8pt; font-weight:600;\">?P&lt;table_header_name&gt;</span><span style=\" font-size:8pt;\"> will be replaced by the edited, filtered and sorted table data.</span></p></body></html>", None))
+        self.labelExportBottom.setText(_translate("settingsDialog", "Bottom:", None))
+        self.textExportBottom.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Body </span><span style=\" font-size:8pt;\">is a pattern to convert notes from the Klippings table into formated text. Wildcards </span><span style=\" font-size:8pt; font-weight:600;\">?P&lt;table_header_name&gt;</span><span style=\" font-size:8pt;\"> will be replaced by the edited, filtered and sorted table data.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportNotes.setText(QtGui.QApplication.translate("settingsDialog", "Attached\nNotes:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textExportNotes.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Body </span><span style=\" font-size:8pt;\">is a pattern to convert notes from the Klippings table into formated text. Wildcards </span><span style=\" font-size:8pt; font-weight:600;\">?P&lt;table_header_name&gt;</span><span style=\" font-size:8pt;\"> will be replaced by the edited, filtered and sorted table data.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportBottom.setText(QtGui.QApplication.translate("settingsDialog", "Bottom:", None, QtGui.QApplication.UnicodeUTF8))
-        self.textExportBottom.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Bottom</span><span style=\" font-size:8pt;\"> is the data to append to the ending of the export file.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportDateFormat.setText(QtGui.QApplication.translate("settingsDialog", "Date<br>format:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editExportDateFormat.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Bottom</span><span style=\" font-size:8pt;\"> is the data to append to the ending of the export file.</span></p></body></html>", None))
+        self.labelExportDateFormat.setText(_translate("settingsDialog", "Date<br>format:", None))
+        self.editExportDateFormat.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
@@ -822,29 +816,46 @@ class Ui_settingsDialog(object):
 "<td>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">ap</span></p></td>\n"
 "<td>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">use am/pm display. </span><span style=\" font-size:8pt; font-style:italic;\">ap</span><span style=\" font-size:8pt;\"> will be replaced by either &quot;am&quot; or &quot;pm&quot;.</span></p></td></tr></table></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.boxExportFileSettings.setTitle(QtGui.QApplication.translate("settingsDialog", "File settings", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExtension.setText(QtGui.QApplication.translate("settingsDialog", "Extensions:", None, QtGui.QApplication.UnicodeUTF8))
-        self.editExportExtensions.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">use am/pm display. </span><span style=\" font-size:8pt; font-style:italic;\">ap</span><span style=\" font-size:8pt;\"> will be replaced by either &quot;am&quot; or &quot;pm&quot;.</span></p></td></tr></table></body></html>", None))
+        self.labelExportNotes.setText(_translate("settingsDialog", "Note\n"
+"Pattern:", None))
+        self.textExportNotes.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">File extensions</span><span style=\" font-size:8pt;\"> seprated by commas.</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelExportEncoding.setText(QtGui.QApplication.translate("settingsDialog", "Encoding:", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbExportEncoding.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">Body </span><span style=\" font-size:8pt;\">is a pattern to convert notes from the Klippings table into formated text. Wildcards </span><span style=\" font-size:8pt; font-weight:600;\">?P&lt;table_header_name&gt;</span><span style=\" font-size:8pt;\"> will be replaced by the edited, filtered and sorted table data.</span></p></body></html>", None))
+        self.boxExportFileSettings.setTitle(_translate("settingsDialog", "File settings", None))
+        self.labelExtension.setText(_translate("settingsDialog", "Extensions:", None))
+        self.editExportExtensions.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Export <span style=\" font-weight:600;\">file encoding</span>.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbExportEncoding.setItemText(0, QtGui.QApplication.translate("settingsDialog", "UTF-8 (all languages)", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbExportEncoding.setItemText(1, QtGui.QApplication.translate("settingsDialog", "UTF-16 (all languages)", None, QtGui.QApplication.UnicodeUTF8))
-        self.cmbExportEncoding.setItemText(2, QtGui.QApplication.translate("settingsDialog", "UTF-32 (all languages)", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabExport), QtGui.QApplication.translate("settingsDialog", "Export", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonOK.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Save settings and close the window.", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonOK.setText(QtGui.QApplication.translate("settingsDialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonApply.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Save settings.", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonApply.setText(QtGui.QApplication.translate("settingsDialog", "Apply", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonCancel.setWhatsThis(QtGui.QApplication.translate("settingsDialog", "Close the window and do not save settings.", None, QtGui.QApplication.UnicodeUTF8))
-        self.buttonCancel.setText(QtGui.QApplication.translate("settingsDialog", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; font-weight:600;\">File extensions</span><span style=\" font-size:8pt;\"> seprated by commas.</span></p></body></html>", None))
+        self.labelExportEncoding.setText(_translate("settingsDialog", "Encoding:", None))
+        self.cmbExportEncoding.setWhatsThis(_translate("settingsDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Export <span style=\" font-weight:600;\">file encoding</span>.</p></body></html>", None))
+        self.cmbExportEncoding.setItemText(0, _translate("settingsDialog", "UTF-8 (all languages)", None))
+        self.cmbExportEncoding.setItemText(1, _translate("settingsDialog", "UTF-16 (all languages)", None))
+        self.cmbExportEncoding.setItemText(2, _translate("settingsDialog", "UTF-32 (all languages)", None))
+        self.tabsSettings.setTabText(self.tabsSettings.indexOf(self.tabExport), _translate("settingsDialog", "Export", None))
+        self.buttonOK.setWhatsThis(_translate("settingsDialog", "Save settings and close the window.", None))
+        self.buttonOK.setText(_translate("settingsDialog", "OK", None))
+        self.buttonApply.setWhatsThis(_translate("settingsDialog", "Save settings.", None))
+        self.buttonApply.setText(_translate("settingsDialog", "Apply", None))
+        self.buttonCancel.setWhatsThis(_translate("settingsDialog", "Close the window and do not save settings.", None))
+        self.buttonCancel.setText(_translate("settingsDialog", "Cancel", None))
 
 import mainWin_rc
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    settingsDialog = QtGui.QDialog()
+    ui = Ui_settingsDialog()
+    ui.setupUi(settingsDialog)
+    settingsDialog.show()
+    sys.exit(app.exec_())
+
