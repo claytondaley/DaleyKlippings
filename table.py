@@ -287,19 +287,7 @@ class TableModel(QAbstractTableModel):
 
         # The original approach did this as lines were imported.  Since Kindle now puts the note before the highlight,
         # we need to post-process the data.
-        #
-        # This new code uses page/loc ranges to match a highlight to one or more related notes.  If lines do not have
-        # page values, we want to fall back on adjacency.  Default Python sort behavior
-        # (https://wiki.python.org/moin/HowTo/Sorting) ensures that adjacency is preserved even if we sort:
-        #
-        # > Starting with Python 2.2, sorts are guaranteed to be stable. That means that when multiple records have
-        # > the same key, their original order is preserved.
-
-        # Setup temporary containers
-        highlights = []
-        notes = []
-        bookmarks = []
-
+  
         matched = 0
         if self.attachNotes == 'True':
             skip = False  # This makes it easy to skip subsequent rows
