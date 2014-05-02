@@ -22,11 +22,19 @@
 """
 Main DaleyKlippings window
 """
-
 __ver__ = '1.02'
 ## Features: 
 ## - default import & export patterns
 ## - language settings for highlight, note & bookmark terms
+
+import logging
+logging.basicConfig(level=logging.INFO)
+handler = logging.StreamHandler()
+logger = logging.getLogger("daley_klippings")
+logger.addHandler(handler)
+logger.info("Loading DaleyKlippings")
+
+import inspect
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -43,6 +51,14 @@ class MainWin(QMainWindow):
     """
     Main DaleyKlippings window class
     """
+
+    # HACKY BUT FAST WAY TO DEBUG
+    def __getattribute__(self, item):
+        returned = QMainWindow.__getattribute__(self, item)
+        if inspect.isfunction(returned) or inspect.ismethod(returned):
+            logger.debug("Call %s on instance of class %s" % (str(returned),
+            QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
+        return returned
 
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
@@ -107,7 +123,7 @@ class MainWin(QMainWindow):
         self.ui.filterOptionButton.setMenu(self.menuFilterOption)
 
         # Initiate delegates
-        typeDelegate = ComboBoxDeligate(self)
+        typeDelegate = ComboBoxDelegate(self)
         locationDelegate = LocationEditDelegate(self)
         dateDelegate = DateEditDelegate(self)
         self.ui.tableView.setItemDelegateForColumn(1, typeDelegate)
@@ -123,9 +139,9 @@ class MainWin(QMainWindow):
         self.menuButtonImport.addAction(self.ui.actionImport)
         self.menuButtonImport.addSeparator()
         self.customImportActions = []
-        for i in self.settings['Import Settings'].keys():
+        for i in sorted(self.settings['Import Settings'].keys()):
             self.customImportActions.append(QAction(i, self.menuButtonImport))
-            #print self.customImportActions[-1].text()
+            log.debug("Added dropdown item %s (import)" % self.customImportActions[-1].text())
             self.connect(self.customImportActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
         self.menuButtonImport.addActions(self.customImportActions)
         self.ui.toolButtonImport.setMenu(self.menuButtonImport)
@@ -135,8 +151,8 @@ class MainWin(QMainWindow):
         self.menuButtonAppend.addAction(self.ui.actionAppend)
         self.menuButtonAppend.addSeparator()
         self.customAppendActions = []
-        for i in self.settings['Import Settings'].keys():
-            #print '%s (append)' % i
+        for i in sorted(self.settings['Import Settings'].keys()):
+            logger.debug('Added dropdown item %s (append)' % i)
             self.customAppendActions.append(QAction(i, self.menuButtonAppend))
             self.connect(self.customAppendActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
         self.menuButtonAppend.addActions(self.customAppendActions)
@@ -147,7 +163,7 @@ class MainWin(QMainWindow):
         self.menuButtonExport.addAction(self.ui.actionExport)
         self.menuButtonExport.addSeparator()
         self.customExportActions = []
-        for i in self.settings['Export Settings'].keys():
+        for i in sorted(self.settings['Export Settings'].keys()):
             self.customExportActions.append(QAction(i, self))
             self.connect(self.customExportActions[-1], SIGNAL('triggered(bool)'), self.onExportCustom)
         self.menuButtonExport.addActions(self.customExportActions)
@@ -220,7 +236,7 @@ class MainWin(QMainWindow):
         """
         try:
             sender = self.sender()
-            #print sender.parent()
+            logger.debug(str(sender.parent()))
             if sender.parent() == self.menuButtonImport:
                 actions = self.customImportActions
                 append = False
@@ -542,4 +558,3 @@ if __name__ == '__main__':
     if osname == 'posix':
         mainWin.raise_()
     sys.exit(app.exec_())
-    

@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
-
+import logging
+logger = logging.getLogger("daley_klippings.table")
+logger.info("Loading DaleyKlippings Table")
 
 """
 Table data model, proxy model, data edit delegates, parsing routine, default constants
@@ -92,7 +94,7 @@ class DateEditDelegate(QStyledItemDelegate):
         editor.setGeometry(option.rect)
 
 
-class ComboBoxDeligate(QStyledItemDelegate):
+class ComboBoxDelegate(QStyledItemDelegate):
     """
     Type of the note edit delegate, QComboBox with 3 predefined values:
     Highlight, Bookmark, Note.

@@ -18,12 +18,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
-
+import logging
+logger = logging.getLogger("daley_klippings.settings")
+logger.info("Loading DaleyKlippings Settings")
 
 """
 Settings dialog
 """
 
+import inspect
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import codecs as co
@@ -43,12 +46,12 @@ class Settings(dict):
                 'Export Settings': {},
                 'Application Settings': {}}
 
-    importSettigs = {'Pattern': '',
-                     'Default': '',
-                     'Delimiter': '',
-                     'Date Format': '',
-                     'Encoding': '',
-                     'Extension': ''}
+    importSettings = {'Pattern': '',
+                      'Default': '',
+                      'Delimiter': '',
+                      'Date Format': '',
+                      'Encoding': '',
+                      'Extension': ''}
 
     exportSettings = {'Default': '',
                       'Header': '',
@@ -68,8 +71,8 @@ class Settings(dict):
                                'Highlight': '',
                                'Note': '',
                                'Bookmark': '',
-                               'RangeSeparator': '',
-                               'DateLanguage': 'English (default)'
+                               'Range Separator': '',
+                               'Date Language': 'English (default)'
                            }}
 
     def __init__(self, parent=None):
@@ -90,6 +93,14 @@ class SettingsDialog(QDialog):
     """
     Settings dialog class
     """
+
+    # HACKY BUT FAST WAY TO DEBUG
+    def __getattribute__(self, item):
+        returned = QMainWindow.__getattribute__(self, item)
+        if inspect.isfunction(returned) or inspect.ismethod(returned):
+            logger.debug("Call %s on instance of class %s" % (str(returned),
+            QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
+        return returned
 
     ENCODINGS_LIST = [
         'ASCII (English)',
@@ -440,6 +451,7 @@ class SettingsDialog(QDialog):
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
+        logger.info("Attaching Application Settings")
         # Initiate active Application settings
         # Attach settings
         try:
@@ -453,21 +465,25 @@ class SettingsDialog(QDialog):
             # Create empty keys in the dictionary
             self.settings['Application Settings']['Attach Notes'] = self.settings.applicationSettings['Attach Notes']
 
-        # Set Language Setings
-        if ['Language'] not in self.settings['Application Settings']:
+        # Set Language Settings
+        if 'Language' not in self.settings['Application Settings']:
+            logger.debug("... language not in settings, setting entire language config to default")
             self.settings['Application Settings']['Language'] = self.settings.applicationSettings['Language']
         else:
             # Date Language Options
-            self.ui.cmbDefaultLanguage.insertSeparator(1000)
-            self.ui.cmbDefaultLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST))
-            # Set Date Lanugage Options
-            if 'DateLanguage' in self.settings.applicationSettings['Language']:
-                lang = self.settings['Application Settings']['Language']['DateLanguage']
+            self.ui.cmbDateLanguage.insertSeparator(1000)
+            self.ui.cmbDateLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST))
+            # Set Date Language Options
+            if 'Date Language' in self.settings['Application Settings']['Language']:
+                lang = self.settings['Application Settings']['Language']['Date Language']
+                logger.debug("lang is %s" % lang)
                 langNo = self.ui.cmbImportEncoding.findText(lang)
+                logger.dubug("langNo is %d" % langNo)
                 self.ui.cmbImportEncoding.setCurrentIndex(langNo)
             else:
-                self.settings['Application Settings']['Language']['DateLanguage'] = \
-                    self.settings.applicationSettings['Language']['DateLanguage']
+                logger.debug("... date language not in settings, setting to default")
+                self.settings['Application Settings']['Language']['Date Language'] = \
+                    self.settings.applicationSettings['Language']['Date Language']
 
             # Additional Language Options
             # Iteration ensures that we don't overwrite existing settings when a new field is added
@@ -475,7 +491,7 @@ class SettingsDialog(QDialog):
                 (self.ui.editHighlightLanguage, 'Highlight'),
                 (self.ui.editNoteLanguge, 'Note'),
                 (self.ui.editBookmarkLanguage, 'Bookmark'),
-                (self.ui.editRangeSeparator, 'RangeSeparator'),
+                (self.ui.editRangeSeparator, 'Range Separator'),
             ]
             for ui_element, settings_key in language_settings:
                 try:
@@ -546,7 +562,7 @@ class SettingsDialog(QDialog):
             self.ui.cmbImportPatternName.addItem(item[0])
             # Activate just added item
             self.ui.cmbImportPatternName.setCurrentIndex(self.ui.cmbImportPatternName.count() - 1)
-            self.settings['Import Settings'][unicode(item[0])] = self.settings.importSettigs
+            self.settings['Import Settings'][unicode(item[0])] = self.settings.importSettings
             self.onImportPatternActivated(item[0])
 
     def onImportDeletePattern(self):
@@ -863,6 +879,14 @@ class SettingsDialog(QDialog):
         sender = self.sender()
         if sender == self.ui.cmbNotesPosition:
             self.settings['Application Settings']['Attach Notes']['Notes Position'] = unicode(text)
+
+    def onApplicationDateLanguageChanged(self, language):
+        text = self.ui.cmbDateLanguage.currentText()
+        if unicode(text) != '':
+            self.settings['Application Settings']['Language']['Date Language'] = unicode(text)
+
+    def onApplicationRangeSeparatorChanged(self, text):
+        self.settings['Application Settings']['Language']['Range Separator'] = unicode(text)
 
     def onApplicationHighlightLanguageChanged(self, text):
         self.settings['Application Settings']['Language']['Highlight'] = unicode(text)
