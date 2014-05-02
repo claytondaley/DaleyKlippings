@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settingsDialog.ui'
 #
-# Created: Fri May 02 14:34:14 2014
+# Created: Fri May 02 14:58:51 2014
 #      by: PyQt4 UI code generator 4.9.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -85,13 +85,13 @@ class Ui_settingsDialog(object):
         self.labelDefaultLanguage = QtGui.QLabel(self.groupLanguage)
         self.labelDefaultLanguage.setObjectName(_fromUtf8("labelDefaultLanguage"))
         self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.labelDefaultLanguage)
-        self.editDefaultLanguage = QtGui.QComboBox(self.groupLanguage)
-        self.editDefaultLanguage.setObjectName(_fromUtf8("editDefaultLanguage"))
-        self.editDefaultLanguage.addItem(_fromUtf8(""))
-        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.editDefaultLanguage)
-        self.lineEdit = QtGui.QLineEdit(self.groupLanguage)
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.lineEdit)
+        self.cmbDefaultLanguage = QtGui.QComboBox(self.groupLanguage)
+        self.cmbDefaultLanguage.setObjectName(_fromUtf8("cmbDefaultLanguage"))
+        self.cmbDefaultLanguage.addItem(_fromUtf8(""))
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.cmbDefaultLanguage)
+        self.editRangeSeparator = QtGui.QLineEdit(self.groupLanguage)
+        self.editRangeSeparator.setObjectName(_fromUtf8("editRangeSeparator"))
+        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.editRangeSeparator)
         self.labelHighlightLanguage = QtGui.QLabel(self.groupLanguage)
         self.labelHighlightLanguage.setObjectName(_fromUtf8("labelHighlightLanguage"))
         self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.labelHighlightLanguage)
@@ -473,10 +473,10 @@ class Ui_settingsDialog(object):
         self.cmbNotesPosition.setItemText(2, _translate("settingsDialog", "After highlights", None))
         self.groupLanguage.setTitle(_translate("settingsDialog", "Language", None))
         self.labelDefaultLanguage.setText(_translate("settingsDialog", "Date Interpreter", None))
-        self.editDefaultLanguage.setWhatsThis(_translate("settingsDialog", "Language used to interpret dates.", None))
-        self.editDefaultLanguage.setItemText(0, _translate("settingsDialog", "English (default)", None))
-        self.lineEdit.setWhatsThis(_translate("settingsDialog", "Text used to separate two values in a page/location range.", None))
-        self.lineEdit.setPlaceholderText(_translate("settingsDialog", "-", None))
+        self.cmbDefaultLanguage.setWhatsThis(_translate("settingsDialog", "Language used to interpret dates.", None))
+        self.cmbDefaultLanguage.setItemText(0, _translate("settingsDialog", "English (default)", None))
+        self.editRangeSeparator.setWhatsThis(_translate("settingsDialog", "Text used to separate two values in a page/location range.", None))
+        self.editRangeSeparator.setPlaceholderText(_translate("settingsDialog", "-", None))
         self.labelHighlightLanguage.setText(_translate("settingsDialog", "Highlight:", None))
         self.editHighlightLanguage.setWhatsThis(_translate("settingsDialog", "Highlight in \'MyClippings.txt\' file language (e.g. Выделение)", None))
         self.editHighlightLanguage.setPlaceholderText(_translate("settingsDialog", "Highlight", None))

@@ -126,7 +126,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="editDefaultLanguage">
+             <widget class="QComboBox" name="cmbDefaultLanguage">
               <property name="whatsThis">
                <string>Language used to interpret dates.</string>
               </property>
@@ -138,7 +138,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="editRangeSeparator">
               <property name="whatsThis">
                <string>Text used to separate two values in a page/location range.</string>
               </property>
