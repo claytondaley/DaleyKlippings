@@ -140,7 +140,7 @@ class MainWin(QMainWindow):
         self.menuButtonImport.addAction(self.ui.actionImport)
         self.menuButtonImport.addSeparator()
         self.customImportActions = []
-        for i in self.settings['Import Settings'].keys().sort():
+        for i in sorted(self.settings['Import Settings'].keys()):
             self.customImportActions.append(QAction(i, self.menuButtonImport))
             logger.debug("Added dropdown item %s (import)" % self.customImportActions[-1].text())
             self.connect(self.customImportActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
@@ -152,7 +152,7 @@ class MainWin(QMainWindow):
         self.menuButtonAppend.addAction(self.ui.actionAppend)
         self.menuButtonAppend.addSeparator()
         self.customAppendActions = []
-        for i in self.settings['Import Settings'].keys().sort():
+        for i in sorted(self.settings['Import Settings'].keys()):
             logger.debug('Added dropdown item %s (append)' % i)
             self.customAppendActions.append(QAction(i, self.menuButtonAppend))
             self.connect(self.customAppendActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
@@ -164,7 +164,7 @@ class MainWin(QMainWindow):
         self.menuButtonExport.addAction(self.ui.actionExport)
         self.menuButtonExport.addSeparator()
         self.customExportActions = []
-        for i in self.settings['Export Settings'].keys().sort():
+        for i in sorted(self.settings['Export Settings'].keys()):
             self.customExportActions.append(QAction(i, self))
             self.connect(self.customExportActions[-1], SIGNAL('triggered(bool)'), self.onExportCustom)
         self.menuButtonExport.addActions(self.customExportActions)

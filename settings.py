@@ -514,12 +514,12 @@ class SettingsDialog(QDialog):
         self.ui.editExportExtensions.setValidator(self.extensionValidator)
 
         # Initiate default Import settings
-        self.ui.cmbImportPatternName.addItems(self.settings['Import Settings'].keys().sort())
+        self.ui.cmbImportPatternName.addItems(sorted(self.settings['Import Settings'].keys()))
         item = self.ui.cmbImportPatternName.currentText()
         self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         # Initiate default Export settings
-        self.ui.cmbExportPatternName.addItems(self.settings['Export Settings'].keys().sort())
+        self.ui.cmbExportPatternName.addItems(sorted(self.settings['Export Settings'].keys()))
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
@@ -546,7 +546,7 @@ class SettingsDialog(QDialog):
             logger.info("... language in settings, updating UI")
             # Date Language Options
             self.ui.cmbDateLanguage.insertSeparator(1000)
-            self.ui.cmbDateLanguage.addItems(self.QLOCALE_LANGUAGE_LIST.sort())
+            self.ui.cmbDateLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST))
             # Set Date Language Options
             if 'Date Language' in self.settings['Application Settings']['Language']:
                 logger.info("... date language in settings, applying")
