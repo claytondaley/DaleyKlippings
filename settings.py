@@ -160,6 +160,8 @@ class Settings(dict):
             msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
                   'for you and start DaleyKlippings with the default settings.'
             QMessageBox.warning(parent, 'File not found', msg)
+            # Create settings file to prevent the error from recurring
+            self.save()
         else:
             try:
                 settings = sj.loads(settingsFile.read())
