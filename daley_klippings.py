@@ -251,6 +251,7 @@ class MainWin(QMainWindow):
                 if sender == i:
                     pattern_name = unicode(i.text())
                     pattern_settings = self.settings.getImportSettings(pattern_name)
+                    logger.info("Using Pattern Settings:\n%s" % pformat(pattern_settings))
                     break
 
             # Load Clippings from File
@@ -269,27 +270,28 @@ class MainWin(QMainWindow):
                 my_clippings = co.open(file_name, 'r', pattern_settings['Encoding']).read()
             except Exception as e:
                 try:
+                    logger.info("Trying to decode using %s" % DEFAULT_ENCODING[1])
                     my_clippings = co.open(file_name, 'r', DEFAULT_ENCODING[1]).read()
                     default_encoding = False
                 except UnicodeError:
-                    try:
-                        my_clippings = co.open(file_name, 'r', 'Windows-1252').read()
-                        default_encoding = False
-                    except Exception as error:
-                        logger.exception("Clippings File load resulted in exception\m%s" % error.message)
-                        bad_encoding = QMessageBox()
-                        informational_text = u'We were unable to import your file using either (1) the encoding ' \
-                                             u'selected on the import pattern or (2) several default encodings.  ' \
-                                             u'Please configure a different encoding for your Import Pattern.  This ' \
-                                             u'can be changed by going to Settings, choosing the Import tab, selecting ' \
-                                             u'the import pattern you use from the main drop-down, and selecting a ' \
-                                             u'different encoding from the Encoding drop-down in the lower right. Many ' \
-                                             u'patterns will work, but will garble or remove characters like quote ' \
-                                             u'and apostrophe.  Please review the results of the import to ensure ' \
-                                             u'that you have selected the correct encoding.  Make sure you click OK ' \
-                                             u'or Accept to lock in the new selection.'
-                        bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
-                        raise e
+                    logger.info("Trying to decode using %s" % 'Windows-1252')
+                    my_clippings = co.open(file_name, 'r', 'Windows-1252').read()
+                    default_encoding = False
+                except Exception as error:
+                    logger.exception("Clippings File load resulted in exception\n%s" % error.message)
+                    bad_encoding = QMessageBox()
+                    informational_text = u'We were unable to import your file using either (1) the encoding ' \
+                                         u'selected on the import pattern or (2) several default encodings.  ' \
+                                         u'Please configure a different encoding for your Import Pattern.  This ' \
+                                         u'can be changed by going to Settings, choosing the Import tab, selecting ' \
+                                         u'the import pattern you use from the main drop-down, and selecting a ' \
+                                         u'different encoding from the Encoding drop-down in the lower right. Many ' \
+                                         u'patterns will work, but will garble or remove characters like quote ' \
+                                         u'and apostrophe.  Please review the results of the import to ensure ' \
+                                         u'that you have selected the correct encoding.  Make sure you click OK ' \
+                                         u'or Accept to lock in the new selection.'
+                    bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
+                    raise e
 
             status = "<%s> Loading clippings from file %s\r\n" % (
                 QTime.currentTime().toString('hh:mm:ss'),
