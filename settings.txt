@@ -4,8 +4,16 @@
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
-			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks \n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ \t\t# \n(?P<Type>(Highlight|Note|Bookmark))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location|Loc\\.)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t# \n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
+			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks \n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ \t\t# \nTu\\ (?P<Type>(Highlight|Note|Bookmark))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location|Loc\\.)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t# \n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
 			"Date Format": "dddd, MMMM d, yyyy h:mm A",
+			"Delimiter": "=========="
+		},
+		"Spanish Example (change language settings too)": {
+			"Extension": "",
+			"Encoding": "Windows-1252",
+			"Default": "False",
+			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ Tu\\                    \t#\n(?P<Type>(subrayado|nota|marcador))         # Clipping type - 'Highlight' or 'Note' or 'Bookmark'\n(\\ auf\\ p\u00e1gina\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(posici\u00f3n)\\                  \t#\n(?P<Location>[\\d-]*))?      \t# Location (optional)\n.*?A\u00f1adido\\ el\\ \t\t#\n(?P<Date>([^\\r\\n]*))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
+			"Date Format": "dddd, dd 'de' MMMM 'de' yyyy HH:mm:ss",
 			"Delimiter": "=========="
 		},
 		"KTouch 5.1.2, with bookmarks, time WITH seconds": {
@@ -40,6 +48,14 @@
 			"Date Format": "dddd, MMMM d, yyyy h:mm:ss A",
 			"Delimiter": "=========="
 		},
+		"German Example (change language settings too)": {
+			"Extension": "",
+			"Encoding": "UTF-8 (all languages)",
+			"Default": "False",
+			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ Ihre\\                    \t#\n(?P<Type>(Markierung|Notiz|Lesezeichen))         # Clipping type - 'Highlight' or 'Note' or 'Bookmark'\n(\\ auf\\ Seite\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Position|Loc\\.)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Hinzugef\u00fcgt\\ am\\             \t#\n(?P<Date>([^\\r\\n]*))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
+			"Date Format": "dddd, d. MMMM yyyy 'um' HH:mm:ss 'Uhr'",
+			"Delimiter": "=========="
+		},
 		"Kindle 4, with bookmarks, time includes GMT+#s": {
 			"Extension": "",
 			"Encoding": "UTF-8 (all languages)",
@@ -58,7 +74,7 @@
 		},
 		"KTouch, with bookmarks, time WITHOUT seconds": {
 			"Extension": "",
-			"Encoding": "UTF-16 (all languages)",
+			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
 			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ Your\\                    \t#\n(?P<Type>(Highlight|Note|Bookmarks))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location|Loc.)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
 			"Date Format": "dddd, MMMM d, yyyy, hh:mm A",
@@ -139,9 +155,11 @@
 			"Notes Position": "Automatic (default)"
 		},
 		"Language": {
-			"Note": "",
-			"Highlight": "",
-			"Bookmark": ""
+			"Note": "nota",
+			"Highlight": "subrayado",
+			"Bookmark": "marcador",
+			"Date Language": "Spanish",
+			"Range Separator": ""
 		}
 	}
 }
