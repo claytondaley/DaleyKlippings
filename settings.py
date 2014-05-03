@@ -106,6 +106,13 @@ class Settings(dict):
                                'Date Language': 'English (default)'
                            }}
 
+    @classmethod
+    def from_json(cls, json):
+        self = cls.__new__(cls)
+        dict.__init__(self)
+        self.update(sj.loads(unicode(json)))
+        return self
+
     def __init__(self, parent=None):
         dict.__init__(self)
 
@@ -125,20 +132,24 @@ class Settings(dict):
         Returns the requested import profile from the settings, with empty values filled by defaults
         """
         if name is None:
-            settings = self.getImportSettings
+            settings = self.importSettings.copy()
         else:
             settings = self['Import Settings'][name].copy()
+
+        # Check for empty/non-existent values
         if settings['Delimiter'] == '':
             settings['Delimiter'] = DEFAULT_DELIMITER
         if settings['Date Format'] == '':
             settings['Date Format'] = DEFAULT_DATE_FORMAT['Qt']
         if settings['Encoding'] == '':
-            settings['Encoding'] = DEFAULT_ENCODING[0]  #UTF-8
+            settings['Encoding'] = DEFAULT_ENCODING[0]  # UTF-8
         if settings['Extension'] == '':
             settings['Extension'] = DEFAULT_EXTENSION[0]
 
         # Add application-wide settings
         settings['Application Settings'] = self['Application Settings']
+        if settings['Application Settings']['Language']['Range Separator'] == '':
+            settings['Application Settings']['Language']['Range Separator'] = '-'
         return settings
 
 
@@ -937,9 +948,7 @@ class SettingsDialog(QDialog):
             self.settings['Application Settings']['Attach Notes']['Notes Position'] = unicode(text)
 
     def onApplicationDateLanguageChanged(self, language):
-        text = self.ui.cmbDateLanguage.currentText()
-        if unicode(text) != '':
-            self.settings['Application Settings']['Language']['Date Language'] = unicode(text)
+        self.settings['Application Settings']['Language']['Date Language'] = unicode(language)
 
     def onApplicationRangeSeparatorChanged(self, text):
         self.settings['Application Settings']['Language']['Range Separator'] = unicode(text)
@@ -963,6 +972,7 @@ class SettingsDialog(QDialog):
         settingsFile = co.open('settings.txt', 'w', 'utf-8')
         settingsJson = sj.dumps(self.settings, indent='\t')
         settingsFile.write(settingsJson)
+        logger.info("Emitting settingsChanged")
         self.emit(SIGNAL('settingsChanged(QString)'), settingsJson)
         settingsFile.close()
 

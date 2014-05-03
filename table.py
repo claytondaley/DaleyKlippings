@@ -220,7 +220,7 @@ class TableModel(QAbstractTableModel):
                                     logger.exception("... error localizing date:\n%s" % e.message)
                             else:
                                 # Attempt to Standardize Date
-                                if u'%' in date_format['Qt']:
+                                if u'%' in date_format:
                                     # The % sign indicates that the pattern is a basic Python format
                                     date = QDateTime(dt.strptime(search.group(h), date_format))
                                 else:

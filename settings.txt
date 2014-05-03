@@ -51,7 +51,7 @@
 		"_German Test": {
 			"Extension": "",
 			"Encoding": "",
-			"Default": "",
+			"Default": "False",
 			"Pattern": "",
 			"Date Format": "",
 			"Delimiter": ""
@@ -74,7 +74,7 @@
 		},
 		"KTouch, with bookmarks, time WITHOUT seconds": {
 			"Extension": "",
-			"Encoding": "UTF-16 (all languages)",
+			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
 			"Pattern": "# Import notes and highlights from \"My Clippings.txt\" and ignore\n# bookmarks. Warnings with information on ignored bookmarks\n# will be added to the log - this is the app normal behaviour\n\n# Note that VERBOSE and UNICODE options are always on\n\n^\\s*                           \t# \n(?P<Book>.*?)                    \t# Book name\n(\\s*\\((?P<Author>[^\\()]*)\\))?\t# Author name (optional)\n\\s*-\\ Your\\                    \t#\n(?P<Type>(Highlight|Note|Bookmarks))         # Clipping type - 'Highlight' or 'Note'\n(\\ on\\ Page\\                  \t#\n(?P<Page>[\\d-]*)\\ \\|)?          \t# Page (optional)\n(.*(Location|Loc.)\\                  \t#\n(?P<Location>[\\d-]*))?           \t# Location (optional)\n.*?Added\\ on\\             \t#\n(?P<Date>(.*)(AM|PM))            \t# Date & time\n\\s*                            \t#\n(?P<Text>.*?)                    \t# Text\n\\s*$ \t\t#",
 			"Date Format": "dddd, MMMM d, yyyy, hh:mm A",
@@ -108,45 +108,45 @@
 			"Encoding": "UTF-16 (all languages)",
 			"Date Format": "yyyy-MM-dd HH:mm"
 		},
+		"CSV, Enclosed in Quotes, Separate Notes and Highlights": {
+			"Body": "\"?P<QuoteEscapeBook>\",\"?P<QuoteEscapeAuthor>\",\"?P<QuoteEscapePage>\",\"?P<QuoteEscapeLocation>\",\"?P<QuoteEscapeDate>\",\"?P<QuoteEscapeHighlight>\",\"?P<QuoteEscapeNote>\"\n",
+			"Extension": "CSV",
+			"Encoding": "UTF-8 (all languages)",
+			"Default": "False",
+			"Notes": "",
+			"Bottom": "",
+			"Date Format": "yyyy-MM-dd HH:mm",
+			"Header": "\"Book\",\"Author\",\"Page\",\"Location\",\"Date\",\"Higlight\",\"Note\"\n"
+		},
 		"CSV, Enclosed in Quotes, Single Text Column": {
 			"Body": "\"?P<QuoteEscapeBook>\",\"?P<QuoteEscapeAuthor>\",\"?P<QuoteEscapePage>\",\"?P<QuoteEscapeLocation>\",\"?P<QuoteEscapeDate>\",\"?P<QuoteEscapeText>\"\n",
 			"Extension": "CSV",
-			"Bottom": "",
+			"Encoding": "UTF-8 (all languages)",
 			"Default": "False",
 			"Notes": "?P<QuoteEscapeNote>\n\nREGARDING HIGHLIGHT\n=========\n?P<QuoteEscapeHighlight>\n=========\nEND HIGHLIGHT",
-			"Encoding": "UTF-8 (all languages)",
+			"Bottom": "",
 			"Date Format": "yyyy-MM-dd HH:mm",
 			"Header": "\"Book\",\"Author\",\"Page\",\"Location\",\"Date\",\"Text\"\n"
 		},
 		"Evernote": {
 			"Body": "<note>\n<title>?P<Type> from Location ?P<Location> of ?P<Book></title>\n<content>\n<![CDATA[<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\t<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n\t<en-note style=\"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;\">\n\t<div title=\"EverKlipperV1.02\">\n\t\t<div>Source:  ?P<XmlSafeSpanBook></div>\n\t\t<div>Author(s):  ?P<XmlSafeSpanAuthor></div>\n\t\t<div>Page(s):  ?P<XmlSafeSpanPage></div>\n\t\t<div>Location:  ?P<XmlSafeSpanLocation></div>\n\t\t<div><br/></div>\n\t\t<div>?P<XmlSafeSpanText></div>\n\t</div>\n\t</en-note>\n]]>\n</content>\n<created>?P<Date></created>\n<updated>?P<Date></updated>\n<tag>KindleClipping</tag><tag>ConvertedByDaleyKlippings</tag>?P<EvernoteTagBook>?P<EvernoteTagAuthor>\n<note-attributes><author>?P<Author></author></note-attributes>\n</note>",
 			"Extension": "enex",
-			"Bottom": "</en-export>",
+			"Encoding": "UTF-8 (all languages)",
 			"Default": "True",
 			"Notes": "<div>?P<XmlSafeSpanNote></div>\n<div><br/></div>\n<div>REGARDING HIGHLIGHT</div>\n<div>=========</div>\n<div>?P<XmlSafeSpanHighlight></div>\n<div>=========</div>\n<div>END HIGHLIGHT</div>",
-			"Encoding": "UTF-8 (all languages)",
+			"Bottom": "</en-export>",
 			"Date Format": "yyyyMMddThhmmssZ",
 			"Header": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE en-export SYSTEM \"http://xml.evernote.com/pub/evernote-export.dtd\">\n<en-export export-date=\"20121211T220218Z\" application=\"Evernote/Windows\" version=\"4.x\">\n"
 		},
 		"XML, Attached Notes": {
 			"Body": "<clipping type = \"?P<XmlSafeType>\" date = \"?P<XmlSafeDate>\">\n   <book>?P<XmlSafeBook></book>\n   <author>?P<XmlSafeAuthor></author>\n   <type>?P<XmlSafeType></type>\n   <page>?P<XmlSafePage></page>\n   <location>?P<XmlSafeLocation></location> \n   <date>?P<XmlSafeDate></date>\n   <text>?P<XmlSafeText></text>\n</clipping>\n",
 			"Extension": "xml",
-			"Bottom": "</clippings>\n<!-- Generated via DaleyKlippings: http://daleyklippings.claytondaley.com/ -->",
+			"Encoding": "UTF-16 (all languages)",
 			"Default": "False",
 			"Notes": "?P<XmlSafeNote>\n\nREGARDING HIGHLIGHT\n=========\n?P<XmlSafeHighlight>\n=========\nEND HIGHLIGHT",
-			"Encoding": "UTF-16 (all languages)",
+			"Bottom": "</clippings>\n<!-- Generated via DaleyKlippings: http://daleyklippings.claytondaley.com/ -->",
 			"Date Format": "yyyy-MM-dd HH:mm",
 			"Header": "<?xml version = \"1.0\" encoding = \"UTF-16\"?>\n<clippings>"
-		},
-		"CSV, Enclosed in Quotes, Separate Notes and Highlights": {
-			"Body": "\"?P<QuoteEscapeBook>\",\"?P<QuoteEscapeAuthor>\",\"?P<QuoteEscapePage>\",\"?P<QuoteEscapeLocation>\",\"?P<QuoteEscapeDate>\",\"?P<QuoteEscapeHighlight>\",\"?P<QuoteEscapeNote>\"\n",
-			"Extension": "CSV",
-			"Bottom": "",
-			"Default": "False",
-			"Notes": "",
-			"Encoding": "UTF-8 (all languages)",
-			"Date Format": "yyyy-MM-dd HH:mm",
-			"Header": "\"Book\",\"Author\",\"Page\",\"Location\",\"Date\",\"Higlight\",\"Note\"\n"
 		}
 	},
 	"Application Settings": {
@@ -158,8 +158,8 @@
 			"Note": "",
 			"Highlight": "",
 			"Bookmark": "",
-			"Range Separator": "",
-			"Date Language": "English (default)"
+			"Date Language": "Spanish",
+			"Range Separator": ""
 		}
 	}
 }

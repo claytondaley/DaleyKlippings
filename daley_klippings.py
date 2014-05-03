@@ -246,12 +246,10 @@ class MainWin(QMainWindow):
                 actions = self.customAppendActions
                 append = True
 
-            logger.info("self.settings is class %s" % self.settings.__class__.__name__)
             for i in actions:
                 if sender == i:
                     pattern_name = unicode(i.text())
                     pattern_settings = self.settings.getImportSettings(pattern_name)
-                    logger.info("Using Pattern Settings:\n%s" % pformat(pattern_settings))
                     break
 
             # Load Clippings from File
@@ -259,15 +257,14 @@ class MainWin(QMainWindow):
                                                     ';;'.join(['%s (*.%s)' % (pattern_name, ext) for
                                                                ext in pattern_settings['Extension'].split(',')]))
             if file_name == '':
-                import_error = QMessageBox()
-                import_error.warning(self, u'Import Error', u'Invalid or no filename found.\r\n')
+                # This happens when we cancel the file dialog so no need to throw an error
                 return
             else:
                 file_name = unicode(file_name)
 
             try:
                 logger.info("Trying to decode using %s" % pattern_settings['Encoding'])
-                my_clippings = co.open(file_name, 'r', pattern_settings['Encoding']).read()
+                my_clippings = co.open(file_name, 'r', pattern_settings['Encoding'].split(' ')[0]).read()
             except Exception as e:
                 try:
                     logger.info("Trying to decode using %s" % DEFAULT_ENCODING[1])
@@ -571,11 +568,16 @@ class MainWin(QMainWindow):
 
     def onSettings(self):
         settingsDialog = SettingsDialog(self)
-        self.connect(settingsDialog, SIGNAL('settigsChanged(QString)'), self.onSettingsChanged)
+        self.connect(settingsDialog, SIGNAL('settingsChanged(QString)'), self.onSettingsChanged)
         settingsDialog.show()
 
-    def onSettingsChanged(self, settings):
-        self.settings = Settings()
+    def onSettingsChanged(self, settingsJson):
+        logging.debug("onSettingsChanged called")
+        try:
+            self.settings = Settings.from_json(settingsJson)
+        except Exception as e:
+            logger.exception("Settings.from_json resulted in exception:\n%s" % e.message)
+        logging.debug("... new Setting set")
         self.initiateToolButtons()
 
 
