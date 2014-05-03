@@ -141,6 +141,8 @@ class MainWin(QMainWindow):
         self.menuButtonImport.addSeparator()
         self.customImportActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
+            if 'Deleted' in self.settings['Import Settings'][i]:
+                continue
             self.customImportActions.append(QAction(i, self.menuButtonImport))
             logger.debug("Added dropdown item %s (import)" % self.customImportActions[-1].text())
             self.connect(self.customImportActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
@@ -153,6 +155,8 @@ class MainWin(QMainWindow):
         self.menuButtonAppend.addSeparator()
         self.customAppendActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
+            if 'Deleted' in self.settings['Import Settings'][i]:
+                continue
             logger.debug('Added dropdown item %s (append)' % i)
             self.customAppendActions.append(QAction(i, self.menuButtonAppend))
             self.connect(self.customAppendActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
@@ -165,6 +169,8 @@ class MainWin(QMainWindow):
         self.menuButtonExport.addSeparator()
         self.customExportActions = []
         for i in sorted(self.settings['Export Settings'].keys()):
+            if 'Deleted' in self.settings['Export Settings'][i]:
+                continue
             self.customExportActions.append(QAction(i, self))
             self.connect(self.customExportActions[-1], SIGNAL('triggered(bool)'), self.onExportCustom)
         self.menuButtonExport.addActions(self.customExportActions)
@@ -574,6 +580,7 @@ class MainWin(QMainWindow):
     def onSettingsChanged(self, settingsJson):
         logging.debug("onSettingsChanged called")
         try:
+            logging.debug("Updating settings to %s" % str(settingsJson))
             self.settings = Settings.from_json(settingsJson)
         except Exception as e:
             logger.exception("Settings.from_json resulted in exception:\n%s" % e.message)

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
+from copy import deepcopy
 import logging
 logger = logging.getLogger("daley_klippings.settings")
 logger.info("Loading DaleyKlippings Settings Models")
@@ -116,24 +117,76 @@ class Settings(dict):
     def __init__(self, parent=None):
         dict.__init__(self)
 
+        # Try to open (and apply) the default settings file
+        try:
+            defaultsFile = co.open('defaults.txt', 'r', 'utf-8')
+        except:
+            msg = 'Default settings file "defaults.txt"\nis corrupted or not found.  We will\n' \
+                  'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
+                  'defaults but you should attempt to\nfix this situation'
+            QMessageBox.warning(parent, 'File not found', msg)
+        else:
+            try:
+                defaults = sj.loads(defaultsFile.read())
+            except:
+                defaults = {}
+                msg = 'Settings file "settings.txt" is in the\nwrong format and could not be loaded.\n' \
+                      'The file is probably corrupted.  Please\nrestore an old version of this file from\n' \
+                      'backups or delete the file to use\ndefault settings.'
+                QMessageBox.warning(parent, 'Settings File', msg)
+            finally:
+                defaultsFile.close()
+
+        self.defaults = deepcopy(defaults)
+        self.update(defaults)
+        # Providing minimal data structure if defaults did not
+        if 'Import Settings' not in self:
+            self['Import Settings'] = {}
+        if 'Export Settings' not in self:
+            self['Export Settings'] = {}
+        if 'Application Settings' not in self:
+            self['Application Settings'] = {}
+        # Must provide default settings for these since this could be the only way they get values
+        if 'Attach Notes' not in self['Application Settings']:
+            self['Application Settings']['Attach Notes'] = self.applicationSettings['Attach Notes']
+        if 'Language' not in self['Application Settings']:
+            self['Application Settings']['Language'] = self.applicationSettings['Language']
+
+
+        # Try to open (and apply) the custom settings file
         try:
             settingsFile = co.open('settings.txt', 'r', 'utf-8')
-            settings = sj.loads(settingsFile.read())
-            settingsFile.close()
         except:
-            QMessageBox.warning(parent, 'File not found', 'File "settings.txt" is corrupted or not found')
-            pass
+            msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
+                  'for you and start DaleyKlippings with the default settings.'
+            QMessageBox.warning(parent, 'File not found', msg)
+        else:
+            try:
+                settings = sj.loads(settingsFile.read())
+            except:
+                settings = {}
+                msg = 'Settings file "settings.txt" is in the\nwrong format and could not be loaded.\n' \
+                      'The file is probably corrupted. Please\nrestore an old version of this file from\n' \
+                      'backups or delete the file to use\ndefault settings'
+                QMessageBox.warning(parent, 'Settings File', msg)
+            else:
+                # Apply custom settings (if they exist)
+                self['Import Settings'].update(settings['Import Settings'])
+                self['Export Settings'].update(settings['Export Settings'])
+                self['Application Settings']['Attach Notes'].update(settings['Application Settings']['Attach Notes'])
+                self['Application Settings']['Language'].update(settings['Application Settings']['Language'])
+            finally:
+                settingsFile.close()
 
-        self.update(settings)
 
     def getImportSettings(self, name=None):
         """
         Returns the requested import profile from the settings, with empty values filled by defaults
         """
         if name is None:
-            settings = self.importSettings.copy()
+            settings = deepcopy(self.importSettings)
         else:
-            settings = self['Import Settings'][name].copy()
+            settings = self['Import Settings'][name].deepcopy()
 
         # Check for empty/non-existent values and set to defaults
         if settings['Delimiter'] == '':
@@ -158,6 +211,44 @@ class Settings(dict):
         if settings['Application Settings']['Language']['Note'] == '':
             settings['Application Settings']['Language']['Note'] = 'Note'
         return settings
+
+    def get_custom(self, defaults=None):
+        logger.info("Starting diff...")
+        if defaults is None and self.defaults is None:
+            logger.info("... defaults not found, returning self")
+            return self
+        elif defaults is None:
+            logger.info("... getting defaults from object, with type %s" % type(self.defaults))
+            defaults = deepcopy(self.defaults)
+
+        diff = deepcopy(self)
+        logger.info("Parsing Import Settings to find duplicates with default.")
+        for key, value in diff['Import Settings'].items():
+            if key in defaults['Import Settings'] and defaults['Import Settings'][key] == value:
+                logger.debug("Import Pattern '%s' duplicates defaults" % key)
+                del diff['Import Settings'][key]
+        logger.info("Parsing Export Settings to find duplicates with default.")
+        for key, value in diff['Export Settings'].items():
+            if key in defaults['Export Settings'] and defaults['Export Settings'][key] == value:
+                logger.debug("Import Pattern '%s' duplicates defaults" % key)
+                del diff['Export Settings'][key]
+
+        logger.info("Diff complete...")
+        return diff
+
+    def save(self):
+        logger.info("Staring save...")
+        diff = self.get_custom()
+        settingsJson = sj.dumps(diff, indent='\t')
+        settingsFile = co.open('settings.bak', 'w', 'utf-8')
+        settingsFile.write(settingsJson)
+        settingsFile.close()
+        settingsFile = co.open('settings.txt', 'w', 'utf-8')
+        settingsFile.write(settingsJson)
+        settingsFile.close()
+        logger.info("Save complete, returning JSON of settings...")
+        return sj.dumps(self, indent='\t')
+
 
 
 class SettingsDialog(QDialog):
@@ -513,12 +604,16 @@ class SettingsDialog(QDialog):
         self.ui.editExportExtensions.setValidator(self.extensionValidator)
 
         # Initiate default Import settings
-        self.ui.cmbImportPatternName.addItems(sorted(self.settings['Import Settings'].keys()))
+        self.ui.cmbImportPatternName.addItems(
+            # Exclude Deleted items
+            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v]))
         item = self.ui.cmbImportPatternName.currentText()
         self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         # Initiate default Export settings
-        self.ui.cmbExportPatternName.addItems(sorted(self.settings['Export Settings'].keys()))
+        self.ui.cmbExportPatternName.addItems(
+            # Exclude Deleted items
+            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v]))
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
@@ -644,7 +739,7 @@ class SettingsDialog(QDialog):
         itemNo = self.ui.cmbImportPatternName.currentIndex()
         item = self.ui.cmbImportPatternName.currentText()
         self.ui.cmbImportPatternName.removeItem(itemNo)
-        del (self.settings['Import Settings'][unicode(item)])
+        self.settings['Import Settings'][unicode(item)]['Deleted'] = "True"
         # Update pattern text
         item = self.ui.cmbImportPatternName.currentText()
         self.onImportPatternActivated(item)
@@ -772,7 +867,7 @@ class SettingsDialog(QDialog):
         itemNo = self.ui.cmbExportPatternName.currentIndex()
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.removeItem(itemNo)
-        del (self.settings['Export Settings'][unicode(item)])
+        self.settings['Export Settings'][unicode(item)]['Deleted'] = "True"
         # Update pattern text
         item = self.ui.cmbExportPatternName.currentText()
         self.onExportPatternActivated(item)
@@ -860,12 +955,9 @@ class SettingsDialog(QDialog):
         self.close()
 
     def onButtonApply(self):
-        settingsFile = co.open('settings.txt', 'w', 'utf-8')
-        settingsJson = sj.dumps(self.settings, indent='\t')
-        settingsFile.write(settingsJson)
+        settingsJson = self.settings.save()
         logger.info("Emitting settingsChanged")
         self.emit(SIGNAL('settingsChanged(QString)'), settingsJson)
-        settingsFile.close()
 
     def onButtonCancel(self):
         self.close()
