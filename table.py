@@ -172,13 +172,26 @@ class TableModel(QAbstractTableModel):
         delimiter = import_settings['Delimiter']
         date_format = import_settings['Date Format']
         encoding = import_settings['Encoding']
+        attachNotes = import_settings['Application Settings']['Attach Notes']['Attach Notes']
+        notesPosition = import_settings['Application Settings']['Attach Notes']['Notes Position']
+        language_settings = import_settings['Application Settings']['Language']
+        date_language = language_settings['Date Language']
+        note_translation = language_settings['Note']
+        bookmark_translation = language_settings['Bookmark']
+        highlight_translation = language_settings['Highlight']
+        range_indicator = language_settings['Range Separator']
 
         default_encoding = True
 
         clip = my_clippings.split(delimiter)
         if clip[-1].strip() == '':
             clip.pop(-1)
-        pattern = re.compile(import_settings['Pattern'], DEFAULT_RE_OPTIONS)
+        try:
+            pattern = re.compile(import_settings['Pattern'], DEFAULT_RE_OPTIONS)
+        except Exception as error:
+            export_error = QMessageBox()
+            export_error.warning(self, u'Pattern Error', u"The regular expression provided\nas the 'Notes Pattern'\n"
+                                                         u"generated an error:\r\n\r\n%s" % error.message)
 
         import_data = Clippings()
         clipNo = 0
@@ -195,28 +208,28 @@ class TableModel(QAbstractTableModel):
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
-                            logger.debug("Date is: %s" % search.group(h))
+                            logger.info("Original date is: '%s'" % search.group(h))
                             # Attempt to Localize Date
-                            if 'Date Language' in import_settings['Application Settings'][ 'Language']:
-                                if import_settings['Application Settings']['Language']['Date Language'] != \
-                                        'English (default)':
-                                    try:
-                                        local_language = getattr(QLocale, import_settings['Application Settings']['Language']['Date Language'])
-                                        date = local_language.toDateTime(search.group(h), date_format['Qt'])
-                                        logger.info("Date converted to: %s" % str(date))
-                                    except:
-                                        logger.info("Error localizing date.")
-                            # Attempt to Standardize Date
-                            if u'%' in date_format['Qt']:
-                                # The % sign indicates that the pattern is a basic Python format
-                                date = QDateTime(dt.strptime(search.group(h), date_format['Qt']))
+                            if date_language != 'English (default)':
+                                logger.info("... trying to localize date")
+                                try:
+                                    local_language = QLocale(getattr(QLocale, import_settings['Application Settings']['Language']['Date Language']))
+                                    date = local_language.toDateTime(search.group(h), date_format)
+                                    logger.info("... date converted to: '%s'" % date.toString())
+                                except Exception as e:
+                                    logger.exception("... error localizing date:\n%s" % e.message)
                             else:
-                                # Otherwise, we assume a Qt Format
-                                date = QDateTime.fromString(search.group(h), date_format['Qt'])
+                                # Attempt to Standardize Date
+                                if u'%' in date_format['Qt']:
+                                    # The % sign indicates that the pattern is a basic Python format
+                                    date = QDateTime(dt.strptime(search.group(h), date_format))
+                                else:
+                                    # Otherwise, we assume a Qt Format
+                                    date = QDateTime.fromString(search.group(h), date_format)
                             line[h] = {Qt.DisplayRole: QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole: date}
-                        elif h == 'Note' and search.group('Type') == 'Note':
+                        elif h == 'Note' and search.group('Type') == note_translation:
                             line[h] = {Qt.DisplayRole: search.group('Text'), Qt.EditRole: search.group('Text')}
-                        elif h == 'Highlight' and search.group('Type') == 'Highlight':
+                        elif h == 'Highlight' and search.group('Type') == highlight_translation:
                             line[h] = {Qt.DisplayRole: search.group('Text'), Qt.EditRole: search.group('Text')}
                         else:
                             line[h] = {Qt.DisplayRole: search.group(h), Qt.EditRole: search.group(h)}
@@ -244,7 +257,7 @@ class TableModel(QAbstractTableModel):
         # we need to post-process the data.
 
         matched = 0
-        if self.attachNotes == 'True':
+        if attachNotes == 'True':
             skip = False  # This makes it easy to skip subsequent rows
             for row in range(len(import_data)):
                 if skip:
@@ -257,7 +270,7 @@ class TableModel(QAbstractTableModel):
                         # Automatic prefers notes before highlights so we start there
                         # If the before match fails (or if the user chooses "After highlights"), we try the after match
                         if (
-                                self.notesPosition == 'Before highlights' or self.notesPosition == 'Automatic (default)') and \
+                                notesPosition == 'Before highlights' or notesPosition == 'Automatic (default)') and \
                                         row < len(import_data) - 1 and \
                                         import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
                                 any( \
@@ -268,7 +281,8 @@ class TableModel(QAbstractTableModel):
                                                 ([int(u'-1')] if import_data[row + 1][u'Location'][
                                                     Qt.DisplayRole] is None else \
                                                          self.hyphen_range(
-                                                                 import_data[row + 1][u'Location'][Qt.DisplayRole]))
+                                                                 import_data[row + 1][u'Location'][Qt.DisplayRole],
+                                                                 range_indicator=range_indicator))
                                 ) and \
                                 any( \
                                                 (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
@@ -277,7 +291,8 @@ class TableModel(QAbstractTableModel):
                                                 ([int(u'-1')] if import_data[row + 1][u'Page'][
                                                     Qt.DisplayRole] is None else \
                                                          self.hyphen_range(
-                                                                 import_data[row + 1][u'Page'][Qt.DisplayRole]))
+                                                                 import_data[row + 1][u'Page'][Qt.DisplayRole],
+                                                                 range_indicator=range_indicator))
                                 ) and \
                                         import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][
                                     Qt.DisplayRole]:
@@ -289,8 +304,8 @@ class TableModel(QAbstractTableModel):
                             skip = True
 
                         elif (
-                                self.notesPosition == 'After highlights'
-                                or self.notesPosition == 'Automatic (default)') and \
+                                notesPosition == 'After highlights'
+                                or notesPosition == 'Automatic (default)') and \
                                 row > 0 and \
                                 import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
                                 any(
@@ -301,7 +316,8 @@ class TableModel(QAbstractTableModel):
                                                 ([int(u'-1')] if import_data[row - 1][u'Location'][
                                                     Qt.DisplayRole] is None else \
                                                          self.hyphen_range(
-                                                                 import_data[row - 1][u'Location'][Qt.DisplayRole]))
+                                                                 import_data[row - 1][u'Location'][Qt.DisplayRole],
+                                                                 range_indicator=range_indicator))
                                 ) and \
                                 any(
                                                 (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
@@ -310,7 +326,8 @@ class TableModel(QAbstractTableModel):
                                                 ([int(u'-1')] if import_data[row - 1][u'Page'][
                                                     Qt.DisplayRole] is None else \
                                                          self.hyphen_range(
-                                                                 import_data[row - 1][u'Page'][Qt.DisplayRole]))
+                                                                 import_data[row - 1][u'Page'][Qt.DisplayRole],
+                                                                 range_indicator=range_indicator))
                                 ) and \
                                         import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][
                                     Qt.DisplayRole]:
@@ -343,7 +360,7 @@ class TableModel(QAbstractTableModel):
                      u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' ' * 50
         else:
             output = u'%d out of %d clippings were successfully processed' % (len(import_data), clipNo) + u' ' * 50
-            if self.attachNotes == 'True':
+            if attachNotes == 'True':
                 output += u'.\r\n - We were able to match %d Note%s with a Highlight' % (
                 matched, ('s' if matched > 1 else '')) + u' ' * 50
                 if matched > 0:
@@ -363,7 +380,7 @@ class TableModel(QAbstractTableModel):
         self.endResetModel()
         return status
 
-    def hyphen_range(self, s):
+    def hyphen_range(self, s, range_indicator='-'):
         """ Takes a range in form of "a-b" and generate a list of numbers between a and b inclusive.
         Also accepts comma separated ranges like "a-b,c-d,f" will build a list which will include
         Numbers from a to b, a to d and f """
@@ -372,9 +389,10 @@ class TableModel(QAbstractTableModel):
         s = u''.join(s.split())  #removes white space
         r = set()
         for x in s.split(','):
-            t = x.split('-')
+            t = x.split(range_indicator)
             if len(t) not in [1, 2]: raise SyntaxError(
-                "hash_range is given its argument as " + s + " which seems not correctly formatted.")
+                "hash_range is given its argument as %s which seems not correctly formatted." % s)
+            # To support ranges like 2014-52 which really mean 2014-2052
             if len(t) == 2 and len(t[0]) > len(t[1]):
                 t[1] = t[0][:(len(t[0]) - len(t[1]))] + t[1]
             r.add(int(t[0])) if len(t) == 1 else r.update(set(range(int(t[0]), int(t[1]) + 1)))

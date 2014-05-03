@@ -265,6 +265,7 @@ class MainWin(QMainWindow):
                 file_name = unicode(file_name)
 
             try:
+                logger.info("Trying to decode using %s" % pattern_settings['Encoding'])
                 my_clippings = co.open(file_name, 'r', pattern_settings['Encoding']).read()
             except Exception as e:
                 try:
@@ -274,13 +275,14 @@ class MainWin(QMainWindow):
                     try:
                         my_clippings = co.open(file_name, 'r', 'Windows-1252').read()
                         default_encoding = False
-                    except:
+                    except Exception as error:
+                        logger.exception("Clippings File load resulted in exception\m%s" % error.message)
                         bad_encoding = QMessageBox()
                         informational_text = u'We were unable to import your file using either (1) the encoding ' \
                                              u'selected on the import pattern or (2) several default encodings.  ' \
                                              u'Please configure a different encoding for your Import Pattern.  This ' \
                                              u'can be changed by going to Settings, choosing the Import tab, selecting ' \
-                                             u'the import pattern you use from the main drop-donw, and selecting a ' \
+                                             u'the import pattern you use from the main drop-down, and selecting a ' \
                                              u'different encoding from the Encoding drop-down in the lower right. Many ' \
                                              u'patterns will work, but will garble or remove characters like quote ' \
                                              u'and apostrophe.  Please review the results of the import to ensure ' \
@@ -571,7 +573,7 @@ class MainWin(QMainWindow):
         settingsDialog.show()
 
     def onSettingsChanged(self, settings):
-        self.settings = sj.loads(unicode(settings))
+        self.settings = Settings()
         self.initiateToolButtons()
 
 

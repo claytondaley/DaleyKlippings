@@ -35,6 +35,7 @@ import re
 import sys
 from os import name as osname
 from os import path, environ
+from pprint import pformat
 
 from gui.ui_settingsDialog import *
 import table
@@ -110,10 +111,11 @@ class Settings(dict):
 
         try:
             settingsFile = co.open('settings.txt', 'r', 'utf-8')
+            logger.info("Reached")
             settings = sj.loads(settingsFile.read())
             settingsFile.close()
         except:
-            #QMessageBox.warning(parent, 'File not found', 'File "settings.txt" is not found')
+            QMessageBox.warning(parent, 'File not found', 'File "settings.txt" is corrupted or not found')
             pass
 
         self.update(settings)
@@ -126,13 +128,10 @@ class Settings(dict):
             settings = self.getImportSettings
         else:
             settings = self['Import Settings'][name].copy()
-
         if settings['Delimiter'] == '':
             settings['Delimiter'] = DEFAULT_DELIMITER
         if settings['Date Format'] == '':
-            settings['Date Format'] = DEFAULT_DATE_FORMAT
-        else:
-            settings['Date Format'] = DEFAULT_DATE_FORMAT.update({'Qt': settings['Date Format']})
+            settings['Date Format'] = DEFAULT_DATE_FORMAT['Qt']
         if settings['Encoding'] == '':
             settings['Encoding'] = DEFAULT_ENCODING[0]  #UTF-8
         if settings['Extension'] == '':
@@ -533,10 +532,10 @@ class SettingsDialog(QDialog):
             if 'Date Language' in self.settings['Application Settings']['Language']:
                 logger.info("... date language in settings, applying")
                 lang = self.settings['Application Settings']['Language']['Date Language']
-                logger.info("lang is %s" % lang)
-                langNo = self.ui.cmbImportEncoding.findText(lang)
+                logger.info("lang is '%s'" % lang)
+                langNo = self.ui.cmbDateLanguage.findText(lang)
                 logger.info("langNo is %d" % langNo)
-                self.ui.cmbImportEncoding.setCurrentIndex(langNo)
+                self.ui.cmbDateLanguage.setCurrentIndex(langNo)
             else:
                 logger.info("... date language not in settings, setting to default")
                 self.settings['Application Settings']['Language']['Date Language'] = \
@@ -553,8 +552,7 @@ class SettingsDialog(QDialog):
             for ui_element, settings_key in language_settings:
                 logger.info("Setting UI for %s" % settings_key)
                 try:
-                    ui_element.setText(unicode(
-                        self.settings['Application Settings']['Language'][settings_key]))
+                    ui_element.setText(unicode(self.settings['Application Settings']['Language'][settings_key]))
                 except:
                     # Create empty keys in the dictionary
                     self.settings['Application Settings']['Language'][settings_key] = \
@@ -965,7 +963,7 @@ class SettingsDialog(QDialog):
         settingsFile = co.open('settings.txt', 'w', 'utf-8')
         settingsJson = sj.dumps(self.settings, indent='\t')
         settingsFile.write(settingsJson)
-        self.emit(SIGNAL('settigsChanged(QString)'), settingsJson)
+        self.emit(SIGNAL('settingsChanged(QString)'), settingsJson)
         settingsFile.close()
 
     def onButtonCancel(self):
