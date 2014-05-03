@@ -186,7 +186,7 @@ class Settings(dict):
         if name is None:
             settings = deepcopy(self.importSettings)
         else:
-            settings = self['Import Settings'][name].deepcopy()
+            settings = deepcopy(self['Import Settings'][name])
 
         # Check for empty/non-existent values and set to defaults
         if settings['Delimiter'] == '':
