@@ -136,7 +136,7 @@ class Settings(dict):
         else:
             settings = self['Import Settings'][name].copy()
 
-        # Check for empty/non-existent values
+        # Check for empty/non-existent values and set to defaults
         if settings['Delimiter'] == '':
             settings['Delimiter'] = DEFAULT_DELIMITER
         if settings['Date Format'] == '':
@@ -148,8 +148,16 @@ class Settings(dict):
 
         # Add application-wide settings
         settings['Application Settings'] = self['Application Settings']
+
+        # Check for empty/non-existent values and set to defaults
         if settings['Application Settings']['Language']['Range Separator'] == '':
             settings['Application Settings']['Language']['Range Separator'] = '-'
+        if settings['Application Settings']['Language']['Highlight'] == '':
+            settings['Application Settings']['Language']['Highlight'] = 'Highlight'
+        if settings['Application Settings']['Language']['Bookmark'] == '':
+            settings['Application Settings']['Language']['Bookmark'] = 'Bookmark'
+        if settings['Application Settings']['Language']['Note'] == '':
+            settings['Application Settings']['Language']['Note'] = 'Note'
         return settings
 
 
@@ -506,12 +514,12 @@ class SettingsDialog(QDialog):
         self.ui.editExportExtensions.setValidator(self.extensionValidator)
 
         # Initiate default Import settings
-        self.ui.cmbImportPatternName.addItems(self.settings['Import Settings'].keys())
+        self.ui.cmbImportPatternName.addItems(self.settings['Import Settings'].keys().sort())
         item = self.ui.cmbImportPatternName.currentText()
         self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         # Initiate default Export settings
-        self.ui.cmbExportPatternName.addItems(self.settings['Export Settings'].keys())
+        self.ui.cmbExportPatternName.addItems(self.settings['Export Settings'].keys().sort())
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
@@ -538,7 +546,7 @@ class SettingsDialog(QDialog):
             logger.info("... language in settings, updating UI")
             # Date Language Options
             self.ui.cmbDateLanguage.insertSeparator(1000)
-            self.ui.cmbDateLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST))
+            self.ui.cmbDateLanguage.addItems(self.QLOCALE_LANGUAGE_LIST.sort())
             # Set Date Language Options
             if 'Date Language' in self.settings['Application Settings']['Language']:
                 logger.info("... date language in settings, applying")

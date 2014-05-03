@@ -261,41 +261,42 @@ class TableModel(QAbstractTableModel):
             skip = False  # This makes it easy to skip subsequent rows
             for row in range(len(import_data)):
                 if skip:
+                    # Once we do a line match, we don't want to process the second line again.  This is especially
+                    # problemmatic in Automatic mode since we'd match both forward and backwards.
                     skip = False
                 else:
-                    if import_data[row][u'Type'][Qt.DisplayRole] == \
-                            (self.settings['Application Settings']['Language']['Note'], 'Note')[
-                                        self.settings['Application Settings']['Language']['Note'] == '']:
+                    # If the current row is a note, we want to check and see if the next row is a matching highlight
+                    if import_data[row][u'Type'][Qt.DisplayRole] in [note_translation, 'Note']:
                         # We've found a notes row
                         # Automatic prefers notes before highlights so we start there
                         # If the before match fails (or if the user chooses "After highlights"), we try the after match
                         if (
-                                notesPosition == 'Before highlights' or notesPosition == 'Automatic (default)') and \
-                                        row < len(import_data) - 1 and \
-                                        import_data[row + 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
-                                any( \
-                                                (
-                                                int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
-                                                int(import_data[row][u'Location'][Qt.DisplayRole])) \
-                                                == s for s in
-                                                ([int(u'-1')] if import_data[row + 1][u'Location'][
-                                                    Qt.DisplayRole] is None else \
-                                                         self.hyphen_range(
-                                                                 import_data[row + 1][u'Location'][Qt.DisplayRole],
-                                                                 range_indicator=range_indicator))
-                                ) and \
-                                any( \
-                                                (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
-                                                 int(import_data[row][u'Page'][Qt.DisplayRole]))
-                                                == s for s in
-                                                ([int(u'-1')] if import_data[row + 1][u'Page'][
-                                                    Qt.DisplayRole] is None else \
-                                                         self.hyphen_range(
-                                                                 import_data[row + 1][u'Page'][Qt.DisplayRole],
-                                                                 range_indicator=range_indicator))
-                                ) and \
-                                        import_data[row][u'Book'][Qt.DisplayRole] == import_data[row + 1][u'Book'][
-                                    Qt.DisplayRole]:
+                            # We're looking for notes before highlights
+                            # and there is a next row to analyze
+                            # and the next row is a highlight
+                            # and the name of the books match
+                            # and either there is no location on the highlight or the note location falls in the highlight range
+                            # and either there is no page or the highlight or the note page falls in the highlight range
+                            notesPosition == 'Before highlights' or notesPosition == 'Automatic (default)') and \
+                            row < len(import_data) - 1 and \
+                            import_data[row + 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
+                            import_data[row][u'Book'][Qt.DisplayRole] == \
+                                import_data[row + 1][u'Book'][Qt.DisplayRole] and \
+                            any(
+                                (
+                                    int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
+                                    int(import_data[row][u'Location'][Qt.DisplayRole])) == s for s in (
+                                        [int(u'-1')] if import_data[row + 1][u'Location'][Qt.DisplayRole] is None
+                                        else self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole],
+                                                               range_indicator=range_indicator))
+                            ) and any(
+                                (
+                                    int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
+                                    int(import_data[row][u'Page'][Qt.DisplayRole]))== s for s in (
+                                        [int(u'-1')] if import_data[row + 1][u'Page'][Qt.DisplayRole] is None \
+                                        else self.hyphen_range(import_data[row + 1][u'Page'][Qt.DisplayRole],
+                                                               range_indicator=range_indicator))
+                            ):
 
                             import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
                             import_data[row][u'Location'] = import_data[row + 1][u'Location']
@@ -307,7 +308,9 @@ class TableModel(QAbstractTableModel):
                                 notesPosition == 'After highlights'
                                 or notesPosition == 'Automatic (default)') and \
                                 row > 0 and \
-                                import_data[row - 1][u'Type'][Qt.DisplayRole] == 'Highlight' and \
+                                import_data[row - 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
+                                import_data[row][u'Book'][Qt.DisplayRole] == \
+                                    import_data[row - 1][u'Book'][Qt.DisplayRole] and \
                                 any(
                                                 (
                                                 int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
@@ -328,12 +331,10 @@ class TableModel(QAbstractTableModel):
                                                          self.hyphen_range(
                                                                  import_data[row - 1][u'Page'][Qt.DisplayRole],
                                                                  range_indicator=range_indicator))
-                                ) and \
-                                        import_data[row][u'Book'][Qt.DisplayRole] == import_data[row - 1][u'Book'][
-                                    Qt.DisplayRole]:
+                                ):
 
                             # In case the auto matcher already matched and skipped the previous highlight
-                            if self.tableData[len(self.tableData) - 1][u'Type'][Qt.DisplayRole] == 'Highlight':
+                            if self.tableData[len(self.tableData) - 1][u'Type'][Qt.DisplayRole] == highlight_translation:
                                 # If not, edit the highlight's entry in tableData
                                 self.tableData[len(self.tableData) - 1][u'Note'] = import_data[row][u'Note']
                                 self.tableData[len(self.tableData) - 1][u'Type'] = import_data[row][u'Type']
