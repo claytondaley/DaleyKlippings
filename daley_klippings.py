@@ -28,6 +28,7 @@ __ver__ = '1.02'
 ## - language settings for highlight, note & bookmark terms
 
 import logging
+from pprint import pformat
 logging.basicConfig(level=logging.INFO)
 handler = logging.StreamHandler()
 logger = logging.getLogger("daley_klippings")
@@ -141,7 +142,7 @@ class MainWin(QMainWindow):
         self.customImportActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
             self.customImportActions.append(QAction(i, self.menuButtonImport))
-            log.debug("Added dropdown item %s (import)" % self.customImportActions[-1].text())
+            logger.debug("Added dropdown item %s (import)" % self.customImportActions[-1].text())
             self.connect(self.customImportActions[-1], SIGNAL('triggered(bool)'), self.onImportCustom)
         self.menuButtonImport.addActions(self.customImportActions)
         self.ui.toolButtonImport.setMenu(self.menuButtonImport)
@@ -225,16 +226,17 @@ class MainWin(QMainWindow):
             except:
                 print 'No Default key in %s' % unicode(i)
 
-        # Defaults removed, show error box instead
+        # No default found, show error box instead
         no_pattern = QMessageBox()
-        no_pattern.critical(self, u'Import Pattern', u'No import pattern defined\nor no default is set. Please\n' +
-                                                     'configure an import pattern\n under Settings.')
+        no_pattern.critical(self, u'Import Pattern',
+                            u'Default import pattern not defined.\nPlease configure one under Settings.')
 
     def onImportCustom(self):
         """
         Slot for custom import actions triggered signals
         """
         try:
+            # Get Import Pattern
             sender = self.sender()
             logger.debug(str(sender.parent()))
             if sender.parent() == self.menuButtonImport:
@@ -244,33 +246,63 @@ class MainWin(QMainWindow):
                 actions = self.customAppendActions
                 append = True
 
+            logger.info("self.settings is class %s" % self.settings.__class__.__name__)
             for i in actions:
                 if sender == i:
-                    name = unicode(i.text())
-                    delimeter = self.settings['Import Settings'][name]['Delimiter']
-                    if delimeter == '': delimeter = '\r\n'
-                    pattern = self.settings['Import Settings'][name]['Pattern']
-                    dateFormat = {'Qt': self.settings['Import Settings'][name]['Date Format'],
-                                  'Python': None}
-                    if dateFormat['Qt'] == '': dateFormat = DEFAULT_DATE_FORMAT
-                    encoding = self.settings['Import Settings'][name]['Encoding'].split(' ')[0]
-                    if encoding == '': encoding = DEFAULT_ENCODIG[0]  #UTF-8
-                    extension = self.settings['Import Settings'][name]['Extension'].split(',')
-                    if extension[0] == '': extension = DEFAULT_EXTENSION
+                    pattern_name = unicode(i.text())
+                    pattern_settings = self.settings.getImportSettings(pattern_name)
                     break
-            fileName = QFileDialog.getOpenFileName(self, '', '',
-                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-            if fileName == '': return
 
-            status = self.tableModel.parse(unicode(fileName), append, False, delimeter, pattern, dateFormat, encoding)
+            # Load Clippings from File
+            file_name = QFileDialog.getOpenFileName(self, '', '',
+                                                    ';;'.join(['%s (*.%s)' % (pattern_name, ext) for
+                                                               ext in pattern_settings['Extension'].split(',')]))
+            if file_name == '':
+                import_error = QMessageBox()
+                import_error.warning(self, u'Import Error', u'Invalid or no filename found.\r\n')
+                return
+            else:
+                file_name = unicode(file_name)
 
-            print status
+            try:
+                my_clippings = co.open(file_name, 'r', pattern_settings['Encoding']).read()
+            except Exception as e:
+                try:
+                    my_clippings = co.open(file_name, 'r', DEFAULT_ENCODING[1]).read()
+                    default_encoding = False
+                except UnicodeError:
+                    try:
+                        my_clippings = co.open(file_name, 'r', 'Windows-1252').read()
+                        default_encoding = False
+                    except:
+                        bad_encoding = QMessageBox()
+                        informational_text = u'We were unable to import your file using either (1) the encoding ' \
+                                             u'selected on the import pattern or (2) several default encodings.  ' \
+                                             u'Please configure a different encoding for your Import Pattern.  This ' \
+                                             u'can be changed by going to Settings, choosing the Import tab, selecting ' \
+                                             u'the import pattern you use from the main drop-donw, and selecting a ' \
+                                             u'different encoding from the Encoding drop-down in the lower right. Many ' \
+                                             u'patterns will work, but will garble or remove characters like quote ' \
+                                             u'and apostrophe.  Please review the results of the import to ensure ' \
+                                             u'that you have selected the correct encoding.  Make sure you click OK ' \
+                                             u'or Accept to lock in the new selection.'
+                        bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
+                        raise e
+
+            status = "<%s> Loading clippings from file %s\r\n" % (
+                QTime.currentTime().toString('hh:mm:ss'),
+                QDir.dirName(QDir(file_name))
+            )
+            status += self.tableModel.parse(my_clippings, pattern_settings, append)
+
+            logger.debug(status)
             self.ui.statusBar.showMessage(status, 3000)
 
             # Set up row indicator text
             self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
                                                           self.tableModel.rowCount(None)))
         except Exception as error:
+            logger.exception("Exception: %s" % error.message)
             import_error = QMessageBox()
             import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
 
@@ -292,10 +324,10 @@ class MainWin(QMainWindow):
             except:
                 print 'No Default key in %s' % unicode(i)
 
-        # Defaults removed, show error box instead
+        # No default found, show error box instead
         no_pattern = QMessageBox()
         no_pattern.critical(self, u'Export Pattern',
-                            u'No export pattern defined.\nPlease configure one under Settings.')
+                            u'Default export pattern not defined.\nPlease configure one under Settings.')
 
     def onExportCustom(self):
         """
@@ -312,7 +344,7 @@ class MainWin(QMainWindow):
                     dateFormat = self.settings['Export Settings'][name]['Date Format']
                     if dateFormat == '': dateFormat = 'dd.MM.yy, hh:mm'
                     encoding = self.settings['Export Settings'][name]['Encoding'].split(' ')[0]
-                    if encoding == '': encoding = DEFAULT_ENCODIG[0]  #UTF-8
+                    if encoding == '': encoding = DEFAULT_ENCODING[0]  #UTF-8
                     extension = self.settings['Export Settings'][name]['Extension'].split(',')
                     if extension[0] == '': extension = DEFAULT_EXTENSION
                     break

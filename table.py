@@ -35,37 +35,6 @@ from datetime import datetime as dt
 
 from settings import *
 
-HEADERS = (u'Book',
-           u'Author',
-           u'Type',
-           u'Page',
-           u'Location',
-           u'Date',
-           u'Highlight',
-           u'Note')
-DEFAULT_DELIMITER = '=' * 10
-DEFAULT_PATTERN = ur"""
-                ^\s*                           	# 
-                (?P<%s>.*?)                     # Book name
-                (Inactive (?P<%s>.*?))?         # Eats up Author Header
-                \s*-\                           #
-                (?P<%s>\w*)                     # Clipping type
-                (Inactive (?P<%s>.*?))?         # Eats up Page Header
-                .*(Loc.|Page)\                  #
-                (?P<%s>[\d-]*)           	# Location
-                .*?Added\ on\             	#
-                (?P<%s>(.*)(AM|PM))             # Date & time
-                \s*                            	# 
-                (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
-                (Inactive (?P<%s>.*?))?         # Eats up Note Header
-                \s*$ 		                #
-                """ % HEADERS
-DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE | re.DOTALL
-DEFAULT_DATE_FORMAT = {'Qt': 'dddd, MMMM dd, yyyy, hh:mm AP',
-                       'Python': '%A, %B %d, %Y, %I:%M %p'}
-DEFAULT_ENCODIG = ['utf-8', 'utf-16']
-DEFAULT_EXTENSION = ['txt', ]
-
 
 class DateEditDelegate(QStyledItemDelegate):
     """
@@ -183,8 +152,7 @@ class TableModel(QAbstractTableModel):
         QAbstractTableModel.__init__(self, parent)
         self.tableData = Clippings()
 
-    def parse(self, fileName, append=False, default=True, delimiter=None, notePattern=None, dateFormat=None,
-              encoding=None):
+    def parse(self, my_clippings, import_settings, append=True):
         """
         Parse My clippings.txt to fetch data
         """
@@ -194,46 +162,23 @@ class TableModel(QAbstractTableModel):
         # Clear previous data
         if not append:
             self.tableData = Clippings()
-        if default:
-            delimiter = DEFAULT_DELIMITER
-            notePattern = DEFAULT_PATTERN
-            dateFormat = DEFAULT_DATE_FORMAT
-            encoding = DEFAULT_ENCODIG[0]
+
         status = ''
 
         # Load Settings
         self.settings = Settings()
-        self.attachNotes = self.settings['Application Settings']['Attach Notes']['Attach Notes']
-        self.notesPosition = self.settings['Application Settings']['Attach Notes']['Notes Position']
+        # Returns default value if patternName is None
+
+        delimiter = import_settings['Delimiter']
+        date_format = import_settings['Date Format']
+        encoding = import_settings['Encoding']
 
         default_encoding = True
 
-        try:
-            myClippings = co.open(fileName, 'r', encoding).read()
-        except Exception as e:
-            try:
-                myClippings = co.open(fileName, 'r', DEFAULT_ENCODIG[1]).read()
-                default_encoding = False
-            except UnicodeError:
-                myClippings = co.open(fileName, 'r', 'Windows-1252').read()
-                default_encoding = False
-            except:
-                bad_encoding = QMessageBox()
-                informational_text = u'We were unable to import your file using either (1) the encoding selected on the' \
-                                     u'import pattern or (2) several default encodings.  Please configure a different ' \
-                                     u'encoding for your Import Pattern.  This can be changed by going to Settings, ' \
-                                     u'choosing the Import tab, selecting the import pattern you use from the main ' \
-                                     u'drop-donw, and selecting a different encoding from the Encoding drop-down in ' \
-                                     u'the lower right. Many patterns will work, but will garble or remove characters ' \
-                                     u'like quote and apostrophe.  Please review the results of the import to ensure ' \
-                                     u'that you have selected the correct encoding.  Make sure you click OK or Accept' \
-                                     u'to lock in the new selection.'
-                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
-                raise e
-
-        clip = myClippings.split(delimiter)
-        if clip[-1].strip() == '': clip.pop(-1)
-        pattern = re.compile(notePattern, DEFAULT_RE_OPTIONS)
+        clip = my_clippings.split(delimiter)
+        if clip[-1].strip() == '':
+            clip.pop(-1)
+        pattern = re.compile(import_settings['Pattern'], DEFAULT_RE_OPTIONS)
 
         import_data = Clippings()
         clipNo = 0
@@ -250,14 +195,24 @@ class TableModel(QAbstractTableModel):
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
-                            #print "Date is: " + search.group(h)
-                            try:
-                                date = QDateTime(dt.strptime(search.group(h), dateFormat['Python']))
-                            except:
-                                if u'%' in dateFormat['Qt']:
-                                    date = QDateTime(dt.strptime(search.group(h), dateFormat['Qt']))
-                                else:
-                                    date = QDateTime.fromString(search.group(h), dateFormat['Qt'])
+                            logger.debug("Date is: %s" % search.group(h))
+                            # Attempt to Localize Date
+                            if 'Date Language' in import_settings['Application Settings'][ 'Language']:
+                                if import_settings['Application Settings']['Language']['Date Language'] != \
+                                        'English (default)':
+                                    try:
+                                        local_language = getattr(QLocale, import_settings['Application Settings']['Language']['Date Language'])
+                                        date = local_language.toDateTime(search.group(h), date_format['Qt'])
+                                        logger.info("Date converted to: %s" % str(date))
+                                    except:
+                                        logger.info("Error localizing date.")
+                            # Attempt to Standardize Date
+                            if u'%' in date_format['Qt']:
+                                # The % sign indicates that the pattern is a basic Python format
+                                date = QDateTime(dt.strptime(search.group(h), date_format['Qt']))
+                            else:
+                                # Otherwise, we assume a Qt Format
+                                date = QDateTime.fromString(search.group(h), date_format['Qt'])
                             line[h] = {Qt.DisplayRole: QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole: date}
                         elif h == 'Note' and search.group('Type') == 'Note':
                             line[h] = {Qt.DisplayRole: search.group('Text'), Qt.EditRole: search.group('Text')}
@@ -279,9 +234,8 @@ class TableModel(QAbstractTableModel):
                                                                                              c.strip())
                 continue
 
-        status = u'<%s> From file "%s" %d out of %d clippings were successfully processed.\r\n%s' % (
+        status = u'<%s> %d out of %d clippings were successfully processed.\r\n%s' % (
             QTime.currentTime().toString('hh:mm:ss'),
-            QDir.dirName(QDir(fileName)),
             len(import_data),
             clipNo,
             status)
