@@ -20,7 +20,7 @@
 ########################################################################
 import logging
 logger = logging.getLogger("daley_klippings.table")
-logger.info("Loading DaleyKlippings Table")
+logger.info("Loading DaleyKlippings Table Models")
 
 """
 Table data model, proxy model, data edit delegates, parsing routine, default constants

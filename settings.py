@@ -20,7 +20,7 @@
 ########################################################################
 import logging
 logger = logging.getLogger("daley_klippings.settings")
-logger.info("Loading DaleyKlippings Settings")
+logger.info("Loading DaleyKlippings Settings Models")
 
 """
 Settings dialog
@@ -57,13 +57,13 @@ DEFAULT_PATTERN = ur"""
                 (?P<%s>\w*)                     # Clipping type
                 (Inactive (?P<%s>.*?))?         # Eats up Page Header
                 .*(Loc.|Page)\                  #
-                (?P<%s>[\d-]*)           	# Location
-                .*?Added\ on\             	#
+                (?P<%s>[\d-]*)           	    # Location
+                .*?Added\ on\             	    #
                 (?P<%s>(.*)(AM|PM))             # Date & time
                 \s*                            	#
                 (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
                 (Inactive (?P<%s>.*?))?         # Eats up Note Header
-                \s*$ 		                #
+                \s*$ 		                    #
                 """ % HEADERS
 DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE | re.DOTALL
 DEFAULT_DATE_FORMAT = {'Qt': 'dddd, MMMM dd, yyyy, hh:mm AP',
@@ -118,7 +118,6 @@ class Settings(dict):
 
         try:
             settingsFile = co.open('settings.txt', 'r', 'utf-8')
-            logger.info("Reached")
             settings = sj.loads(settingsFile.read())
             settingsFile.close()
         except:
@@ -657,81 +656,37 @@ class SettingsDialog(QDialog):
             # Due to strange Python bug I can't use here and latter just one line:
             # self.settings['Import Settings'][unicode(item)]['Pattern'] = unicode(pattern)
             # becuse Python change value for all members with the same key
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Pattern': unicode(pattern),
-                 'Default': self.settings['Import Settings'][unicode(item)]['Default'],
-                 'Delimiter': self.settings['Import Settings'][unicode(item)]['Delimiter'],
-                 'Encoding': self.settings['Import Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Import Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Import Settings'][unicode(item)]['Extension']}
+            self.settings['Import Settings'][unicode(item)]['Pattern'] = unicode(pattern)
 
     def onImportIsDefaultChanged(self, isDefaultImport):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Default': unicode(isDefaultImport),
-                 'Pattern': self.settings['Import Settings'][unicode(item)]['Pattern'],
-                 'Delimiter': self.settings['Import Settings'][unicode(item)]['Delimiter'],
-                 'Encoding': self.settings['Import Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Import Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Import Settings'][unicode(item)]['Extension']}
+            self.settings['Import Settings'][unicode(item)]['Default'] = unicode(isDefaultImport)
             # If new Default state is True then change Default settings of all other imports to False
             if unicode(self.settings['Import Settings'][unicode(item)]['Default']) == 'True':
                 for i in self.settings['Import Settings']:
                     if unicode(i) != unicode(item):
-                        self.settings['Import Settings'][unicode(i)] = \
-                            {'Default': 'False',
-                             'Pattern': self.settings['Import Settings'][unicode(i)]['Pattern'],
-                             'Delimiter': self.settings['Import Settings'][unicode(i)]['Delimiter'],
-                             'Encoding': self.settings['Import Settings'][unicode(i)]['Encoding'],
-                             'Date Format': self.settings['Import Settings'][unicode(i)]['Date Format'],
-                             'Extension': self.settings['Import Settings'][unicode(i)]['Extension']}
-
+                        self.settings['Import Settings'][unicode(i)]['Default'] = 'False'
 
     def onImportDelimiterChanged(self, delimiter):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Delimiter': unicode(delimiter),
-                 'Default': self.settings['Import Settings'][unicode(item)]['Default'],
-                 'Pattern': self.settings['Import Settings'][unicode(item)]['Pattern'],
-                 'Encoding': self.settings['Import Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Import Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Import Settings'][unicode(item)]['Extension']}
+            self.settings['Import Settings'][unicode(item)]['Delimiter'] = unicode(delimiter)
 
     def onImportExtensionChanged(self, extension):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Extension': unicode(extension),
-                 'Pattern': self.settings['Import Settings'][unicode(item)]['Pattern'],
-                 'Default': self.settings['Import Settings'][unicode(item)]['Default'],
-                 'Encoding': self.settings['Import Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Import Settings'][unicode(item)]['Date Format'],
-                 'Delimiter': self.settings['Import Settings'][unicode(item)]['Delimiter']}
+            self.settings['Import Settings'][unicode(item)]['Extension'] = unicode(extension)
 
     def onImportEncodingChanged(self, encoding):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Encoding': unicode(encoding),
-                 'Pattern': self.settings['Import Settings'][unicode(item)]['Pattern'],
-                 'Default': self.settings['Import Settings'][unicode(item)]['Default'],
-                 'Extension': self.settings['Import Settings'][unicode(item)]['Extension'],
-                 'Date Format': self.settings['Import Settings'][unicode(item)]['Date Format'],
-                 'Delimiter': self.settings['Import Settings'][unicode(item)]['Delimiter']}
+            self.settings['Import Settings'][unicode(item)]['Encoding'] = unicode(encoding)
 
     def onImportDateFormatChanged(self, dateFormat):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)] = \
-                {'Date Format': unicode(dateFormat),
-                 'Pattern': self.settings['Import Settings'][unicode(item)]['Pattern'],
-                 'Default': self.settings['Import Settings'][unicode(item)]['Default'],
-                 'Extension': self.settings['Import Settings'][unicode(item)]['Extension'],
-                 'Encoding': self.settings['Import Settings'][unicode(item)]['Encoding'],
-                 'Delimiter': self.settings['Import Settings'][unicode(item)]['Delimiter']}
-
+            self.settings['Import Settings'][unicode(item)]['Date Format'] = unicode(dateFormat)
     # End Import Tab Slots
 
     # Begin Export Tab Slots
@@ -825,124 +780,52 @@ class SettingsDialog(QDialog):
     def onExportIsDefaultChanged(self, isDefaultExport):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': unicode(isDefaultExport),
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Default'] = unicode(isDefaultExport)
             # If new Default state is True then change Default settings of all other exports to False
             if unicode(self.settings['Export Settings'][unicode(item)]['Default']) == 'True':
                 for i in self.settings['Export Settings']:
                     if unicode(i) != unicode(item):
-                        self.settings['Export Settings'][unicode(i)] = \
-                            {'Default': 'False',
-                             'Header': self.settings['Export Settings'][unicode(i)]['Header'],
-                             'Body': self.settings['Export Settings'][unicode(i)]['Body'],
-                             'Notes': self.settings['Export Settings'][unicode(i)]['Notes'],
-                             'Bottom': self.settings['Export Settings'][unicode(i)]['Bottom'],
-                             'Encoding': self.settings['Export Settings'][unicode(i)]['Encoding'],
-                             'Date Format': self.settings['Export Settings'][unicode(i)]['Date Format'],
-                             'Extension': self.settings['Export Settings'][unicode(i)]['Extension']}
+                        self.settings['Export Settings'][unicode(i)]['Default'] = 'False'
 
     def onExportHeaderChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
             header = self.ui.textExportHeader.toPlainText()
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Header': unicode(header),
-                 'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Header'] = unicode(header)
 
     def onExportBodyChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
             body = self.ui.textExportBody.toPlainText()
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': unicode(body),
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Body'] = unicode(body)
 
     def onExportNotesChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
             notes = self.ui.textExportNotes.toPlainText()
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': unicode(notes),
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Notes'] = unicode(notes)
 
     def onExportBottomChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
             bottom = self.ui.textExportBottom.toPlainText()
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': unicode(bottom),
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Bottom'] = unicode(bottom)
 
     def onExportDateFormatChanged(self, dateFormat):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': unicode(dateFormat),
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Date Format'] = unicode(dateFormat)
 
     def onExportEncodingChanged(self, encoding):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': unicode(encoding),
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': self.settings['Export Settings'][unicode(item)]['Extension']}
+            self.settings['Export Settings'][unicode(item)]['Encoding'] = unicode(encoding)
 
     def onExportExtensionChanged(self, extension):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Export Settings'][unicode(item)] = \
-                {'Default': self.settings['Export Settings'][unicode(item)]['Default'],
-                 'Header': self.settings['Export Settings'][unicode(item)]['Header'],
-                 'Body': self.settings['Export Settings'][unicode(item)]['Body'],
-                 'Notes': self.settings['Export Settings'][unicode(item)]['Notes'],
-                 'Bottom': self.settings['Export Settings'][unicode(item)]['Bottom'],
-                 'Encoding': self.settings['Export Settings'][unicode(item)]['Encoding'],
-                 'Date Format': self.settings['Export Settings'][unicode(item)]['Date Format'],
-                 'Extension': unicode(extension)}
-            #End Export Settings Slots
+            self.settings['Export Settings'][unicode(item)]['Extension'] = unicode(extension)
+    #End Export Settings Slots
 
     #Begin Appliction Settings Slots
     def onApplicationAttachNotesChanged(self, state):

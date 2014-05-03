@@ -591,7 +591,12 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     mainWin = MainWin()
-    mainWin.show()
+    try:
+        logger.info("Showing main window")
+        mainWin.show()
+        logger.info("Main window show completed")
+    except Exception as e:
+        logger.exception("Exception in window.show():\n%s" % e.message)
     # Bring window to the front to cure PyInstaller bug under Mac OS X
     if osname == 'posix':
         mainWin.raise_()
