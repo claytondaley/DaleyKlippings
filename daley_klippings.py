@@ -138,6 +138,11 @@ class MainWin(QMainWindow):
         # Import Button
         self.menuButtonImport = QMenu()
         self.menuButtonImport.addAction(self.ui.actionImport)
+        # Special (built-in) CSV Option
+        csv_action = QAction("CSV", self.menuButtonImport)
+        self.menuButtonImport.addAction(csv_action)
+        self.connect(csv_action, SIGNAL('triggered(bool)'), self.onImportCsv)
+        # Add Actions from Settings
         self.menuButtonImport.addSeparator()
         self.customImportActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
@@ -152,6 +157,11 @@ class MainWin(QMainWindow):
         # Append Button
         self.menuButtonAppend = QMenu()
         self.menuButtonAppend.addAction(self.ui.actionAppend)
+        # Special (built-in) CSV Option
+        csv_action = QAction("CSV", self.menuButtonAppend)
+        self.connect(csv_action, SIGNAL('triggered(bool)'), self.onImportCsv)
+        self.menuButtonAppend.addAction(csv_action)
+        # Add Actions from Settings
         self.menuButtonAppend.addSeparator()
         self.customAppendActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
@@ -166,6 +176,11 @@ class MainWin(QMainWindow):
         # Export Button
         self.menuButtonExport = QMenu()
         self.menuButtonExport.addAction(self.ui.actionExport)
+        # Special (built-in) CSV Option
+        csv_action = QAction("CSV", self.menuButtonExport)
+        self.connect(csv_action, SIGNAL('triggered(bool)'), self.onExportCsv)
+        self.menuButtonExport.addAction(csv_action)
+        # Add Actions from Settings
         self.menuButtonExport.addSeparator()
         self.customExportActions = []
         for i in sorted(self.settings['Export Settings'].keys()):
@@ -258,6 +273,8 @@ class MainWin(QMainWindow):
                     pattern_settings = self.settings.getImportSettings(pattern_name)
                     break
 
+            default_encoding = True
+
             # Load Clippings from File
             file_name = QFileDialog.getOpenFileName(self, '', '',
                                                     ';;'.join(['%s (*.%s)' % (pattern_name, ext) for
@@ -296,18 +313,48 @@ class MainWin(QMainWindow):
                     bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
                     raise e
 
-            status = "<%s> Loading clippings from file %s\r\n" % (
+            summary, detail = self.tableModel.parse(my_clippings, pattern_settings, append)
+            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
                 QTime.currentTime().toString('hh:mm:ss'),
-                QDir.dirName(QDir(file_name))
+                QDir.dirName(QDir(file_name)),
+                summary
             )
-            status += self.tableModel.parse(my_clippings, pattern_settings, append)
 
-            logger.debug(status)
-            self.ui.statusBar.showMessage(status, 3000)
+            if not default_encoding:
+                summary += u'\r\n\r\nNOTE:  The encoding selected for your import pattern did not work.  However, we were ' \
+                          u'able to import using one of our default patterns.  Please review your data and make sure ' \
+                          u'it has imported properly.  If it has not, please select a different import pattern on the ' \
+                          u'Import Tab of Settings.'
+            summary += u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
+            import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', summary)
+            import_complete.addButton(QMessageBox.Ok)
+            import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
+            import_complete.setDetailedText(detail)
+            import_complete.exec_()
+
+            logger.debug(summary)
+            self.ui.statusBar.showMessage(summary, 3000)
 
             # Set up row indicator text
             self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
                                                           self.tableModel.rowCount(None)))
+        except Exception as error:
+            logger.exception("Exception: %s" % error.message)
+            import_error = QMessageBox()
+            import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
+
+    def onImportCsv(self):
+        try:
+            # Get Import Pattern
+            sender = self.sender()
+            logger.debug(str(sender.parent()))
+            if sender.parent() == self.menuButtonImport:
+                append = False
+            elif sender.parent() == self.menuButtonAppend:
+                append = True
+
+
+
         except Exception as error:
             logger.exception("Exception: %s" % error.message)
             import_error = QMessageBox()
@@ -387,6 +434,9 @@ class MainWin(QMainWindow):
         except Exception as error:
             export_error = QMessageBox()
             export_error.warning(self, u'Export Error', u'Error during export.\r\n\r\n' + error.message)
+
+    def onExportCsv(self):
+        pass
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:

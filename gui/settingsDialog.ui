@@ -30,7 +30,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabApplication">
       <attribute name="title">
@@ -354,7 +354,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Delimiter&lt;/span&gt; is an array of characters used to divide notes in a file. If the field is empty, carrier return and line feed characters are used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="placeholderText">
-               <string notr="true">\r\n</string>
+               <string notr="true">==========</string>
               </property>
              </widget>
             </item>

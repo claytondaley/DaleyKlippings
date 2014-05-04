@@ -29,7 +29,6 @@ from PyQt4 import Qt
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-import codecs as co
 import re
 from datetime import datetime as dt
 
@@ -121,9 +120,8 @@ class LocationEditDelegate(QStyledItemDelegate):
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
 
-    # Changed structure to list from dictionary to avoid problems with implementation of
 
-
+# Changed structure to list from dictionary to avoid problems with implementation of
 # deleting rows function
 class Clippings(list):
     """
@@ -140,81 +138,52 @@ class Clippings(list):
     def __init__(self):
         list.__init__(self)
 
-
-class TableModel(QAbstractTableModel):
-    """
-    Table model, all the data are stored in the Clippings object tableData.
-    Returns status string.
-    """
-    tableData = Clippings()
-
-    def __init__(self, parent=None):
-        QAbstractTableModel.__init__(self, parent)
-        self.tableData = Clippings()
-
-    def parse(self, my_clippings, import_settings, append=True):
+    def import_(self, my_clippings, import_settings):
         """
         Parse My clippings.txt to fetch data
         """
-
-        self.beginResetModel()
-
-        # Clear previous data
-        if not append:
-            self.tableData = Clippings()
-
-        status = ''
-
-        # Load Settings
-        self.settings = Settings()
-        # Returns default value if patternName is None
+        detail = ''
 
         delimiter = import_settings['Delimiter']
+
+        raw_clippings = my_clippings.split(delimiter)
+        if raw_clippings[-1].strip() == '':
+            raw_clippings.pop(-1)
+        try:
+            pattern = re.compile(import_settings['Pattern'], DEFAULT_RE_OPTIONS)
+        except Exception as error:
+            return u'The Import Pattern is invalid.', \
+                   'Import Pattern resulted in the error:\n%s' % str(error.message)
+
         date_format = import_settings['Date Format']
-        encoding = import_settings['Encoding']
-        attachNotes = import_settings['Application Settings']['Attach Notes']['Attach Notes']
-        notesPosition = import_settings['Application Settings']['Attach Notes']['Notes Position']
         language_settings = import_settings['Application Settings']['Language']
         date_language = language_settings['Date Language']
         note_translation = language_settings['Note']
         bookmark_translation = language_settings['Bookmark']
         highlight_translation = language_settings['Highlight']
-        range_indicator = language_settings['Range Separator']
-
-        default_encoding = True
-
-        clip = my_clippings.split(delimiter)
-        if clip[-1].strip() == '':
-            clip.pop(-1)
-        try:
-            pattern = re.compile(import_settings['Pattern'], DEFAULT_RE_OPTIONS)
-        except Exception as error:
-            export_error = QMessageBox()
-            export_error.warning(self, u'Pattern Error', u"The regular expression provided\nas the 'Notes Pattern'\n"
-                                                         u"generated an error:\r\n\r\n%s" % error.message)
 
         import_data = Clippings()
         clipNo = 0
-        for c in clip:
+        for raw_clipping in raw_clippings:
             clipNo += 1
             try:
                 #if c.strip() == '' : continue
+                clipping = pattern.search(raw_clipping.strip())
                 line = {}
-                search = pattern.search(c.strip())
                 emptyHeaders = 0
-                for h in self.tableData.headers:
+                for h in self.headers:
                     try:
                         # Try to convert date to shorter format string, using standard datetime function
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
-                            logger.info("Original date is: '%s'" % search.group(h))
+                            logger.info("Original date is: '%s'" % clipping.group(h))
                             # Attempt to Localize Date
                             if date_language != 'English (default)':
                                 logger.info("... trying to localize date")
                                 try:
                                     local_language = QLocale(getattr(QLocale, import_settings['Application Settings']['Language']['Date Language']))
-                                    date = local_language.toDateTime(search.group(h), date_format)
+                                    date = local_language.toDateTime(clipping.group(h), date_format)
                                     logger.info("... date converted to: '%s'" % date.toString())
                                 except Exception as e:
                                     logger.exception("... error localizing date:\n%s" % e.message)
@@ -222,164 +191,157 @@ class TableModel(QAbstractTableModel):
                                 # Attempt to Standardize Date
                                 if u'%' in date_format:
                                     # The % sign indicates that the pattern is a basic Python format
-                                    date = QDateTime(dt.strptime(search.group(h), date_format))
+                                    date = QDateTime(dt.strptime(clipping.group(h), date_format))
                                 else:
                                     # Otherwise, we assume a Qt Format
-                                    date = QDateTime.fromString(search.group(h), date_format)
+                                    date = QDateTime.fromString(clipping.group(h), date_format)
                             line[h] = {Qt.DisplayRole: QDateTime.toString(date, 'dd.MM.yy, hh:mm'), Qt.EditRole: date}
-                        elif h == 'Note' and search.group('Type') == note_translation:
-                            line[h] = {Qt.DisplayRole: search.group('Text'), Qt.EditRole: search.group('Text')}
-                        elif h == 'Highlight' and search.group('Type') == highlight_translation:
-                            line[h] = {Qt.DisplayRole: search.group('Text'), Qt.EditRole: search.group('Text')}
+                        elif h == 'Note' and clipping.group('Type') == note_translation:
+                            line[h] = {Qt.DisplayRole: clipping.group('Text'), Qt.EditRole: clipping.group('Text')}
+                        elif h == 'Highlight' and clipping.group('Type') == highlight_translation:
+                            line[h] = {Qt.DisplayRole: clipping.group('Text'), Qt.EditRole: clipping.group('Text')}
                         else:
-                            line[h] = {Qt.DisplayRole: search.group(h), Qt.EditRole: search.group(h)}
+                            line[h] = {Qt.DisplayRole: clipping.group(h), Qt.EditRole: clipping.group(h)}
                     except:
                         # If header is not found set it empty string
                         line[h] = {Qt.DisplayRole: '', Qt.EditRole: ''}
                         emptyHeaders += 1
-                        if emptyHeaders == len(self.tableData.headers):
+                        if emptyHeaders == len(self.headers):
                             raise
                 import_data.append(line)
 
-            except:
+            except Exception as e:
                 # Inform about invalid note
-                status += u'\r\nWarning: note %d is empty or in wrong format: \r\n%s\r\n' % (clipNo,
-                                                                                             c.strip())
+                detail += u'\r\nWarning: note %d is empty or in wrong format: \r\n%s\r\n' % \
+                          (clipNo, raw_clipping.strip())
+                logger.exception("Clipping number %s resulted in the exception: %s" % (clipNo, e.message))
                 continue
 
-        status = u'<%s> %d out of %d clippings were successfully processed.\r\n%s' % (
+        detail = u'<%s> %d out of %d clippings were successfully processed.\r\n%s' % (
             QTime.currentTime().toString('hh:mm:ss'),
             len(import_data),
             clipNo,
-            status)
+            detail)
 
         # The original approach did this as lines were imported.  Since Kindle now puts the note before the highlight,
         # we need to post-process the data.
+        attachNotes = import_settings['Application Settings']['Attach Notes']['Attach Notes']
+        notesPosition = import_settings['Application Settings']['Attach Notes']['Notes Position']
+        range_indicator = language_settings['Range Separator']
 
         matched = 0
         if attachNotes == 'True':
             skip = False  # This makes it easy to skip subsequent rows
             for row in range(len(import_data)):
+                # Once we match two lines, we don't want to process the second line again.  This is especially
+                # problematic in Automatic mode since we could match both forward and backwards.
                 if skip:
-                    # Once we do a line match, we don't want to process the second line again.  This is especially
-                    # problemmatic in Automatic mode since we'd match both forward and backwards.
                     skip = False
-                else:
-                    # If the current row is a note, we want to check and see if the next row is a matching highlight
-                    if import_data[row][u'Type'][Qt.DisplayRole] in [note_translation, 'Note']:
-                        # We've found a notes row
-                        # Automatic prefers notes before highlights so we start there
-                        # If the before match fails (or if the user chooses "After highlights"), we try the after match
-                        if (
-                            # We're looking for notes before highlights
-                            # and there is a next row to analyze
-                            # and the next row is a highlight
-                            # and the name of the books match
-                            # and either there is no location on the highlight or the note location falls in the highlight range
-                            # and either there is no page or the highlight or the note page falls in the highlight range
-                            notesPosition == 'Before highlights' or notesPosition == 'Automatic (default)') and \
-                            row < len(import_data) - 1 and \
-                            import_data[row + 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
-                            import_data[row][u'Book'][Qt.DisplayRole] == \
-                                import_data[row + 1][u'Book'][Qt.DisplayRole] and \
-                            any(
-                                (
-                                    int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
-                                    int(import_data[row][u'Location'][Qt.DisplayRole])) == s for s in (
-                                        [int(u'-1')] if import_data[row + 1][u'Location'][Qt.DisplayRole] is None
-                                        else self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole],
-                                                               range_indicator=range_indicator))
-                            ) and any(
-                                (
-                                    int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
-                                    int(import_data[row][u'Page'][Qt.DisplayRole]))== s for s in (
-                                        [int(u'-1')] if import_data[row + 1][u'Page'][Qt.DisplayRole] is None \
-                                        else self.hyphen_range(import_data[row + 1][u'Page'][Qt.DisplayRole],
-                                                               range_indicator=range_indicator))
-                            ):
+                    continue
 
-                            import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
-                            import_data[row][u'Location'] = import_data[row + 1][u'Location']
-                            self.tableData.append(import_data[row])
-                            matched += 1
-                            skip = True
+                # If the current row is a note, we want to check and see if the next row is a matching highlight
+                if import_data[row][u'Type'][Qt.DisplayRole] in [note_translation, 'Note']:
+                    # We've found a notes row
+                    # Automatic prefers notes before highlights so we start there
+                    # If the before match fails (or if the user chooses "After highlights"), we try the after match
+                    if (
+                        # We're looking for notes before highlights
+                        # and there is a next row to analyze
+                        # and the next row is a highlight
+                        # and the name of the books match
+                        # and either there is no location on the highlight or the note location falls in the highlight range
+                        # and either there is no page or the highlight or the note page falls in the highlight range
+                        notesPosition == 'Before highlights' or notesPosition == 'Automatic (default)') and \
+                        row < len(import_data) - 1 and \
+                        import_data[row + 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
+                        import_data[row][u'Book'][Qt.DisplayRole] == \
+                            import_data[row + 1][u'Book'][Qt.DisplayRole] and \
+                        any(
+                            (
+                                int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Location'][Qt.DisplayRole])) == s for s in (
+                                    [int(u'-1')] if import_data[row + 1][u'Location'][Qt.DisplayRole] is None
+                                    else self.hyphen_range(import_data[row + 1][u'Location'][Qt.DisplayRole],
+                                                           range_indicator=range_indicator))
+                        ) and any(
+                            (
+                                int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Page'][Qt.DisplayRole]))== s for s in (
+                                    [int(u'-1')] if import_data[row + 1][u'Page'][Qt.DisplayRole] is None \
+                                    else self.hyphen_range(import_data[row + 1][u'Page'][Qt.DisplayRole],
+                                                           range_indicator=range_indicator))
+                        ):
 
-                        elif (
-                                notesPosition == 'After highlights'
-                                or notesPosition == 'Automatic (default)') and \
-                                row > 0 and \
-                                import_data[row - 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
-                                import_data[row][u'Book'][Qt.DisplayRole] == \
-                                    import_data[row - 1][u'Book'][Qt.DisplayRole] and \
-                                any(
-                                                (
-                                                int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
-                                                int(import_data[row][u'Location'][Qt.DisplayRole])) \
-                                                == s for s in
-                                                ([int(u'-1')] if import_data[row - 1][u'Location'][
-                                                    Qt.DisplayRole] is None else \
-                                                         self.hyphen_range(
-                                                                 import_data[row - 1][u'Location'][Qt.DisplayRole],
-                                                                 range_indicator=range_indicator))
-                                ) and \
-                                any(
-                                                (int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
-                                                 int(import_data[row][u'Page'][Qt.DisplayRole]))
-                                                == s for s in
-                                                ([int(u'-1')] if import_data[row - 1][u'Page'][
-                                                    Qt.DisplayRole] is None else \
-                                                         self.hyphen_range(
-                                                                 import_data[row - 1][u'Page'][Qt.DisplayRole],
-                                                                 range_indicator=range_indicator))
-                                ):
+                        import_data[row][u'Highlight'] = import_data[row + 1][u'Highlight']
+                        import_data[row][u'Location'] = import_data[row + 1][u'Location']
+                        self.append(import_data[row])
+                        matched += 1
+                        skip = True
 
-                            # In case the auto matcher already matched and skipped the previous highlight
-                            if self.tableData[len(self.tableData) - 1][u'Type'][Qt.DisplayRole] == highlight_translation:
-                                # If not, edit the highlight's entry in tableData
-                                self.tableData[len(self.tableData) - 1][u'Note'] = import_data[row][u'Note']
-                                self.tableData[len(self.tableData) - 1][u'Type'] = import_data[row][u'Type']
-                            else:
-                                # If so, attach the highlight to the new note as well
-                                import_data[row][u'Highlight'] = import_data[row - 1][u'Highlight']
-                                self.tableData.append(import_data[row])
-                            matched += 1
+                    elif (
+                        # We're looking for notes after highlights
+                        # and there is a previous row to analyze
+                        # and the previous row is a highlight
+                        # and the name of the books match
+                        # and either there is no location on the highlight or the note location falls in the highlight range
+                        # and either there is no page or the highlight or the note page falls in the highlight range
+                        notesPosition == 'After highlights'
+                        or notesPosition == 'Automatic (default)') and \
+                        row > 0 and \
+                        import_data[row - 1][u'Type'][Qt.DisplayRole] == highlight_translation and \
+                        import_data[row][u'Book'][Qt.DisplayRole] == \
+                            import_data[row - 1][u'Book'][Qt.DisplayRole] and \
+                        any(
+                            (
+                                int(u'-1') if import_data[row][u'Location'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Location'][Qt.DisplayRole])) == s for s in (
+                                    [int(u'-1')] if import_data[row - 1][u'Location'][Qt.DisplayRole] is None else
+                                    self.hyphen_range(import_data[row - 1][u'Location'][Qt.DisplayRole],
+                                                      range_indicator=range_indicator))
+                        ) and any(
+                            (
+                                int(u'-1') if import_data[row][u'Page'][Qt.DisplayRole] is None else
+                                int(import_data[row][u'Page'][Qt.DisplayRole])) == s for s in (
+                                    [int(u'-1')] if import_data[row - 1][u'Page'][Qt.DisplayRole] is None else
+                                    self.hyphen_range(import_data[row - 1][u'Page'][Qt.DisplayRole],
+                                                      range_indicator=range_indicator))
+                        ):
 
+                        # In case the auto matcher already matched and skipped the previous highlight
+                        if self[len(self) - 1][u'Type'][Qt.DisplayRole] == highlight_translation:
+                            # If not, edit the highlight's entry in tableData
+                            self[len(self) - 1][u'Note'] = import_data[row][u'Note']
+                            self[len(self) - 1][u'Type'] = import_data[row][u'Type']
                         else:
-                            self.tableData.append(import_data[row])
+                            # If so, attach the highlight to the new note as well
+                            import_data[row][u'Highlight'] = import_data[row - 1][u'Highlight']
+                            self.append(import_data[row])
+                        matched += 1
 
                     else:
-                        self.tableData.append(import_data[row])
+                        self.append(import_data[row])
+
+                else:
+                    self.append(import_data[row])
 
         else:  # if attach notes flag is not on
             for row in import_data:
-                self.tableData.append(row)
+                self.append(row)
 
         # Pop Import Status Box
+        summary = u'%d out of %d clippings were successfully processed%s' % \
+                  (len(import_data), clipNo, u' ' * 50)
         if len(import_data) == 0 and clipNo > 0:
-            output = u'0 out of %d clippings were imported.  ' % clipNo + \
-                     u'Please verify that you selected the right file or try a different Import Pattern.' + u' ' * 50 + \
-                     u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' ' * 50
+            summary += u'Please verify that you selected the right file or try a different Import Pattern.' + u' ' * 50 + \
+                       u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' ' * 50
         else:
-            output = u'%d out of %d clippings were successfully processed' % (len(import_data), clipNo) + u' ' * 50
             if attachNotes == 'True':
-                output += u'.\r\n - We were able to match %d Note%s with a Highlight' % (
-                matched, ('s' if matched > 1 else '')) + u' ' * 50
+                summary += u'\r\n - We were able to match %d Note%s with a Highlight %s' % \
+                           (matched, ('s' if matched > 1 else ''), u' ' * 50)
                 if matched > 0:
-                    output += u'.\r\n - As a result, fewer lines will show up in the interface.' + u' ' * 50
-            if not default_encoding:
-                output += u'\r\n\r\nNOTE:  The encoding selected for your import pattern did not work.  However, we were ' \
-                          u'able to import using one of our default patterns.  Please review your data and make sure ' \
-                          u'it has imported properly.  If it has not, please select a different import pattern on the ' \
-                          u'Import Tab of Settings.'
-        output += u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
-        import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', output)
-        import_complete.addButton(QMessageBox.Ok)
-        import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
-        import_complete.setDetailedText(status)
-        import_complete.exec_()
+                    summary += u'\r\n - As a result, fewer lines will show up in the interface.' + u' ' * 50
 
-        self.endResetModel()
-        return status
+        return summary, detail
 
     def hyphen_range(self, s, range_indicator='-'):
         """ Takes a range in form of "a-b" and generate a list of numbers between a and b inclusive.
@@ -400,6 +362,39 @@ class TableModel(QAbstractTableModel):
         l = list(r)
         l.sort()
         return l
+
+
+class TableModel(QAbstractTableModel):
+    """
+    Table model, all the data are stored in the Clippings object tableData.
+    Returns status string.
+    """
+    tableData = Clippings()
+
+    def __init__(self, parent=None):
+        QAbstractTableModel.__init__(self, parent)
+        self.tableData = Clippings()
+
+    def parse(self, my_clippings, import_settings, append=True):
+        """
+        Parse data in my_clippings using pattern in import_settings
+        """
+        self.beginResetModel()
+
+        # Clear previous data
+        if not append:
+            self.reset()
+        
+        # Consider loading default import_settings if import_settings is None
+        if import_settings is None:
+            raise ValueError("Import Pattern not selected.")
+
+        summary, detail = self.tableData.import_(my_clippings=my_clippings, import_settings=import_settings)
+        self.endResetModel()
+        return summary, detail
+
+    def reset(self):
+        self.tableData = Clippings()
 
     def rowCount(self, index):
         return len(self.tableData)

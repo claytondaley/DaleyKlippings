@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settingsDialog.ui'
 #
-# Created: Fri May 02 23:20:04 2014
+# Created: Sun May 04 10:26:43 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -181,7 +181,7 @@ class Ui_settingsDialog(object):
         self.labelImportDelimiter.setObjectName(_fromUtf8("labelImportDelimiter"))
         self.gridLayout.addWidget(self.labelImportDelimiter, 0, 0, 1, 1)
         self.editImportDelimiter = QtGui.QLineEdit(self.boxImportPattern)
-        self.editImportDelimiter.setPlaceholderText(_fromUtf8("\\r\\n"))
+        self.editImportDelimiter.setPlaceholderText(_fromUtf8("=========="))
         self.editImportDelimiter.setObjectName(_fromUtf8("editImportDelimiter"))
         self.gridLayout.addWidget(self.editImportDelimiter, 0, 1, 1, 1)
         self.labelImportPattern = QtGui.QLabel(self.boxImportPattern)
@@ -402,7 +402,7 @@ class Ui_settingsDialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(settingsDialog)
-        self.tabsSettings.setCurrentIndex(0)
+        self.tabsSettings.setCurrentIndex(1)
         QtCore.QObject.connect(self.buttonOK, QtCore.SIGNAL(_fromUtf8("clicked()")), settingsDialog.onButtonOK)
         QtCore.QObject.connect(self.buttonApply, QtCore.SIGNAL(_fromUtf8("clicked()")), settingsDialog.onButtonApply)
         QtCore.QObject.connect(self.buttonCancel, QtCore.SIGNAL(_fromUtf8("clicked()")), settingsDialog.onButtonCancel)
