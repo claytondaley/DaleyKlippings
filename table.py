@@ -160,16 +160,28 @@ class Clippings(list):
             headers.append(h)
         # To ensure the table responds to all the right columns, we add the remaining headers.  Our strategy later will
         # set the value of these additional headers to None
+        missing_headers = 0
         for h in self.headers:
             if h not in headers:
+                missing_headers += 1
                 logger.info("Adding %s to headers" % h)
                 detail += '%s was not included in source data so it will be initialized with empty data.\r\n' % h
                 headers.append(h)
+        if missing_headers == len(self.headers):
+            return 'Error importing file. No valid headers found.', \
+                   'The CSV Importer assumes that the first row is a list of headers.  This tells DaleyKlippings ' + \
+                   'how to map the CSV columns to data.  When importing this first row, none of the columns matched ' + \
+                   'the headers expected by DaleyKlippings.  Please confirm that the headers are in English (not ' + \
+                   'the translated versions) and use the same capitalization as the headers in the UI.'
+
         # Now add the actual data, but don't rewind
         for line in csv_reader:
-            logger.info("Processing line %s" % pformat(line))
-            self.append({(k, v) for k, v in itertools.izip_longest(headers, line) if k in self.headers})
-            logger.info("... added")
+            logger.debug("Processing line %s" % pformat(line))
+            self.append(dict(itertools.izip_longest(headers, line)))
+            #self.append({(k, v) for k, v in dict(itertools.izip_longest(headers, line)) if k in self.headers})
+            logger.debug("... added")
+
+        logger.info("After import, object is %s" % pformat(self))
 
         return 'CSV Import Completed', detail
 

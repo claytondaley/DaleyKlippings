@@ -22,7 +22,7 @@
 """
 Main DaleyKlippings window
 """
-import csv
+import unicodecsv as csv
 
 __ver__ = '1.02'
 ## Features: 
@@ -360,51 +360,6 @@ class MainWin(QMainWindow):
             import_error = QMessageBox()
             import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
 
-    def onImportCsv(self):
-        try:
-            # Get Import Pattern
-            sender = self.sender()
-            logger.debug(str(sender.parent()))
-            if sender.parent() == self.menuButtonImport:
-                append = False
-            elif sender.parent() == self.menuButtonAppend:
-                append = True
-
-            file_name = QFileDialog.getOpenFileName(self, '', '',
-                                                    ';;'.join(['Comma Separated Value (*.csv)']))
-            if file_name == '':
-                # This happens when we cancel the file dialog so no need to throw an error
-                return
-            else:
-                file_name = unicode(file_name)
-
-            try:
-                csv_file = open(file_name, 'rb')
-                csv_reader = csv.reader(csv_file)
-            except Exception as e:
-                logger.exception("Could not load CSV file for import\n%s" % e.message)
-                bad_encoding = QMessageBox()
-                informational_text = u'We were unable to import your file.'
-                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
-                raise e
-
-            summary, detail = self.tableModel.from_csv(csv_reader, append=append)
-            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
-                QTime.currentTime().toString('hh:mm:ss'),
-                QDir.dirName(QDir(file_name)),
-                summary
-            )
-            import_complete = QMessageBox(QMessageBox.Information, u'CSV Import Complete', summary)
-            import_complete.addButton(QMessageBox.Ok)
-            import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
-            import_complete.setDetailedText(detail)
-            import_complete.exec_()
-
-        except Exception as error:
-            logger.exception("Exception: %s" % error.message)
-            import_error = QMessageBox()
-            import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
-
     def onExport(self):
         """
         Slot for exportAction signal
@@ -479,27 +434,6 @@ class MainWin(QMainWindow):
         except Exception as error:
             export_error = QMessageBox()
             export_error.warning(self, u'Export Error', u'Error during export.\r\n\r\n' + error.message)
-
-    def onExportCsv(self):
-        filename = QFileDialog.getSaveFileName(self, '', '',
-                                               ';;'.join(['Comma Separated Values (*.CSV)']))
-        if filename == '':
-            # This happens if we cancel the dialog so we don't want to raise an error
-            return
-
-        f = open(filename, 'wb')
-        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
-        writer.writerow(self.tableModel.table_data.headers)
-
-        # This outputs only the rows visible on the screen
-        for row in range(self.proxyModel.rowCount()):
-            writer.writerow([
-                unicode(self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole).toString())
-                for i in range(len(self.tableModel.table_data.headers))
-            ])
-
-        f.close()
-
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:
@@ -592,6 +526,71 @@ class MainWin(QMainWindow):
                                                     Qt.DisplayRole).toString())
         except:
             return u''
+
+    def onImportCsv(self):
+        try:
+            # Get Import Pattern
+            sender = self.sender()
+            logger.debug(str(sender.parent()))
+            if sender.parent() == self.menuButtonImport:
+                append = False
+            elif sender.parent() == self.menuButtonAppend:
+                append = True
+
+            file_name = QFileDialog.getOpenFileName(self, '', '',
+                                                    ';;'.join(['Comma Separated Value (*.csv)']))
+            if file_name == '':
+                # This happens when we cancel the file dialog so no need to throw an error
+                return
+            else:
+                file_name = unicode(file_name)
+
+            try:
+                csv_file = open(file_name, 'rb')
+                csv_reader = csv.reader(csv_file)
+            except Exception as e:
+                logger.exception("Could not load CSV file for import\n%s" % e.message)
+                bad_encoding = QMessageBox()
+                informational_text = u'We were unable to import your file.'
+                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
+                raise e
+
+            summary, detail = self.tableModel.from_csv(csv_reader, append=append)
+            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
+                QTime.currentTime().toString('hh:mm:ss'),
+                QDir.dirName(QDir(file_name)),
+                summary
+            )
+            import_complete = QMessageBox(QMessageBox.Information, u'CSV Import Complete', summary)
+            import_complete.addButton(QMessageBox.Ok)
+            import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
+            import_complete.setDetailedText(detail)
+            import_complete.exec_()
+
+        except Exception as error:
+            logger.exception("Exception: %s" % error.message)
+            import_error = QMessageBox()
+            import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
+
+    def onExportCsv(self):
+        filename = QFileDialog.getSaveFileName(self, '', '',
+                                               ';;'.join(['Comma Separated Values (*.CSV)']))
+        if filename == '':
+            # This happens if we cancel the dialog so we don't want to raise an error
+            return
+
+        f = open(filename, 'wb')
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+        writer.writerow(self.tableModel.table_data.headers)
+
+        # This outputs only the rows visible on the screen
+        for row in range(self.proxyModel.rowCount()):
+            writer.writerow([
+                unicode(self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole).toString())
+                for i in range(len(self.tableModel.table_data.headers))
+            ])
+
+        f.close()
 
     def onFilter(self):
         """
