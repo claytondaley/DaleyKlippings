@@ -22,6 +22,8 @@
 """
 Main DaleyKlippings window
 """
+import csv
+
 __ver__ = '1.02'
 ## Features: 
 ## - default import & export patterns
@@ -116,7 +118,7 @@ class MainWin(QMainWindow):
         self.connect(self.actionFilterAll, SIGNAL('triggered(bool)'), self.onFilterOptionTriggered)
         self.menuFilterOption.addSeparator()
         self.actionFilterHeaders = {}
-        for h in self.tableModel.tableData.headers:
+        for h in self.tableModel.table_data.headers:
             self.actionFilterHeaders[h] = QAction(h, self)
             self.actionFilterHeaders[h].setCheckable(True)
             self.menuFilterOption.addAction(self.actionFilterHeaders[h])
@@ -126,9 +128,24 @@ class MainWin(QMainWindow):
         # Initiate delegates
         typeDelegate = ComboBoxDelegate(self)
         locationDelegate = LocationEditDelegate(self)
-        dateDelegate = DateEditDelegate(self)
-        self.ui.tableView.setItemDelegateForColumn(1, typeDelegate)
-        self.ui.tableView.setItemDelegateForColumn(2, locationDelegate)
+        # Try to localize the dates
+        date_language = self.settings['Application Settings']['Language']['Date Language']
+        if date_language == "English (default)":
+            # This is a default value not available in QLocale
+            date_language = "English"
+        logger.info("Date Lanugage is %s" % date_language)
+        local_language = QLocale(getattr(QLocale, date_language))
+        date_format = local_language.dateFormat(format=QLocale.ShortFormat)
+        time_format = local_language.timeFormat()
+        # Remove time zone if included
+        if time_format[-1:] == "t":
+            time_format = time_format[:-1]
+        logger.info("Localizing date formats to %s %s" % (date_format, time_format))
+        dateDelegate = DateEditDelegate(self, format="%s %s" % (date_format, time_format))
+
+        self.ui.tableView.setItemDelegateForColumn(2, typeDelegate)
+        self.ui.tableView.setItemDelegateForColumn(3, locationDelegate)
+        self.ui.tableView.setItemDelegateForColumn(4, locationDelegate)
         self.ui.tableView.setItemDelegateForColumn(5, dateDelegate)
 
         # Scroll table to the current cell after sorting
@@ -353,7 +370,35 @@ class MainWin(QMainWindow):
             elif sender.parent() == self.menuButtonAppend:
                 append = True
 
+            file_name = QFileDialog.getOpenFileName(self, '', '',
+                                                    ';;'.join(['Comma Separated Value (*.csv)']))
+            if file_name == '':
+                # This happens when we cancel the file dialog so no need to throw an error
+                return
+            else:
+                file_name = unicode(file_name)
 
+            try:
+                csv_file = open(file_name, 'rb')
+                csv_reader = csv.reader(csv_file)
+            except Exception as e:
+                logger.exception("Could not load CSV file for import\n%s" % e.message)
+                bad_encoding = QMessageBox()
+                informational_text = u'We were unable to import your file.'
+                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
+                raise e
+
+            summary, detail = self.tableModel.from_csv(csv_reader, append=append)
+            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
+                QTime.currentTime().toString('hh:mm:ss'),
+                QDir.dirName(QDir(file_name)),
+                summary
+            )
+            import_complete = QMessageBox(QMessageBox.Information, u'CSV Import Complete', summary)
+            import_complete.addButton(QMessageBox.Ok)
+            import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
+            import_complete.setDetailedText(detail)
+            import_complete.exec_()
 
         except Exception as error:
             logger.exception("Exception: %s" % error.message)
@@ -436,7 +481,25 @@ class MainWin(QMainWindow):
             export_error.warning(self, u'Export Error', u'Error during export.\r\n\r\n' + error.message)
 
     def onExportCsv(self):
-        pass
+        filename = QFileDialog.getSaveFileName(self, '', '',
+                                               ';;'.join(['Comma Separated Values (*.CSV)']))
+        if filename == '':
+            # This happens if we cancel the dialog so we don't want to raise an error
+            return
+
+        f = open(filename, 'wb')
+        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+        writer.writerow(self.tableModel.table_data.headers)
+
+        # This outputs only the rows visible on the screen
+        for row in range(self.proxyModel.rowCount()):
+            writer.writerow([
+                unicode(self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole).toString())
+                for i in range(len(self.tableModel.table_data.headers))
+            ])
+
+        f.close()
+
 
     def processWildcard(self, template_name, wildcard, row, dateFormat):
         try:
@@ -568,7 +631,7 @@ class MainWin(QMainWindow):
 
     def onFilterOptionTriggered(self, state):
         sender = self.sender()
-        for h in self.tableModel.tableData.headers:
+        for h in self.tableModel.table_data.headers:
             if sender != self.actionFilterHeaders[h]:
                 self.actionFilterHeaders[h].setEnabled(True)
                 self.actionFilterHeaders[h].setChecked(False)
@@ -577,7 +640,7 @@ class MainWin(QMainWindow):
             self.actionFilterAll.setChecked(False)
 
             self.ui.filterOptionButton.setChecked(True)
-            self.proxyModel.setFilterKeyColumn(self.tableModel.tableData.headers.index(sender.text()))
+            self.proxyModel.setFilterKeyColumn(self.tableModel.table_data.headers.index(sender.text()))
         else:
             self.ui.filterOptionButton.setChecked(False)
             self.proxyModel.setFilterKeyColumn(-1)
