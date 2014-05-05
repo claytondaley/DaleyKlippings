@@ -24,7 +24,7 @@ Main DaleyKlippings window
 """
 import unicodecsv as csv
 
-__ver__ = '1.02'
+__ver__ = '1.3.0'
 ## Features: 
 ## - default import & export patterns
 ## - language settings for highlight, note & bookmark terms
