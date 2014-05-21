@@ -66,6 +66,9 @@ class DateEditDelegate(QStyledItemDelegate):
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
 
+    def displayText(self, value, locale):
+        return value.toDateTime().toString(self.format)
+
 
 class ComboBoxDelegate(QStyledItemDelegate):
     """

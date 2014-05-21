@@ -125,6 +125,12 @@ class MainWin(QMainWindow):
             self.connect(self.actionFilterHeaders[h], SIGNAL('triggered(bool)'), self.onFilterOptionTriggered)
         self.ui.filterOptionButton.setMenu(self.menuFilterOption)
 
+        self.updateDelegates()
+
+        # Scroll table to the current cell after sorting
+        self.connect(self.proxyModel, SIGNAL('layoutChanged()'), self.onLayoutChanged)
+
+    def updateDelegates(self):
         # Initiate delegates
         typeDelegate = ComboBoxDelegate(self)
         locationDelegate = LocationEditDelegate(self)
@@ -133,7 +139,7 @@ class MainWin(QMainWindow):
         if date_language == "English (default)":
             # This is a default value not available in QLocale
             date_language = "English"
-        logger.info("Date Lanugage is %s" % date_language)
+        logger.info("Date Language is %s" % date_language)
         local_language = QLocale(getattr(QLocale, date_language))
         date_format = local_language.dateFormat(format=QLocale.ShortFormat)
         time_format = local_language.timeFormat()
@@ -148,10 +154,11 @@ class MainWin(QMainWindow):
         self.ui.tableView.setItemDelegateForColumn(4, locationDelegate)
         self.ui.tableView.setItemDelegateForColumn(5, dateDelegate)
 
-        # Scroll table to the current cell after sorting
-        self.connect(self.proxyModel, SIGNAL('layoutChanged()'), self.onLayoutChanged)
-
     def initiateToolButtons(self):
+        """
+        This function is called to create the toolbar and anytime settings change (to update the list of patterns
+        in the dropdown.
+        """
         # Import Button
         self.menuButtonImport = QMenu()
         self.menuButtonImport.addAction(self.ui.actionImport)
@@ -698,7 +705,7 @@ class MainWin(QMainWindow):
             logger.exception("Settings.from_json resulted in exception:\n%s" % e.message)
         logging.debug("... new Setting set")
         self.initiateToolButtons()
-
+        self.updateDelegates()
 
 if __name__ == '__main__':
     import StringIO
