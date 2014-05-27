@@ -30,7 +30,6 @@ __ver__ = '1.3.1'
 ## - language settings for highlight, note & bookmark terms
 
 import logging
-from pprint import pformat
 logging.basicConfig(level=logging.INFO)
 handler = logging.StreamHandler()
 logger = logging.getLogger("daley_klippings")
@@ -38,12 +37,7 @@ logger.addHandler(handler)
 logger.info("Loading DaleyKlippings")
 
 import inspect
-
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-import codecs as co
-
-import sys
+from pprint import pformat
 
 from gui.ui_mainWin import *
 from table import *
@@ -59,8 +53,9 @@ class MainWin(QMainWindow):
     def __getattribute__(self, item):
         returned = QMainWindow.__getattribute__(self, item)
         if inspect.isfunction(returned) or inspect.ismethod(returned):
-            logger.debug("Call %s on instance of class %s" % (str(returned),
-            QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
+            logger.debug("Call %s on instance of class %s" % (
+                str(returned),
+                QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
         return returned
 
     def __init__(self, parent=None):
@@ -239,7 +234,7 @@ class MainWin(QMainWindow):
     def onResizeRows(self):
         height = QInputDialog.getInteger(self, 'Rows height', 'Input a new rows height (min = 20 pts)', value=30,
                                          min=20, max=1000)
-        if height[1] == True:
+        if height[1]:
             for i in range(self.proxyModel.rowCount()):
                 self.ui.tableView.setRowHeight(i, height[0])
 
@@ -346,9 +341,9 @@ class MainWin(QMainWindow):
 
             if not default_encoding:
                 summary += u'\r\n\r\nNOTE:  The encoding selected for your import pattern did not work.  However, we were ' \
-                          u'able to import using one of our default patterns.  Please review your data and make sure ' \
-                          u'it has imported properly.  If it has not, please select a different import pattern on the ' \
-                          u'Import Tab of Settings.'
+                           u'able to import using one of our default patterns.  Please review your data and make sure ' \
+                           u'it has imported properly.  If it has not, please select a different import pattern on the ' \
+                           u'Import Tab of Settings.'
             summary += u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
             import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', summary)
             import_complete.addButton(QMessageBox.Ok)
@@ -403,15 +398,19 @@ class MainWin(QMainWindow):
                     body = self.settings['Export Settings'][name]['Body']
                     bottom = self.settings['Export Settings'][name]['Bottom']
                     dateFormat = self.settings['Export Settings'][name]['Date Format']
-                    if dateFormat == '': dateFormat = 'dd.MM.yy, hh:mm'
+                    if dateFormat == '':
+                        dateFormat = 'dd.MM.yy, hh:mm'
                     encoding = self.settings['Export Settings'][name]['Encoding'].split(' ')[0]
-                    if encoding == '': encoding = DEFAULT_ENCODING[0]  #UTF-8
+                    if encoding == '':
+                        encoding = DEFAULT_ENCODING[0]  # UTF-8
                     extension = self.settings['Export Settings'][name]['Extension'].split(',')
-                    if extension[0] == '': extension = DEFAULT_EXTENSION
+                    if extension[0] == '':
+                        extension = DEFAULT_EXTENSION
                     break
             fileName = QFileDialog.getSaveFileName(self, '', '',
                                                    ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
-            if fileName == '': return
+            if fileName == '':
+                return
 
             wildCards = re.findall(r'\?P<(.*?)>', body, re.UNICODE)
 
@@ -452,7 +451,7 @@ class MainWin(QMainWindow):
                 elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Highlight':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Highlight', row, dateFormat)
                 elif self.processWildcard(template_name, 'Type', row, dateFormat) == 'Note' and \
-                                self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
+                        self.processWildcard(template_name, 'Highlight', row, dateFormat) == '':
                     return self.processWildcard(template_name, wildcard[:-4] + 'Note', row, dateFormat)
                 else:
                     response = self.settings['Export Settings'][template_name]['Notes']
@@ -507,7 +506,7 @@ class MainWin(QMainWindow):
                                              :(truncate_len - 3)] + '...'
                         else:
                             replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[
-                                             :(truncate_len)]
+                                             :truncate_len]
                     if len(replace_string) > 0:
                         return replace_string
                 else:
@@ -516,7 +515,7 @@ class MainWin(QMainWindow):
                 if wildcard[8:11].isdigit():
                     truncate_len = int(wildcard[8:11])
                     replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)
-                    if len(replace_string) > truncate_len and truncate_len > 3:
+                    if len(replace_string) > truncate_len > 3:
                         replace_string = self.processWildcard(template_name, wildcard[11:], row, dateFormat)[
                                          :truncate_len]
                     if len(replace_string) > 0:
@@ -709,6 +708,7 @@ class MainWin(QMainWindow):
 
 if __name__ == '__main__':
     import StringIO
+    import sys
 
     log = StringIO.StringIO()
     sys.stdout = log
@@ -720,6 +720,7 @@ if __name__ == '__main__':
     try:
         logger.info("Showing main window")
         mainWin.show()
+        mainWin._
         logger.info("Main window show completed")
     except Exception as e:
         logger.exception("Exception in window.show():\n%s" % e.message)
