@@ -720,7 +720,7 @@ if __name__ == '__main__':
     try:
         logger.info("Showing main window")
         mainWin.show()
-        mainWin._
+        mainWin.raise_()
         logger.info("Main window show completed")
     except Exception as e:
         logger.exception("Exception in window.show():\n%s" % e.message)
