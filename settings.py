@@ -28,8 +28,8 @@ Settings dialog
 """
 
 import inspect
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PySide.QtGui import *
+from PySide.QtCore import *
 import codecs as co
 import simplejson as sj
 import re
@@ -259,12 +259,14 @@ class SettingsDialog(QDialog):
     """
 
     # HACKY BUT FAST WAY TO DEBUG
+    """
     def __getattribute__(self, item):
         returned = QMainWindow.__getattribute__(self, item)
         if inspect.isfunction(returned) or inspect.ismethod(returned):
             logger.debug("Call %s on instance of class %s" % (str(returned),
             QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
         return returned
+    """
 
     ENCODINGS_LIST = [
         'ASCII (English)',

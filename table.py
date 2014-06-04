@@ -25,9 +25,9 @@ logger.info("Loading DaleyKlippings Table Models")
 """
 Table data model, proxy model, data edit delegates, parsing routine, default constants
 """
-from PyQt4 import Qt
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PySide.QtCore import Qt
+from PySide.QtGui import *
+from PySide.QtCore import *
 
 import itertools
 import re
@@ -43,7 +43,7 @@ class DateEditDelegate(QStyledItemDelegate):
     """
 
     def __init__(self, parent=None, format=None):
-        QItemDelegate.__init__(self, parent)
+        QStyledItemDelegate.__init__(self, parent)
         if format is not None:
             self.format = format
         else:
@@ -56,7 +56,7 @@ class DateEditDelegate(QStyledItemDelegate):
         return editor
 
     def setEditorData(self, editor, index):
-        value = index.model().data(index, Qt.EditRole).toDateTime()
+        value = QDateTime(index.model().data(index, Qt.EditRole)).toPython()
         editor.setDateTime(value)
 
     def setModelData(self, editor, model, index):
@@ -67,7 +67,7 @@ class DateEditDelegate(QStyledItemDelegate):
         editor.setGeometry(option.rect)
 
     def displayText(self, value, locale):
-        return value.toDateTime().toString(self.format)
+        return QDateTime(value).toString(self.format)
 
 
 class ComboBoxDelegate(QStyledItemDelegate):
@@ -483,7 +483,7 @@ class TableModel(QAbstractTableModel):
         if role == Qt.EditRole:
             if self.table_data.headers[index.column()] == 'Date':
                 # This is necessary because Qt uses a QVariant to get around typing issues
-                self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toDateTime()
+                self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toPython()
             else:
                 # This is necessary because Qt uses a QVariant to get around typing issues
                 self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toString()

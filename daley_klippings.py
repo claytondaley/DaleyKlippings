@@ -50,6 +50,7 @@ class MainWin(QMainWindow):
     """
 
     # HACKY BUT FAST WAY TO DEBUG
+    """
     def __getattribute__(self, item):
         returned = QMainWindow.__getattribute__(self, item)
         if inspect.isfunction(returned) or inspect.ismethod(returned):
@@ -57,6 +58,7 @@ class MainWin(QMainWindow):
                 str(returned),
                 QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
         return returned
+    """
 
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
@@ -95,7 +97,7 @@ class MainWin(QMainWindow):
         self.proxyModel.setDynamicSortFilter(True)
         self.ui.tableView.setModel(self.proxyModel)
 
-        self.proxyModel.setFilterCaseSensitivity(False)
+        self.proxyModel.setFilterCaseSensitivity(Qt.CaseSensitivity(False))
         self.proxyModel.setFilterKeyColumn(-1)
 
         # Initiate table context menu
@@ -297,7 +299,7 @@ class MainWin(QMainWindow):
             # Load Clippings from File
             file_name = QFileDialog.getOpenFileName(self, '', '',
                                                     ';;'.join(['%s (*.%s)' % (pattern_name, ext) for
-                                                               ext in pattern_settings['Extension'].split(',')]))
+                                                               ext in pattern_settings['Extension'].split(',')]))[0]
             if file_name == '':
                 # This happens when we cancel the file dialog so no need to throw an error
                 return
@@ -526,7 +528,7 @@ class MainWin(QMainWindow):
                     # return data types
             elif wildcard == 'Date':
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
-                                                    Qt.EditRole).toDateTime().toString(dateFormat))
+                                                    Qt.EditRole).toPython().toString(dateFormat))
             else:
                 return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
                                                     Qt.DisplayRole).toString())
@@ -544,7 +546,7 @@ class MainWin(QMainWindow):
                 append = True
 
             file_name = QFileDialog.getOpenFileName(self, '', '',
-                                                    ';;'.join(['Comma Separated Value (*.csv)']))
+                                                    ';;'.join(['Comma Separated Value (*.csv)']))[0]
             if file_name == '':
                 # This happens when we cancel the file dialog so no need to throw an error
                 return
@@ -710,9 +712,9 @@ if __name__ == '__main__':
     import StringIO
     import sys
 
-    log = StringIO.StringIO()
-    sys.stdout = log
-    sys.stderr = log
+#    log = StringIO.StringIO()
+#    sys.stdout = log
+#    sys.stderr = log
     print u'# Log started on %s\n# %s' % (QDateTime.currentDateTime().toString('dd.MM.yy, hh:mm:ss'), '=' * 30)
 
     app = QApplication(sys.argv)
