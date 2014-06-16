@@ -22,12 +22,7 @@
 """
 Main DaleyKlippings window
 """
-import unicodecsv as csv
-
 __ver__ = '1.3.1'
-## Features: 
-## - default import & export patterns
-## - language settings for highlight, note & bookmark terms
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -36,28 +31,15 @@ logger = logging.getLogger("daley_klippings")
 logger.addHandler(handler)
 logger.info("Loading DaleyKlippings")
 
-import inspect
-from pprint import pformat
-
 from gui.ui_mainWin import *
 from table import *
 from settings import *
+import unicodecsv as csv
 
 
 class MainWin(QMainWindow):
     """
     Main DaleyKlippings window class
-    """
-
-    # HACKY BUT FAST WAY TO DEBUG
-    """
-    def __getattribute__(self, item):
-        returned = QMainWindow.__getattribute__(self, item)
-        if inspect.isfunction(returned) or inspect.ismethod(returned):
-            logger.debug("Call %s on instance of class %s" % (
-                str(returned),
-                QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
-        return returned
     """
 
     def __init__(self, parent=None):
@@ -167,6 +149,7 @@ class MainWin(QMainWindow):
         self.menuButtonImport.addSeparator()
         self.customImportActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
+            # Don't display "deleted" items (which must remain the settings file to override the defaults file)
             if 'Deleted' in self.settings['Import Settings'][i]:
                 continue
             self.customImportActions.append(QAction(i, self.menuButtonImport))
@@ -186,6 +169,7 @@ class MainWin(QMainWindow):
         self.menuButtonAppend.addSeparator()
         self.customAppendActions = []
         for i in sorted(self.settings['Import Settings'].keys()):
+            # Don't display "deleted" items (which must remain the settings file to override the defaults file)
             if 'Deleted' in self.settings['Import Settings'][i]:
                 continue
             logger.debug('Added dropdown item %s (append)' % i)
@@ -266,7 +250,7 @@ class MainWin(QMainWindow):
                                 a.emit(SIGNAL('triggered(bool)'), True)
                                 return
             except:
-                print 'No Default key in %s' % unicode(i)
+                logger.error('No Default key in %s' % unicode(i))
 
         # No default found, show error box instead
         no_pattern = QMessageBox()
@@ -375,12 +359,11 @@ class MainWin(QMainWindow):
             try:
                 if self.settings['Export Settings'][unicode(i)]['Default'] == 'True':
                     for a in self.customExportActions:
-                        #print a.text()
                         if a.text() == unicode(i):
                             a.emit(SIGNAL('triggered(bool)'), True)
                             return
             except:
-                print 'No Default key in %s' % unicode(i)
+                logger.error('No Default key in %s' % unicode(i))
 
         # No default found, show error box instead
         no_pattern = QMessageBox()
@@ -436,7 +419,7 @@ class MainWin(QMainWindow):
             export_complete.setInformativeText(u'Data has been exported to "%s"' % QDir.dirName(QDir(fileName)))
             export_complete.exec_()
 
-            print status
+            logger.info(status)
             self.ui.statusBar.showMessage(status, 3000)
 
         except Exception as error:
@@ -594,7 +577,7 @@ class MainWin(QMainWindow):
         # This outputs only the rows visible on the screen
         for row in range(self.proxyModel.rowCount()):
             writer.writerow([
-                unicode(self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole).toString())
+                self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole)
                 for i in range(len(self.tableModel.table_data.headers))
             ])
 
@@ -662,11 +645,11 @@ class MainWin(QMainWindow):
         about.setWindowTitle(u'About...')
         about.setWindowIcon(QIcon(u':/icons/Bloomy/infoabout.png'))
         about.setText(u'<b>DaleyKlippings (ver. %s) — Kindle clippings viewer</b>' % __ver__)
-        about.setInformativeText(u'DaleyKlippings (<a href="https://daleyklippings.claytondaley.com">' +
+        about.setInformativeText(u'DaleyKlippings (<a href="http://daleyklippings.claytondaley.com">' +
                                  u'homepage</a>) is a programm to view, edit and export ' +
                                  u'Kindle highlights, notes, and bookmarks, ' +
                                  u'stored in \'My Clippings.txt\' file.<br>' +
-                                 u'<a href="https://daleyklippings.claytondaley.com/">' +
+                                 u'<a href="http://daleyklippings.claytondaley.com/">' +
                                  u'Author</a>: Clayton Daley, <i>daleyklippings@claytondaley.com</i><br><br>' +
                                  u'Derived from: Klippings v0.1.5<br>' +
                                  u'Author: thearr, <i>hmi@ya.ru</i><br>' +
@@ -680,17 +663,17 @@ class MainWin(QMainWindow):
         if button == QMessageBox.Save:
             try:
                 logFile = co.open('log.txt', 'w', 'utf-16', 'replace')
-                print u'<%s> The log is saved' % (QTime.currentTime().toString('hh:mm:ss'))
+                logger.info(u'<%s> The log is saved' % (QTime.currentTime().toString('hh:mm:ss')))
                 logFile.write(log.getvalue())
                 logFile.close()
             except:
                 QMessageBox.critical(self, u'Error', u'Can\'t save the file')
-                print u'<%s> Unsuccessful attempt to save the log' % (QTime.currentTime().toString('hh:mm:ss'))
+                logger.info(u'<%s> Unsuccessful attempt to save the log' % (QTime.currentTime().toString('hh:mm:ss')))
 
     def onHelp(self):
         import webbrowser
 
-        webbrowser.open_new_tab('https://daleyclippings.claytondaley.com/klippings/')
+        webbrowser.open_new_tab('http://daleyclippings.claytondaley.com/')
 
     def onSettings(self):
         settingsDialog = SettingsDialog(self)
@@ -712,21 +695,19 @@ if __name__ == '__main__':
     import StringIO
     import sys
 
-#    log = StringIO.StringIO()
-#    sys.stdout = log
-#    sys.stderr = log
-    print u'# Log started on %s\n# %s' % (QDateTime.currentDateTime().toString('dd.MM.yy, hh:mm:ss'), '=' * 30)
+    log = StringIO.StringIO()
+
+    logger.info(u'# %s\n# Log started on %s\n# %s' %
+                ('=' * 33, QDateTime.currentDateTime().toString('dd.MM.yy, hh:mm:ss'), '=' * 33))
 
     app = QApplication(sys.argv)
     mainWin = MainWin()
     try:
-        logger.info("Showing main window")
         mainWin.show()
-        mainWin.raise_()
-        logger.info("Main window show completed")
+        # Bring window to the front to cure PyInstaller bug under Mac OS X
+        if osname == 'posix':
+            mainWin.raise_()
     except Exception as e:
-        logger.exception("Exception in window.show():\n%s" % e.message)
-    # Bring window to the front to cure PyInstaller bug under Mac OS X
-    if osname == 'posix':
-        mainWin.raise_()
+        logger.exception("Exception in window.show() or mainWin.raise_():\n%s" % e.message)
+
     sys.exit(app.exec_())

@@ -25,15 +25,9 @@ logger.info("Loading DaleyKlippings Table Models")
 """
 Table data model, proxy model, data edit delegates, parsing routine, default constants
 """
-from PySide.QtCore import Qt
-from PySide.QtGui import *
-from PySide.QtCore import *
-
+from settings import *  # Includes re, PySide
 import itertools
-import re
 from datetime import datetime as dt
-
-from settings import *
 
 
 class DateEditDelegate(QStyledItemDelegate):
@@ -56,12 +50,10 @@ class DateEditDelegate(QStyledItemDelegate):
         return editor
 
     def setEditorData(self, editor, index):
-        value = QDateTime(index.model().data(index, Qt.EditRole)).toPython()
-        editor.setDateTime(value)
+        editor.setDateTime(QDateTime(index.model().data(index, Qt.EditRole)))
 
     def setModelData(self, editor, model, index):
-        value = editor.dateTime().toString(self.format)
-        model.setData(index, editor.dateTime(), Qt.EditRole)
+        model.setData(index, editor.dateTime().toPython(), Qt.EditRole)
 
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
@@ -227,24 +219,24 @@ class Clippings(list):
                         # as QDateTime support only local format strings.
                         # Date converted to QDateTime object for compatibility purpose.
                         if h == 'Date':
-                            logger.info("Original date is: '%s'" % clipping.group(h))
+                            logger.debug("Original date is: '%s'" % clipping.group(h))
                             # Attempt to Localize Date
                             if date_language != 'English (default)':
-                                logger.info("... trying to localize date")
+                                logger.debug("... trying to localize date")
                                 try:
                                     local_language = QLocale(getattr(QLocale, date_language))
-                                    date = local_language.toDateTime(clipping.group(h), date_format)
-                                    logger.info("... date converted to: '%s'" % date.toString())
+                                    date = local_language.toDateTime(clipping.group(h), date_format).toPython()
+                                    logger.debug("... date converted to: '%s'" % str(date))
                                 except Exception as e:
                                     logger.exception("... error localizing date:\n%s" % e.message)
                             else:
                                 # Attempt to Standardize Date
                                 if u'%' in date_format:
                                     # The % sign indicates that the pattern is a basic Python format
-                                    date = QDateTime(dt.strptime(clipping.group(h), date_format))
+                                    date = dt.strptime(clipping.group(h), date_format)
                                 else:
                                     # Otherwise, we assume a Qt Format
-                                    date = QDateTime.fromString(clipping.group(h), date_format)
+                                    date = QDateTime.fromString(clipping.group(h), date_format).toPython()
                             line[h] = date
                         elif h == 'Note' and clipping.group('Type') == note_translation:
                             line[h] = clipping.group('Text')
@@ -254,7 +246,7 @@ class Clippings(list):
                             line[h] = clipping.group(h)
                     except:
                         # If header is not found set it empty string
-                        line[h] = {Qt.DisplayRole: '', Qt.EditRole: ''}
+                        line[h] = ''
                         emptyHeaders += 1
                         if emptyHeaders == len(self.headers):
                             raise
@@ -481,12 +473,15 @@ class TableModel(QAbstractTableModel):
 
     def setData(self, index, value, role):
         if role == Qt.EditRole:
+            self.table_data[index.row()][self.table_data.headers[index.column()]] = value
+            """
             if self.table_data.headers[index.column()] == 'Date':
                 # This is necessary because Qt uses a QVariant to get around typing issues
                 self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toPython()
             else:
                 # This is necessary because Qt uses a QVariant to get around typing issues
                 self.table_data[index.row()][self.table_data.headers[index.column()]] = value
+            """
 
         self.emit(SIGNAL('dataChanged(QModelIndex, QModelIndex)'), index, index)
         return True
