@@ -114,28 +114,40 @@ class Settings(dict):
     def __init__(self, parent=None):
         dict.__init__(self)
 
-        dirs = AppDirs("DaleyKlippings", "Eviduction")
-        self.settings_dir = dirs.user_data_dir + os.sep
-        if not os.path.exists(self.settings_dir):
-            os.makedirs(self.settings_dir)
+        if os.path.exists('portable.txt'):
+            # Portable installation so we want to use the local directory and no additional processing is necessary
+            self.settings_dir = ''
+        else:
+            # Not a portable installation so we need to correctly handle user folders
+            # Start by getting the folder for the user's application data
+            dirs = AppDirs("DaleyKlippings", "Eviduction")
+            self.settings_dir = dirs.user_data_dir + os.sep
+            # If the daleyklippings folder does not exist in the user's application data, create it
+            if not os.path.exists(self.settings_dir):
+                os.makedirs(self.settings_dir)
+            # If the settings file is not in the user data folder but is found in the program folder, move it
+            if not os.path.exists(self.settings_dir + 'settings.txt') and os.path.exists('settings.txt'):
+                logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
+                import shutil
+                shutil.copyfile('settings.txt', self.settings_dir + 'settings.txt')
 
         # Try to open (and apply) the default settings file
         try:
             defaultsFile = co.open('defaults.txt', 'r', 'utf-8')
         except:
-            msg = 'Default settings file "defaults.txt"\nis corrupted or not found.  We will\n' \
+            msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
                   'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
-                  'defaults but you should attempt to\nfix this situation'
+                  'defaults but you should attempt to\nfix this situation.'
             QMessageBox.warning(parent, 'File not found', msg)
         else:
             try:
                 defaults = sj.loads(defaultsFile.read())
             except:
                 defaults = {}
-                msg = 'Settings file "settings.txt" is in the\nwrong format and could not be loaded.\n' \
-                      'The file is probably corrupted.  Please\nrestore an old version of this file from\n' \
-                      'backups or delete the file to use\ndefault settings.'
-                QMessageBox.warning(parent, 'Settings File', msg)
+                msg = 'Default settings file "defaults.txt"\nis in the wrong format and\ncould not be loaded.\n' \
+                      'The file is probably corrupted.  We will\n attempt to proceed using only the\n' \
+                      '"settings.txt" file or built-in\ndefaults but you should attempt to\nfix this situation.'
+                QMessageBox.warning(parent, 'Default Settings File', msg)
             finally:
                 defaultsFile.close()
 
@@ -153,7 +165,6 @@ class Settings(dict):
             self['Application Settings']['Attach Notes'] = self.applicationSettings['Attach Notes']
         if 'Language' not in self['Application Settings']:
             self['Application Settings']['Language'] = self.applicationSettings['Language']
-
 
         # Try to open (and apply) the custom settings file
         try:

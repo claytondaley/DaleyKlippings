@@ -1,0 +1,7 @@
+This file tells the DaleyKlippings executable that this is a portable installation 
+of the DaleyKlippings program.
+
+If you do not leave this file in place, the program will attempt to write the 
+settings file to the current user's application data folder (the precise folder 
+will depend on your OS).  In most cases, this is undesirable because your settings
+will be left behind when you move this folder to a new location.
