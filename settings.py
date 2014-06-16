@@ -93,8 +93,8 @@ class Settings(dict):
 
     applicationSettings = {'Attach Notes':
                            {
-                               'Attach Notes': '',
-                               'Notes Position': ''
+                               'Attach Notes': 'True',
+                               'Notes Position': 'Automatic (default)'
                            },
                            'Language': {
                                'Highlight': '',

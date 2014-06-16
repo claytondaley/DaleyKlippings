@@ -813,7 +813,7 @@ if __name__ == '__main__':
     try:
         mainWin.show()
         # Bring window to the front to cure PyInstaller bug under Mac OS X
-        if osname == 'posix':
+        if os.name == 'posix':
             mainWin.raise_()
     except Exception as e:
         logger.exception("Exception in window.show() or mainWin.raise_():\n%s" % e.message)
