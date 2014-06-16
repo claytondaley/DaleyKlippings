@@ -34,9 +34,8 @@ from os import name as osname
 from pprint import pformat
 from PySide.QtGui import *
 from PySide.QtCore import *
-from appdirs import AppDirs
-
 from gui.ui_settingsDialog import *
+from appdirs import AppDirs
 
 HEADERS = (u'Book',
            u'Author',
