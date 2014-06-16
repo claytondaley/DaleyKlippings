@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
-from copy import deepcopy
 import logging
 logger = logging.getLogger("daley_klippings.settings")
 logger.info("Loading DaleyKlippings Settings Models")
@@ -27,19 +26,15 @@ logger.info("Loading DaleyKlippings Settings Models")
 Settings dialog
 """
 
-import inspect
-from PySide.QtGui import *
-from PySide.QtCore import *
+import re
 import codecs as co
 import simplejson as sj
-import re
-import sys
+from copy import deepcopy
 from os import name as osname
-from os import path, environ
 from pprint import pformat
-
+from PySide.QtGui import *
+from PySide.QtCore import *
 from gui.ui_settingsDialog import *
-import table
 
 HEADERS = (u'Book',
            u'Author',
@@ -71,6 +66,7 @@ DEFAULT_DATE_FORMAT = {'Qt': 'dddd, MMMM dd, yyyy, hh:mm AP',
                        'Python': '%A, %B %d, %Y, %I:%M %p'}
 DEFAULT_ENCODING = ['utf-8', 'utf-16']
 DEFAULT_EXTENSION = ['txt', ]
+
 
 class Settings(dict):
     # Structure of the settings file
@@ -180,7 +176,6 @@ class Settings(dict):
             finally:
                 settingsFile.close()
 
-
     def getImportSettings(self, name=None):
         """
         Returns the requested import profile from the settings, with empty values filled by defaults
@@ -252,20 +247,9 @@ class Settings(dict):
         return sj.dumps(self, indent='\t')
 
 
-
 class SettingsDialog(QDialog):
     """
     Settings dialog class
-    """
-
-    # HACKY BUT FAST WAY TO DEBUG
-    """
-    def __getattribute__(self, item):
-        returned = QMainWindow.__getattribute__(self, item)
-        if inspect.isfunction(returned) or inspect.ismethod(returned):
-            logger.debug("Call %s on instance of class %s" % (str(returned),
-            QMainWindow.__getattribute__(QMainWindow.__getattribute__(self, '__class__'), '__name__')))
-        return returned
     """
 
     ENCODINGS_LIST = [
@@ -951,7 +935,6 @@ class SettingsDialog(QDialog):
 
     def onApplicationBookmarkLanguageChanged(self, text):
         self.settings['Application Settings']['Language']['Bookmark'] = unicode(text)
-
     #End Application Settings Slots
 
     def onButtonOK(self):
