@@ -27,10 +27,10 @@ Settings dialog
 """
 
 import re
+import os
 import codecs as co
 import simplejson as sj
 from copy import deepcopy
-from os import name as osname
 from pprint import pformat
 from PySide.QtGui import *
 from PySide.QtCore import *
@@ -586,10 +586,10 @@ class SettingsDialog(QDialog):
         self.ui.cmbExportEncoding.addItems(self.ENCODINGS_LIST)
 
         # Initiate WhatsThis button for Mac OS X
-        if osname == 'posix':
+        if os.name == 'posix':
             self.actionWhatsThis = QWhatsThis.createAction(self)
             self.ui.buttonWhatsThis.setDefaultAction(self.actionWhatsThis)
-        elif osname == 'nt':
+        elif os.name == 'nt':
             self.ui.buttonWhatsThis.setVisible(False)
 
         # Set validators
