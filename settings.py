@@ -34,6 +34,8 @@ from os import name as osname
 from pprint import pformat
 from PySide.QtGui import *
 from PySide.QtCore import *
+from appdirs import AppDirs
+
 from gui.ui_settingsDialog import *
 
 HEADERS = (u'Book',
@@ -113,6 +115,11 @@ class Settings(dict):
     def __init__(self, parent=None):
         dict.__init__(self)
 
+        dirs = AppDirs("DaleyKlippings", "Eviduction")
+        self.settings_dir = dirs.user_data_dir + os.sep
+        if not os.path.exists(self.settings_dir):
+            os.makedirs(self.settings_dir)
+
         # Try to open (and apply) the default settings file
         try:
             defaultsFile = co.open('defaults.txt', 'r', 'utf-8')
@@ -151,7 +158,7 @@ class Settings(dict):
 
         # Try to open (and apply) the custom settings file
         try:
-            settingsFile = co.open('settings.txt', 'r', 'utf-8')
+            settingsFile = co.open(self.settings_dir + 'settings.txt', 'r', 'utf-8')
         except:
             msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
                   'for you and start DaleyKlippings with the default settings.'
@@ -237,10 +244,10 @@ class Settings(dict):
         logger.info("Staring save...")
         diff = self.get_custom()
         settingsJson = sj.dumps(diff, indent='\t')
-        settingsFile = co.open('settings.bak', 'w', 'utf-8')
+        settingsFile = co.open(self.settings_dir + 'settings.bak', 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
-        settingsFile = co.open('settings.txt', 'w', 'utf-8')
+        settingsFile = co.open(self.settings_dir + 'settings.txt', 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
         logger.info("Save complete, returning JSON of settings...")
