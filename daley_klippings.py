@@ -22,7 +22,7 @@
 """
 Main DaleyKlippings window
 """
-__ver__ = '1.3.1'
+__ver__ = '1.3.2'
 
 import logging
 logging.basicConfig(level=logging.INFO)
