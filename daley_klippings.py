@@ -104,6 +104,7 @@ class MainWin(QMainWindow):
             self.connect(self.actionFilterHeaders[h], SIGNAL('triggered(bool)'), self.onFilterOptionTriggered)
         self.ui.filterOptionButton.setMenu(self.menuFilterOption)
 
+        self.date_format = DEFAULT_DATE_FORMAT['Qt']
         self.updateDelegates()
 
         # Scroll table to the current cell after sorting
@@ -125,8 +126,9 @@ class MainWin(QMainWindow):
         # Remove time zone if included
         if time_format[-1:] == "t":
             time_format = time_format[:-1]
-        logger.info("Localizing date formats to %s %s" % (date_format, time_format))
-        dateDelegate = DateEditDelegate(self, format="%s %s" % (date_format, time_format))
+        self.date_format = "%s %s" % (date_format, time_format)
+        logger.info("Localizing date formats to %s" % self.date_format)
+        dateDelegate = DateEditDelegate(self, format=self.date_format)
 
         self.ui.tableView.setItemDelegateForColumn(2, typeDelegate)
         self.ui.tableView.setItemDelegateForColumn(3, locationDelegate)
@@ -572,14 +574,24 @@ class MainWin(QMainWindow):
 
         f = open(filename, 'wb')
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
+
+        # Write header row
         writer.writerow(self.tableModel.table_data.headers)
 
         # This outputs only the rows visible on the screen
         for row in range(self.proxyModel.rowCount()):
-            writer.writerow([
-                self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole)
-                for i in range(len(self.tableModel.table_data.headers))
-            ])
+            row_data = []
+            for i in range(len(self.tableModel.table_data.headers)):
+                item = self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole)
+                if item and self.tableModel.table_data.headers[i] == 'Date':
+                    if u'%' in self.date_format:
+                        # The % sign indicates that the pattern is a basic Python format
+                        item = item.strftime(self.date_format).strip()
+                    else:
+                        # Otherwise, we assume a Qt Format
+                        item = QDateTime(item).toString(self.date_format).strip()
+                row_data.append(item)
+            writer.writerow(row_data)
 
         f.close()
 
