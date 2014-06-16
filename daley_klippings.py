@@ -410,7 +410,7 @@ class MainWin(QMainWindow):
                         extension = DEFAULT_EXTENSION
                     break
             fileName = QFileDialog.getSaveFileName(self, '', '',
-                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))
+                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in extension]))[0]
             if fileName == '':
                 return
 
@@ -582,7 +582,7 @@ class MainWin(QMainWindow):
 
     def onExportCsv(self):
         filename = QFileDialog.getSaveFileName(self, '', '',
-                                               ';;'.join(['Comma Separated Values (*.CSV)']))
+                                               ';;'.join(['Comma Separated Values (*.CSV)']))[0]
         if filename == '':
             # This happens if we cancel the dialog so we don't want to raise an error
             return

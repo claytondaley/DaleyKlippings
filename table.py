@@ -81,7 +81,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
 
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
-        editor.setAutoCompletion(True)
+        # editor.setAutoCompletion(True)
         # Load language settings
         settings = Settings()['Application Settings']['Language']
         highlight = (settings['Highlight'], 'Highlight')[settings['Highlight'] == '']
@@ -92,7 +92,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
         return editor
 
     def setEditorData(self, editor, index):
-        value = index.model().data(index, Qt.EditRole).toString()
+        value = index.model().data(index, Qt.EditRole)
         editor.setCurrentIndex(editor.findText(value))
 
     def setModelData(self, editor, model, index):
@@ -118,7 +118,7 @@ class LocationEditDelegate(QStyledItemDelegate):
         return editor
 
     def setEditorData(self, editor, index):
-        value = index.model().data(index, Qt.EditRole).toString()
+        value = index.model().data(index, Qt.EditRole)
         editor.setText(value)
 
     def setModelData(self, editor, model, index):
@@ -486,7 +486,7 @@ class TableModel(QAbstractTableModel):
                 self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toPython()
             else:
                 # This is necessary because Qt uses a QVariant to get around typing issues
-                self.table_data[index.row()][self.table_data.headers[index.column()]] = value.toString()
+                self.table_data[index.row()][self.table_data.headers[index.column()]] = value
 
         self.emit(SIGNAL('dataChanged(QModelIndex, QModelIndex)'), index, index)
         return True
