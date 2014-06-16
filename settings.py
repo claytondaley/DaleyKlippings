@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################
 #  DaleyKlippings
-#  Copyright (C) 2012-13 Clayton Daley III
+#  Copyright (C) 2012-14 Clayton Daley III
 #  daleyklippings@gmail.com
 #
 # This program is free software; you can redistribute it and/or
