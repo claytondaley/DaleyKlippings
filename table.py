@@ -59,7 +59,12 @@ class DateEditDelegate(QStyledItemDelegate):
         editor.setGeometry(option.rect)
 
     def displayText(self, value, locale):
-        return QDateTime(value).toString(self.format)
+        if u'%' in self.format:
+            # The % sign indicates that the pattern is a basic Python format
+            return value.strftime(self.format)
+        else:
+            # Otherwise, we assume a Qt Format
+            return QDateTime(value).toString(self.format)
 
 
 class ComboBoxDelegate(QStyledItemDelegate):
