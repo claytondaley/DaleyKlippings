@@ -611,15 +611,34 @@ class SettingsDialog(QDialog):
         # Initiate default Import settings
         self.ui.cmbImportPatternName.addItems(
             # Exclude Deleted items
-            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v]))
-        item = self.ui.cmbImportPatternName.currentText()
+            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v])
+        )
+
+        # Set Import dropdown to default value
+        defaults = [k for k, v in self.settings['Import Settings'].items() if v['Default'] == 'True']
+        if len(defaults) > 0:
+            item = defaults[0]
+        else:
+            item = self.ui.cmbImportPatternName.currentText()
+        index = self.ui.cmbImportPatternName.findText(item)
+        self.ui.cmbImportPatternName.setCurrentIndex(index)
         self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         # Initiate default Export settings
         self.ui.cmbExportPatternName.addItems(
             # Exclude Deleted items
-            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v]))
+            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v])
+        )
         item = self.ui.cmbExportPatternName.currentText()
+
+        # Set Export dropdown to default value
+        defaults = [k for k, v in self.settings['Export Settings'].items() if v['Default'] == 'True']
+        if len(defaults) > 0:
+            item = defaults[0]
+        else:
+            item = self.ui.cmbExportPatternName.currentText()
+        index = self.ui.cmbExportPatternName.findText(item)
+        self.ui.cmbExportPatternName.setCurrentIndex(index)
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         logger.info("Applying Application Settings")

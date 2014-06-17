@@ -1,17 +1,18 @@
 <RCC>
-    <qresource prefix="icons">
-        <file>Bloomy/help.png</file>
-        <file>Bloomy/cut.png</file>
-        <file>Bloomy/textfile.png</file>
-        <file>Bloomy/find1.png</file>
-        <file>Bloomy/add.png</file>
-        <file>Bloomy/addfile.png</file>
-        <file>Bloomy/close.png</file>
-        <file>Bloomy/configure.png</file>
-        <file>Bloomy/delete.png</file>
-        <file>Bloomy/edit.png</file>
-        <file>Bloomy/foldermove.png</file>
-        <file>Bloomy/help.png</file>
-        <file>Bloomy/infoabout.png</file>
-    </qresource>
+  <qresource prefix="icons">
+    <file>Bloomy/help.png</file>
+    <file>Bloomy/cut.png</file>
+    <file>Bloomy/textfile.png</file>
+    <file>daley_klippings.png</file>
+    <file>Bloomy/find1.png</file>
+    <file>Bloomy/add.png</file>
+    <file>Bloomy/addfile.png</file>
+    <file>Bloomy/close.png</file>
+    <file>Bloomy/configure.png</file>
+    <file>Bloomy/delete.png</file>
+    <file>Bloomy/edit.png</file>
+    <file>Bloomy/foldermove.png</file>
+    <file>Bloomy/help.png</file>
+    <file>Bloomy/infoabout.png</file>
+  </qresource>
 </RCC>

@@ -388,7 +388,7 @@ class Ui_settingsDialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(settingsDialog)
-        self.tabsSettings.setCurrentIndex(1)
+        self.tabsSettings.setCurrentIndex(0)
         QtCore.QObject.connect(self.buttonOK, QtCore.SIGNAL("clicked()"), settingsDialog.onButtonOK)
         QtCore.QObject.connect(self.buttonApply, QtCore.SIGNAL("clicked()"), settingsDialog.onButtonApply)
         QtCore.QObject.connect(self.buttonCancel, QtCore.SIGNAL("clicked()"), settingsDialog.onButtonCancel)
