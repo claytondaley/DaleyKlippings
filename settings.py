@@ -27,14 +27,15 @@ Settings dialog
 """
 
 import re
+import os
 import codecs as co
 import simplejson as sj
 from copy import deepcopy
-from os import name as osname
 from pprint import pformat
 from PySide.QtGui import *
 from PySide.QtCore import *
 from gui.ui_settingsDialog import *
+from appdirs import AppDirs
 
 HEADERS = (u'Book',
            u'Author',
@@ -92,8 +93,8 @@ class Settings(dict):
 
     applicationSettings = {'Attach Notes':
                            {
-                               'Attach Notes': '',
-                               'Notes Position': ''
+                               'Attach Notes': 'True',
+                               'Notes Position': 'Automatic (default)'
                            },
                            'Language': {
                                'Highlight': '',
@@ -113,23 +114,40 @@ class Settings(dict):
     def __init__(self, parent=None):
         dict.__init__(self)
 
+        if os.path.exists('portable.txt'):
+            # Portable installation so we want to use the local directory and no additional processing is necessary
+            self.settings_dir = ''
+        else:
+            # Not a portable installation so we need to correctly handle user folders
+            # Start by getting the folder for the user's application data
+            dirs = AppDirs("DaleyKlippings", "Eviduction")
+            self.settings_dir = dirs.user_data_dir + os.sep
+            # If the daleyklippings folder does not exist in the user's application data, create it
+            if not os.path.exists(self.settings_dir):
+                os.makedirs(self.settings_dir)
+            # If the settings file is not in the user data folder but is found in the program folder, move it
+            if not os.path.exists(self.settings_dir + 'settings.txt') and os.path.exists('settings.txt'):
+                logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
+                import shutil
+                shutil.copyfile('settings.txt', self.settings_dir + 'settings.txt')
+
         # Try to open (and apply) the default settings file
         try:
             defaultsFile = co.open('defaults.txt', 'r', 'utf-8')
         except:
-            msg = 'Default settings file "defaults.txt"\nis corrupted or not found.  We will\n' \
+            msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
                   'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
-                  'defaults but you should attempt to\nfix this situation'
+                  'defaults but you should attempt to\nfix this situation.'
             QMessageBox.warning(parent, 'File not found', msg)
         else:
             try:
                 defaults = sj.loads(defaultsFile.read())
             except:
                 defaults = {}
-                msg = 'Settings file "settings.txt" is in the\nwrong format and could not be loaded.\n' \
-                      'The file is probably corrupted.  Please\nrestore an old version of this file from\n' \
-                      'backups or delete the file to use\ndefault settings.'
-                QMessageBox.warning(parent, 'Settings File', msg)
+                msg = 'Default settings file "defaults.txt"\nis in the wrong format and\ncould not be loaded.\n' \
+                      'The file is probably corrupted.  We will\n attempt to proceed using only the\n' \
+                      '"settings.txt" file or built-in\ndefaults but you should attempt to\nfix this situation.'
+                QMessageBox.warning(parent, 'Default Settings File', msg)
             finally:
                 defaultsFile.close()
 
@@ -148,10 +166,9 @@ class Settings(dict):
         if 'Language' not in self['Application Settings']:
             self['Application Settings']['Language'] = self.applicationSettings['Language']
 
-
         # Try to open (and apply) the custom settings file
         try:
-            settingsFile = co.open('settings.txt', 'r', 'utf-8')
+            settingsFile = co.open(self.settings_dir + 'settings.txt', 'r', 'utf-8')
         except:
             msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
                   'for you and start DaleyKlippings with the default settings.'
@@ -237,10 +254,10 @@ class Settings(dict):
         logger.info("Staring save...")
         diff = self.get_custom()
         settingsJson = sj.dumps(diff, indent='\t')
-        settingsFile = co.open('settings.bak', 'w', 'utf-8')
+        settingsFile = co.open(self.settings_dir + 'settings.bak', 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
-        settingsFile = co.open('settings.txt', 'w', 'utf-8')
+        settingsFile = co.open(self.settings_dir + 'settings.txt', 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
         logger.info("Save complete, returning JSON of settings...")
@@ -580,10 +597,10 @@ class SettingsDialog(QDialog):
         self.ui.cmbExportEncoding.addItems(self.ENCODINGS_LIST)
 
         # Initiate WhatsThis button for Mac OS X
-        if osname == 'posix':
+        if os.name == 'posix':
             self.actionWhatsThis = QWhatsThis.createAction(self)
             self.ui.buttonWhatsThis.setDefaultAction(self.actionWhatsThis)
-        elif osname == 'nt':
+        elif os.name == 'nt':
             self.ui.buttonWhatsThis.setVisible(False)
 
         # Set validators
@@ -594,15 +611,34 @@ class SettingsDialog(QDialog):
         # Initiate default Import settings
         self.ui.cmbImportPatternName.addItems(
             # Exclude Deleted items
-            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v]))
-        item = self.ui.cmbImportPatternName.currentText()
+            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v])
+        )
+
+        # Set Import dropdown to default value
+        defaults = [k for k, v in self.settings['Import Settings'].items() if v['Default'] == 'True']
+        if len(defaults) > 0:
+            item = defaults[0]
+        else:
+            item = self.ui.cmbImportPatternName.currentText()
+        index = self.ui.cmbImportPatternName.findText(item)
+        self.ui.cmbImportPatternName.setCurrentIndex(index)
         self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         # Initiate default Export settings
         self.ui.cmbExportPatternName.addItems(
             # Exclude Deleted items
-            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v]))
+            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v])
+        )
         item = self.ui.cmbExportPatternName.currentText()
+
+        # Set Export dropdown to default value
+        defaults = [k for k, v in self.settings['Export Settings'].items() if v['Default'] == 'True']
+        if len(defaults) > 0:
+            item = defaults[0]
+        else:
+            item = self.ui.cmbExportPatternName.currentText()
+        index = self.ui.cmbExportPatternName.findText(item)
+        self.ui.cmbExportPatternName.setCurrentIndex(index)
         self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
 
         logger.info("Applying Application Settings")

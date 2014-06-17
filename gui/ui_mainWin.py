@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWin.ui'
 #
-# Created: Tue Jun 03 21:34:34 2014
+# Created: Mon Jun 16 22:40:09 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -15,7 +15,7 @@ class Ui_mainWin(object):
         mainWin.resize(1100, 600)
         mainWin.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/Bloomy/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/daley_klippings.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         mainWin.setWindowIcon(icon)
         mainWin.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         mainWin.setIconSize(QtCore.QSize(48, 48))

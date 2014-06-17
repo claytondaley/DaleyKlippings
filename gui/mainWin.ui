@@ -17,8 +17,8 @@
    <string>DaleyKlippings</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/Bloomy/edit.png</normaloff>:/icons/Bloomy/edit.png</iconset>
+   <iconset resource="mainWin.qrc">
+    <normaloff>:/icons/daley_klippings.png</normaloff>:/icons/daley_klippings.png</iconset>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -55,7 +55,7 @@
        <string>&amp;Import</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="mainWin.qrc">
         <normaloff>:/icons/Bloomy/add.png</normaloff>:/icons/Bloomy/add.png</iconset>
       </property>
       <property name="iconSize">
@@ -90,7 +90,7 @@
        <string>&amp;Append</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="mainWin.qrc">
         <normaloff>:/icons/Bloomy/addfile.png</normaloff>:/icons/Bloomy/addfile.png</iconset>
       </property>
       <property name="iconSize">
@@ -125,7 +125,7 @@
        <string>&amp;Export</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="mainWin.qrc">
         <normaloff>:/icons/Bloomy/foldermove.png</normaloff>:/icons/Bloomy/foldermove.png</iconset>
       </property>
       <property name="iconSize">
@@ -222,7 +222,7 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="mainWin.qrc">
           <normaloff>:/icons/Bloomy/delete.png</normaloff>:/icons/Bloomy/delete.png</iconset>
         </property>
         <property name="popupMode">
@@ -246,7 +246,7 @@
          <string>▼</string>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="mainWin.qrc">
           <normaloff>:/icons/Bloomy/find1.png</normaloff>:/icons/Bloomy/find1.png</iconset>
         </property>
         <property name="iconSize">
@@ -390,7 +390,7 @@
   </widget>
   <action name="actionImport">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/add.png</normaloff>:/icons/Bloomy/add.png</iconset>
    </property>
    <property name="text">
@@ -408,7 +408,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/close.png</normaloff>:/icons/Bloomy/close.png</iconset>
    </property>
    <property name="text">
@@ -426,7 +426,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/infoabout.png</normaloff>:/icons/Bloomy/infoabout.png</iconset>
    </property>
    <property name="text">
@@ -441,7 +441,7 @@
   </action>
   <action name="actionExport">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/foldermove.png</normaloff>:/icons/Bloomy/foldermove.png</iconset>
    </property>
    <property name="text">
@@ -459,7 +459,7 @@
   </action>
   <action name="actionFilter">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/find1.png</normaloff>:/icons/Bloomy/find1.png</iconset>
    </property>
    <property name="text">
@@ -477,7 +477,7 @@
   </action>
   <action name="actionAppend">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/addfile.png</normaloff>:/icons/Bloomy/addfile.png</iconset>
    </property>
    <property name="text">
@@ -495,7 +495,7 @@
   </action>
   <action name="actionHelp">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/help.png</normaloff>:/icons/Bloomy/help.png</iconset>
    </property>
    <property name="text">
@@ -519,7 +519,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/configure.png</normaloff>:/icons/Bloomy/configure.png</iconset>
    </property>
    <property name="text">
@@ -537,7 +537,7 @@
   </action>
   <action name="actionDeleteRow">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/cut.png</normaloff>:/icons/Bloomy/cut.png</iconset>
    </property>
    <property name="text">
@@ -549,7 +549,7 @@
   </action>
   <action name="actionResizeRowsToContents">
    <property name="icon">
-    <iconset>
+    <iconset resource="mainWin.qrc">
      <normaloff>:/icons/Bloomy/textfile.png</normaloff>:/icons/Bloomy/textfile.png</iconset>
    </property>
    <property name="text">
