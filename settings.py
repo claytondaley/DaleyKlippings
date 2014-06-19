@@ -116,24 +116,24 @@ class Settings(dict):
 
         if os.path.exists('portable.txt'):
             # Portable installation so we want to use the local directory and no additional processing is necessary
-            self.settings_dir = ''
+            self.settings_dir = os.path.dirname(__file__)
         else:
             # Not a portable installation so we need to correctly handle user folders
             # Start by getting the folder for the user's application data
             dirs = AppDirs("DaleyKlippings", "Eviduction")
-            self.settings_dir = dirs.user_data_dir + os.sep
+            self.settings_dir = dirs.user_data_dir
             # If the daleyklippings folder does not exist in the user's application data, create it
             if not os.path.exists(self.settings_dir):
                 os.makedirs(self.settings_dir)
             # If the settings file is not in the user data folder but is found in the program folder, move it
-            if not os.path.exists(self.settings_dir + 'settings.txt') and os.path.exists('settings.txt'):
+            if not os.path.exists(os.path.join(self.settings_dir, 'settings.txt')) and os.path.exists('settings.txt'):
                 logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
                 import shutil
-                shutil.copyfile('settings.txt', self.settings_dir + 'settings.txt')
+                shutil.copyfile('settings.txt', os.path.join(self.settings_dir, 'settings.txt'))
 
         # Try to open (and apply) the default settings file
         try:
-            defaultsFile = co.open('defaults.txt', 'r', 'utf-8')
+            defaultsFile = co.open(os.path.join(os.path.dirname(__file__),'defaults.txt'), 'r', 'utf-8')
         except:
             msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
                   'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
@@ -168,7 +168,7 @@ class Settings(dict):
 
         # Try to open (and apply) the custom settings file
         try:
-            settingsFile = co.open(self.settings_dir + 'settings.txt', 'r', 'utf-8')
+            settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'r', 'utf-8')
         except:
             msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
                   'for you and start DaleyKlippings with the default settings.'
@@ -254,10 +254,10 @@ class Settings(dict):
         logger.info("Staring save...")
         diff = self.get_custom()
         settingsJson = sj.dumps(diff, indent='\t')
-        settingsFile = co.open(self.settings_dir + 'settings.bak', 'w', 'utf-8')
+        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.bak'), 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
-        settingsFile = co.open(self.settings_dir + 'settings.txt', 'w', 'utf-8')
+        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
         logger.info("Save complete, returning JSON of settings...")
