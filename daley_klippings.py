@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+    #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ########################################################################
 #  DaleyKlippings
@@ -495,7 +495,8 @@ class MainWin(QMainWindow):
             if fileName == '':
                 return
 
-            wildCards = re.findall(r'\?P<(.*?)>', body, re.UNICODE)
+            wildCards = re.findall(r'\?P<([^>]+)>', body, re.UNICODE)
+            logger.info("wildCards are %s" % pformat(wildCards))
 
             fileOut = co.open(unicode(fileName), 'w', encoding, 'replace')
             fileOut.write(header)
@@ -572,9 +573,15 @@ class MainWin(QMainWindow):
                        self.processWildcard(template_name, u'XmlSafe' + wildcard[11:], row, dateFormat) + \
                        u'</span>'
             elif wildcard[:7] == 'XmlSafe':
-                return re.sub("<", "&lt;", re.sub(">", "&gt;", re.sub("&", "&amp;",
-                                                                      self.processWildcard(template_name, wildcard[7:],
-                                                                                           row, dateFormat))))
+                return re.sub('<', '&lt;', re.sub('>', '&gt;', re.sub('&',
+                                                                      '&amp;',
+                                                                      self.processWildcard(
+                                                                          template_name,
+                                                                          wildcard[7:],
+                                                                          row,
+                                                                          dateFormat))
+                                                  )
+                              )
             elif wildcard[:4] == 'Span':
                 return u'<span title="value_' + wildcard[11:].lower() + u'">' + \
                        self.processWildcard(template_name, wildcard[4:], row, dateFormat) + u'</span>'
@@ -608,12 +615,21 @@ class MainWin(QMainWindow):
 
                     # return data types
             elif wildcard == 'Date':
-                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
-                                                    Qt.EditRole).toPython().toString(dateFormat))
+                #return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
+                #                                    Qt.EditRole).toPython().toString(dateFormat))
+                item = self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole)
+                if u'%' in self.date_format:
+                    # The % sign indicates that the pattern is a basic Python format
+                    return item.strftime(self.date_format).strip()
+                else:
+                    # Otherwise, we assume a Qt Format
+                    return QDateTime(item).toString(self.date_format).strip()
             else:
-                return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
-                                                    Qt.DisplayRole).toString())
-        except:
+                #return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
+                #                                    Qt.DisplayRole).toString())
+                return self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole)
+        except Exception as err:
+            logger.exception("Error: " + err.message)
             return u''
 
     def onImportCsv(self):
