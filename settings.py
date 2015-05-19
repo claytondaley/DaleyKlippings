@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ########################################################################
 #  DaleyKlippings
-#  Copyright (C) 2012-14 Clayton Daley III
+#  Copyright (C) 2012-15 Clayton Daley III
 #  daleyklippings@gmail.com
 #
 # This program is free software; you can redistribute it and/or
@@ -262,6 +262,68 @@ class Settings(dict):
         settingsFile.close()
         logger.info("Save complete, returning JSON of settings...")
         return sj.dumps(self, indent='\t')
+
+
+class DefaultsStore(object):
+    def load(self, ui=None):
+        # Try to open (and apply) the default settings file
+        try:
+            defaultsFile = co.open(os.path.join(os.path.dirname(__file__),'defaults.txt'), 'r', 'utf-8')
+        except:
+            msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
+                  'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
+                  'defaults but you should attempt to\nfix this situation.'
+            QMessageBox.warning(ui, 'File not found', msg)
+        else:
+            try:
+                defaults = sj.loads(defaultsFile.read())
+            except:
+                defaults = {}
+                msg = 'Default settings file "defaults.txt"\nis in the wrong format and\ncould not be loaded.\n' \
+                      'The file is probably corrupted.  We will\n attempt to proceed using only the\n' \
+                      '"settings.txt" file or built-in\ndefaults but you should attempt to\nfix this situation.'
+                QMessageBox.warning(ui, 'Default Settings File', msg)
+            finally:
+                defaultsFile.close()
+
+
+class SettingsStore(object):
+    """
+    Class that knows how to get and store a settings object as a Json File
+    """
+    def __init__(self):
+        if os.path.exists('portable.txt'):
+            # Portable installation so we want to use the local directory and no additional processing is necessary
+            self.settings_dir = os.path.dirname(__file__)
+        else:
+            # Not a portable installation so we need to correctly handle user folders
+            # Start by getting the folder for the user's application data
+            dirs = AppDirs("DaleyKlippings", "Eviduction")
+            self.settings_dir = dirs.user_data_dir
+            # If the daleyklippings folder does not exist in the user's application data, create it
+            if not os.path.exists(self.settings_dir):
+                os.makedirs(self.settings_dir)
+            # If the settings file is not in the user data folder but is found in the program folder, move it
+            if not os.path.exists(os.path.join(self.settings_dir, 'settings.txt')) and os.path.exists('settings.txt'):
+                logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
+                import shutil
+                shutil.copyfile('settings.txt', os.path.join(self.settings_dir, 'settings.txt'))
+
+    def save(self, settings):
+        logger.info("Staring save...")
+        # Get changes between existing settings and default file
+        diff = settings.get_custom()
+        settingsJson = sj.dumps(diff, indent='\t')
+        # Overwrite backup file
+        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.bak'), 'w', 'utf-8')
+        settingsFile.write(settingsJson)
+        settingsFile.close()
+        # OVerwrite settings file
+        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'w', 'utf-8')
+        settingsFile.write(settingsJson)
+        settingsFile.close()
+        logger.info("Save complete, returning JSON of settings...")
+        return sj.dumps(settings, indent='\t')
 
 
 class SettingsDialog(QDialog):
