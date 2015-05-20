@@ -19,12 +19,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
 import logging
+from PySide.QtCore import QDateTime, Qt
+
 logger = logging.getLogger("daley_klippings.delegators")
-logger.info("Loading DaleyKlippings Settings Models")
+logger.info("Loading DaleyKlippings Delegators")
 
-from settings import *  # Includes re, PySide, pformat
+from PySide.QtGui import QStyledItemDelegate, QDateTimeEdit, QComboBox, QLineEdit
 
-# Helper classes for table UI in main window
+
+# Helper classes for date cells in the table UI
 class DateEditDelegate(QStyledItemDelegate):
     """
     Date edit delegate, attempts to localize dates, defaulting to 'dd.MM.yy, hh:mm'
@@ -62,25 +65,20 @@ class DateEditDelegate(QStyledItemDelegate):
             return QDateTime(value).toString(self.format)
 
 
+# Helper class for clippings types in the table UI
 class ComboBoxDelegate(QStyledItemDelegate):
     """
     Type of the note edit delegate, QComboBox with 3 predefined values:
     Highlight, Bookmark, Note.
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, language, parent=None):
         QStyledItemDelegate.__init__(self, parent)
+        self.language = language
 
     def createEditor(self, parent, option, index):
         editor = QComboBox(parent)
-        # editor.setAutoCompletion(True)
-        # Load language settings
-        settings = Settings()['Application Settings']['Language']
-        highlight = (settings['Highlight'], 'Highlight')[settings['Highlight'] == '']
-        note = (settings['Note'], 'Note')[settings['Note'] == '']
-        bookmark = (settings['Bookmark'], 'Bookmark')[settings['Bookmark'] == '']
-
-        editor.addItems([highlight, note, bookmark])
+        editor.addItems([self.language['Highlight'], self.language['Note'], self.language['Bookmark']])
         return editor
 
     def setEditorData(self, editor, index):
@@ -95,6 +93,7 @@ class ComboBoxDelegate(QStyledItemDelegate):
         editor.setGeometry(option.rect)
 
 
+# Helper type for location (and page) ranges in the table UI
 class LocationEditDelegate(QStyledItemDelegate):
     """
     Loctaion edit delegate, QLineEdit with mask

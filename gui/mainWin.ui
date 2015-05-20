@@ -596,42 +596,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionImport</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWin</receiver>
-   <slot>onImport()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>260</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionAbout</sender>
    <signal>triggered()</signal>
    <receiver>mainWin</receiver>
    <slot>onAbout()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>272</x>
-     <y>271</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionExport</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWin</receiver>
-   <slot>onExport()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -666,8 +634,8 @@
    <slot>onFilterInput(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>191</x>
-     <y>496</y>
+     <x>203</x>
+     <y>556</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -682,28 +650,12 @@
    <slot>onFilter()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>8</x>
-     <y>478</y>
+     <x>21</x>
+     <y>557</y>
     </hint>
     <hint type="destinationlabel">
      <x>39</x>
      <y>509</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionAppend</sender>
-   <signal>triggered()</signal>
-   <receiver>mainWin</receiver>
-   <slot>onImport()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>324</x>
-     <y>267</y>
     </hint>
    </hints>
   </connection>
@@ -714,8 +666,8 @@
    <slot>onFilterCaseState(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>486</y>
+     <x>301</x>
+     <y>554</y>
     </hint>
     <hint type="destinationlabel">
      <x>324</x>
@@ -778,8 +730,8 @@
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>28</x>
-     <y>170</y>
+     <x>29</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

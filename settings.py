@@ -19,6 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
 import logging
+from PySide.QtCore import QRegExp, SIGNAL, Qt
+from PySide.QtGui import QMessageBox, QDialog, QWhatsThis, QRegExpValidator, QInputDialog, QApplication
+from gui.ui_settingsDialog import Ui_settingsDialog
+
 logger = logging.getLogger("daley_klippings.settings")
 logger.info("Loading DaleyKlippings Settings Models")
 
@@ -26,272 +30,177 @@ logger.info("Loading DaleyKlippings Settings Models")
 Settings dialog
 """
 
-import re
 import os
-import codecs as co
-import simplejson as sj
+import codecs
 from copy import deepcopy
-from pprint import pformat
-from PySide.QtGui import *
-from PySide.QtCore import *
-from gui.ui_settingsDialog import *
+import simplejson as sj
 from appdirs import AppDirs
 
-HEADERS = (u'Book',
-           u'Author',
-           u'Type',
-           u'Page',
-           u'Location',
-           u'Date',
-           u'Highlight',
-           u'Note')
-DEFAULT_DELIMITER = '=' * 10
-DEFAULT_PATTERN = ur"""
-                ^\s*                           	#
-                (?P<%s>.*?)                     # Book name
-                (Inactive (?P<%s>.*?))?         # Eats up Author Header
-                \s*-\                           #
-                (?P<%s>\w*)                     # Clipping type
-                (Inactive (?P<%s>.*?))?         # Eats up Page Header
-                .*(Loc.|Page)\                  #
-                (?P<%s>[\d-]*)           	    # Location
-                .*?Added\ on\             	    #
-                (?P<%s>(.*)(AM|PM))             # Date & time
-                \s*                            	#
-                (Inactive (?P<%s>.*?))?         # Eats up Highlight Header
-                (Inactive (?P<%s>.*?))?         # Eats up Note Header
-                \s*$ 		                    #
-                """ % HEADERS
-DEFAULT_RE_OPTIONS = re.UNICODE | re.VERBOSE | re.DOTALL
-DEFAULT_DATE_FORMAT = {'Qt': 'dddd, MMMM dd, yyyy, hh:mm AP',
-                       'Python': '%A, %B %d, %Y, %I:%M %p'}
-DEFAULT_ENCODING = ['utf-8', 'utf-16']
-DEFAULT_EXTENSION = ['txt', ]
+
+class ImportPattern(dict):
+    VERSION = '1.0'
+    DEFAULTS = {
+        'Version': VERSION,
+        'Pattern': ur"""
+# --== SAMPLE PATTERN ==--
+# Import notes, highlights, and bookmarks from "My Clippings.txt"
+# Note that VERBOSE and UNICODE options are always on
+
+^\s*                                  #
+(?P<Book>.*?)                         # Book name
+(\s*\((?P<Author>[^\()]*)\))?         # Author name (optional)
+\s*-\ Your\                           #
+(?P<Type>(Highlight|Note|Bookmarks))  # Clipping type
+(\ on\ Page\                          #
+(?P<Page>[\d-]*)\ \|)?                # Page (optional)
+(.*(Location|Loc.)\                   #
+(?P<Location>[\d-]*))?                # Location (optional)
+.*?Added\ on\                         #
+(?P<Date>(.*)([0-9:]{5})\ (AM|PM))    # Date & time
+\s*                                   #
+(?P<Text>.*?)                         # Text
+\s*$                                  #""",
+        'Default': 'False',
+        'Delimiter': '=' * 10,
+        'Date Format': 'dddd, MMMM dd, yyyy, hh:mm AP',
+        'Encoding': 'UTF-8 (all languages)',
+        'Extension': 'txt'
+    }
+    SAMPLE_DATE_FORMATS = {'Qt': 'dddd, MMMM dd, yyyy, hh:mm AP',
+                           'Python': '%A, %B %d, %Y, %I:%M %p'}
+
+    def __init__(self, settings=None):
+        dict.__init__(self)
+        self.update(self.DEFAULTS)
+        if settings is not None:
+            settings = deepcopy(settings)
+            if 'Version' not in settings or settings['Version'] != self.VERSION:
+                self.upgrade(settings)
+            self.update(settings)
+
+    def upgrade(self, settings):
+        if 'Version' not in settings:
+            settings['Version'] = '1.0'
+        # Mutable, but returned for convenience
+        return settings
+
+    def delete(self):
+        self['Deleted'] = "True"
+
+
+class ExportPattern(dict):
+    VERSION = '1.0'
+    DEFAULTS = {
+        'Version': VERSION,
+        'Default': 'False',
+        'Header': '',
+        'Body': '',
+        'Notes': '',
+        'Bottom': '',
+        'Date Format': 'yyyy-MM-dd HH:mm',
+        'Extension': 'txt',
+        'Encoding': 'UTF-8 (all languages)'
+    }
+
+    def __init__(self, settings=None):
+        dict.__init__(self)
+        self.update(self.DEFAULTS)
+        if settings is not None:
+            if 'Version' not in settings or settings['Version'] != self.VERSION:
+                self.upgrade(settings)
+            self.update(settings)
+
+    def upgrade(self, settings):
+        if 'Version' not in settings:
+            settings['Version'] = '1.0'
+        # Mutable, but returned for convenience
+        return settings
 
 
 class Settings(dict):
-    # Structure of the settings file
-    settings = {'Import Settings': {},
-                'Export Settings': {},
-                'Application Settings': {}}
+    VERSION = '1.0'
+    ENGLISH = {
+        'Highlight': 'Highlight',
+        'Note': 'Note',
+        'Bookmark': 'Bookmark',
+        'Range Separator': '-',
+        'Date Language': 'English (default)'
+    }
+    DEFAULTS = {
+        'Version': VERSION,
+        'Import Settings': {'Sample Pattern': ImportPattern()},
+        'Export Settings': {'Sample Pattern': ExportPattern()},
+        'Notes': {
+            'Attach': 'True',
+            'Position': 'Automatic (default)'
+        },
+        'Language': ENGLISH
+    }
 
-    importSettings = {'Pattern': '',
-                      'Default': '',
-                      'Delimiter': '',
-                      'Date Format': '',
-                      'Encoding': '',
-                      'Extension': ''}
-
-    exportSettings = {'Default': '',
-                      'Header': '',
-                      'Body': '',
-                      'Notes': '',
-                      'Bottom': '',
-                      'Date Format': '',
-                      'Extension': '',
-                      'Encoding': ''}
-
-    applicationSettings = {'Attach Notes':
-                           {
-                               'Attach Notes': 'True',
-                               'Notes Position': 'Automatic (default)'
-                           },
-                           'Language': {
-                               'Highlight': '',
-                               'Note': '',
-                               'Bookmark': '',
-                               'Range Separator': '',
-                               'Date Language': 'English (default)'
-                           }}
-
-    @classmethod
-    def from_json(cls, json):
-        self = cls.__new__(cls)
+    def __init__(self, defaults=None):
         dict.__init__(self)
-        self.update(sj.loads(unicode(json)))
-        return self
+        # Ensure base structure is present
+        dict.update(self, deepcopy(self.DEFAULTS))
+        # If defaults aren't provided, use embedded defaults
+        if defaults is not None:
+            # Upgrade defaults to the current version
+            if 'Version' not in defaults or defaults['Version'] != self.VERSION:
+                self.upgrade(defaults)
+            # Apply defaults to settings
+            self.update(defaults)
 
-    def __init__(self, parent=None):
-        dict.__init__(self)
-
-        if os.path.exists('portable.txt'):
-            # Portable installation so we want to use the local directory and no additional processing is necessary
-            self.settings_dir = os.path.dirname(__file__)
-        else:
-            # Not a portable installation so we need to correctly handle user folders
-            # Start by getting the folder for the user's application data
-            dirs = AppDirs("DaleyKlippings", "Eviduction")
-            self.settings_dir = dirs.user_data_dir
-            # If the daleyklippings folder does not exist in the user's application data, create it
-            if not os.path.exists(self.settings_dir):
-                os.makedirs(self.settings_dir)
-            # If the settings file is not in the user data folder but is found in the program folder, move it
-            if not os.path.exists(os.path.join(self.settings_dir, 'settings.txt')) and os.path.exists('settings.txt'):
-                logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
-                import shutil
-                shutil.copyfile('settings.txt', os.path.join(self.settings_dir, 'settings.txt'))
-
-        # Try to open (and apply) the default settings file
-        try:
-            defaultsFile = co.open(os.path.join(os.path.dirname(__file__),'defaults.txt'), 'r', 'utf-8')
-        except:
-            msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
-                  'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
-                  'defaults but you should attempt to\nfix this situation.'
-            QMessageBox.warning(parent, 'File not found', msg)
-        else:
-            try:
-                defaults = sj.loads(defaultsFile.read())
-            except:
-                defaults = {}
-                msg = 'Default settings file "defaults.txt"\nis in the wrong format and\ncould not be loaded.\n' \
-                      'The file is probably corrupted.  We will\n attempt to proceed using only the\n' \
-                      '"settings.txt" file or built-in\ndefaults but you should attempt to\nfix this situation.'
-                QMessageBox.warning(parent, 'Default Settings File', msg)
-            finally:
-                defaultsFile.close()
-
-        self.defaults = deepcopy(defaults)
-        self.update(defaults)
-        # Providing minimal data structure if defaults did not
-        if 'Import Settings' not in self:
-            self['Import Settings'] = {}
-        if 'Export Settings' not in self:
-            self['Export Settings'] = {}
-        if 'Application Settings' not in self:
-            self['Application Settings'] = {}
-        # Must provide default settings for these since this could be the only way they get values
-        if 'Attach Notes' not in self['Application Settings']:
-            self['Application Settings']['Attach Notes'] = self.applicationSettings['Attach Notes']
-        if 'Language' not in self['Application Settings']:
-            self['Application Settings']['Language'] = self.applicationSettings['Language']
-
-        # Try to open (and apply) the custom settings file
-        try:
-            settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'r', 'utf-8')
-        except:
-            msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
-                  'for you and start DaleyKlippings with the default settings.'
-            QMessageBox.warning(parent, 'File not found', msg)
-            # Create settings file to prevent the error from recurring
-            self.save()
-        else:
-            try:
-                settings = sj.loads(settingsFile.read())
-            except:
-                settings = {}
-                msg = 'Settings file "settings.txt" is in the\nwrong format and could not be loaded.\n' \
-                      'The file is probably corrupted. Please\nrestore an old version of this file from\n' \
-                      'backups or delete the file to use\ndefault settings'
-                QMessageBox.warning(parent, 'Settings File', msg)
+    def upgrade(self, settings):
+        # Upgrade settings that are
+        if 'Version' not in self:
+            logging.info("Upgrading settings from unversioned file.")
+            settings['Notes'] = settings['Application Settings']['Attach Notes']
+            del(settings['Application Settings']['Attach Notes'])
+            settings['Notes']['Attach'] = settings['Notes']['Attach Notes']
+            del(settings['Notes']['Attach Notes'])
+            settings['Notes']['Position'] = settings['Notes']['Notes Position']
+            del(settings['Notes']['Notes Position'])
+            if 'Language' not in settings['Application Settings']:
+                settings['Language'] = self.ENGLISH
             else:
-                # Apply custom settings (if they exist)
-                self['Import Settings'].update(settings['Import Settings'])
-                self['Export Settings'].update(settings['Export Settings'])
-                self['Application Settings']['Attach Notes'].update(settings['Application Settings']['Attach Notes'])
-                self['Application Settings']['Language'].update(settings['Application Settings']['Language'])
-            finally:
-                settingsFile.close()
+                settings['Language'] = settings['Application Settings']['Language']
+                del(settings['Application Settings']['Language'])
+            del(settings['Application Settings'])
+            settings['Version'] = '1.0'
+        # Mutable, but returned for convenience
+        return settings
 
     def getImportSettings(self, name=None):
         """
         Returns the requested import profile from the settings, with empty values filled by defaults
         """
-        if name is None:
-            settings = deepcopy(self.importSettings)
-        else:
-            settings = deepcopy(self['Import Settings'][name])
+        return self['ImportSettings'][name]
 
-        # Check for empty/non-existent values and set to defaults
-        if settings['Delimiter'] == '':
-            settings['Delimiter'] = DEFAULT_DELIMITER
-        if settings['Date Format'] == '':
-            settings['Date Format'] = DEFAULT_DATE_FORMAT['Qt']
-        if settings['Encoding'] == '':
-            settings['Encoding'] = DEFAULT_ENCODING[0]  # UTF-8
-        if settings['Extension'] == '':
-            settings['Extension'] = DEFAULT_EXTENSION[0]
+    def update(self, settings):
+        settings = deepcopy(settings)
+        for k, v in settings['Import Settings'].iteritems():
+            self['Import Settings'][k] = ImportPattern(v)
+        del settings['Import Settings']
+        for k, v in settings['Export Settings'].iteritems():
+            self['Export Settings'][k] = ExportPattern(v)
+        del settings['Export Settings']
+        dict.update(self, settings)
+        del settings
 
-        # Add application-wide settings
-        settings['Application Settings'] = self['Application Settings']
+    def addImportPattern(self, name):
+        self['Import Settings'][name] = ImportPattern()
 
-        # Check for empty/non-existent values and set to defaults
-        if settings['Application Settings']['Language']['Range Separator'] == '':
-            settings['Application Settings']['Language']['Range Separator'] = '-'
-        if settings['Application Settings']['Language']['Highlight'] == '':
-            settings['Application Settings']['Language']['Highlight'] = 'Highlight'
-        if settings['Application Settings']['Language']['Bookmark'] == '':
-            settings['Application Settings']['Language']['Bookmark'] = 'Bookmark'
-        if settings['Application Settings']['Language']['Note'] == '':
-            settings['Application Settings']['Language']['Note'] = 'Note'
-        return settings
-
-    def get_custom(self, defaults=None):
-        logger.info("Starting diff...")
-        if defaults is None and self.defaults is None:
-            logger.info("... defaults not found, returning self")
-            return self
-        elif defaults is None:
-            logger.info("... getting defaults from object, with type %s" % type(self.defaults))
-            defaults = deepcopy(self.defaults)
-
-        diff = deepcopy(self)
-        logger.info("Parsing Import Settings to find duplicates with default.")
-        for key, value in diff['Import Settings'].items():
-            if key in defaults['Import Settings'] and defaults['Import Settings'][key] == value:
-                logger.debug("Import Pattern '%s' duplicates defaults" % key)
-                del diff['Import Settings'][key]
-        logger.info("Parsing Export Settings to find duplicates with default.")
-        for key, value in diff['Export Settings'].items():
-            if key in defaults['Export Settings'] and defaults['Export Settings'][key] == value:
-                logger.debug("Import Pattern '%s' duplicates defaults" % key)
-                del diff['Export Settings'][key]
-
-        logger.info("Diff complete...")
-        return diff
-
-    def save(self):
-        logger.info("Staring save...")
-        diff = self.get_custom()
-        settingsJson = sj.dumps(diff, indent='\t')
-        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.bak'), 'w', 'utf-8')
-        settingsFile.write(settingsJson)
-        settingsFile.close()
-        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'w', 'utf-8')
-        settingsFile.write(settingsJson)
-        settingsFile.close()
-        logger.info("Save complete, returning JSON of settings...")
-        return sj.dumps(self, indent='\t')
+    def removeImportPattern(self, name):
+        self['Import Settings'][name].delete()
 
 
-class DefaultsStore(object):
-    def load(self, ui=None):
-        # Try to open (and apply) the default settings file
-        try:
-            defaultsFile = co.open(os.path.join(os.path.dirname(__file__),'defaults.txt'), 'r', 'utf-8')
-        except:
-            msg = 'Default settings file "defaults.txt"\nis could not be opened.  We will\n' \
-                  'attempt to proceed using only the\n"settings.txt" file or built-in\n' \
-                  'defaults but you should attempt to\nfix this situation.'
-            QMessageBox.warning(ui, 'File not found', msg)
-        else:
-            try:
-                defaults = sj.loads(defaultsFile.read())
-            except:
-                defaults = {}
-                msg = 'Default settings file "defaults.txt"\nis in the wrong format and\ncould not be loaded.\n' \
-                      'The file is probably corrupted.  We will\n attempt to proceed using only the\n' \
-                      '"settings.txt" file or built-in\ndefaults but you should attempt to\nfix this situation.'
-                QMessageBox.warning(ui, 'Default Settings File', msg)
-            finally:
-                defaultsFile.close()
-
-
-class SettingsStore(object):
+class JsonFileStore(object):
     """
     Class that knows how to get and store a settings object as a Json File
     """
-    def __init__(self):
+    def __init__(self, ui):
+        self.ui = ui
+
+        # Determine settings storage location
         if os.path.exists('portable.txt'):
             # Portable installation so we want to use the local directory and no additional processing is necessary
             self.settings_dir = os.path.dirname(__file__)
@@ -303,27 +212,78 @@ class SettingsStore(object):
             # If the daleyklippings folder does not exist in the user's application data, create it
             if not os.path.exists(self.settings_dir):
                 os.makedirs(self.settings_dir)
-            # If the settings file is not in the user data folder but is found in the program folder, move it
-            if not os.path.exists(os.path.join(self.settings_dir, 'settings.txt')) and os.path.exists('settings.txt'):
-                logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
-                import shutil
-                shutil.copyfile('settings.txt', os.path.join(self.settings_dir, 'settings.txt'))
+
+    def load(self):
+        # Default to object defaults
+        self.defaults = Settings.DEFAULTS
+        self.settings = Settings.DEFAULTS
+
+        # Try loading dynamic defaults file
+        try:
+            defaultsFile = codecs.open(os.path.join(os.path.dirname(__file__), 'defaults.txt'), 'r', 'utf-8')
+            defaults = sj.loads(defaultsFile.read())
+            defaultsFile.close()
+        except:
+            pass
+        else:
+            self.defaults = defaults
+
+        # Create settings object using defaults
+        self.settings = Settings(self.defaults)
+
+        # Find settings file, if it exists
+        if os.path.exists(os.path.join(self.settings_dir, 'settings.txt')):
+            settingsFile = os.path.join(self.settings_dir, 'settings.txt')
+        elif os.path.exists('settings.txt'):
+            logger.info("Migrating 'settings.txt' file from the DaleyKlippings folder to user's application data.")
+            settingsFile = os.path.join(os.path.dirname(__file__), 'settings.txt')
+        else:
+            return
+
+        # Try to open (and apply) the custom settings file
+        settingsFile = codecs.open(settingsFile, 'r', 'utf-8')
+        loaded = sj.loads(settingsFile.read())
+        self.settings.update(loaded)
+        settingsFile.close()
+        return
+
+    def get(self):
+        return self.settings
+
+    def diff(self, settings):
+        logger.info("Starting diff() of Settings")
+        if self.defaults is None:
+            logger.info("... defaults not found, returning all settings")
+            return self
+
+        diff = deepcopy(self)
+        logger.info("Parsing Import Settings to find duplicates with default.")
+        for k, v in diff['Import Settings'].items():
+            if k in self.defaults['Import Settings'] and self.defaults['Import Settings'][k] == v:
+                logger.debug("Import Pattern '%s' duplicates default" % k)
+                del diff['Import Settings'][k]
+        logger.info("Parsing Export Settings to find duplicates with default.")
+        for k, v in diff['Export Settings'].items():
+            if k in self.defaults['Export Settings'] and self.defaults['Export Settings'][k] == v:
+                logger.debug("Export Pattern '%s' duplicates default" % k)
+                del diff['Export Settings'][k]
+
+        logger.info("Completed diff() of Settings")
+        return diff
 
     def save(self, settings):
-        logger.info("Staring save...")
-        # Get changes between existing settings and default file
-        diff = settings.get_custom()
+        logger.info("Staring save()")
+        diff = self.diff(settings)
+        logger.info("... writing backup settings file")
         settingsJson = sj.dumps(diff, indent='\t')
-        # Overwrite backup file
-        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.bak'), 'w', 'utf-8')
+        settingsFile = codecs.open(os.path.join(self.settings_dir, 'settings.bak'), 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
-        # OVerwrite settings file
-        settingsFile = co.open(os.path.join(self.settings_dir, 'settings.txt'), 'w', 'utf-8')
+        logger.info("... writing settings file")
+        settingsFile = codecs.open(os.path.join(self.settings_dir, 'settings.txt'), 'w', 'utf-8')
         settingsFile.write(settingsJson)
         settingsFile.close()
-        logger.info("Save complete, returning JSON of settings...")
-        return sj.dumps(settings, indent='\t')
+        logger.info("Finished save()")
 
 
 class SettingsDialog(QDialog):
@@ -645,10 +605,11 @@ class SettingsDialog(QDialog):
         'Shambala'
     ]
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None):
         QDialog.__init__(self, parent)
 
-        self.settings = Settings(self)
+        # Need to make a local copy so we don't mutate the global settings dictionary when we cancel
+        self.settings = deepcopy(settings)
 
         # Initiate GUI
         self.ui = Ui_settingsDialog()
@@ -670,92 +631,66 @@ class SettingsDialog(QDialog):
         self.ui.editImportExtension.setValidator(self.extensionValidator)
         self.ui.editExportExtensions.setValidator(self.extensionValidator)
 
+        logger.info("Building Import Pattern Menu")
         # Initiate default Import settings
-        self.ui.cmbImportPatternName.addItems(
-            # Exclude Deleted items
-            sorted([k for k, v in self.settings['Import Settings'].items() if 'Deleted' not in v])
-        )
-
-        # Set Import dropdown to default value
-        defaults = [k for k, v in self.settings['Import Settings'].items() if v['Default'] == 'True']
-        if len(defaults) > 0:
-            item = defaults[0]
-        else:
-            item = self.ui.cmbImportPatternName.currentText()
-        index = self.ui.cmbImportPatternName.findText(item)
+        index = 0
         self.ui.cmbImportPatternName.setCurrentIndex(index)
-        self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), item)
-
-        # Initiate default Export settings
-        self.ui.cmbExportPatternName.addItems(
+        for k in sorted(self.settings['Import Settings'].keys(), key=lambda s: s.lower()):
             # Exclude Deleted items
-            sorted([k for k, v in self.settings['Export Settings'].items() if 'Deleted' not in v])
-        )
-        item = self.ui.cmbExportPatternName.currentText()
+            if 'Deleted' in self.settings['Import Settings'][k]:
+                continue
+            self.ui.cmbImportPatternName.addItem(k)
+            if 'Default' in self.settings['Import Settings'][k] and self.settings['Import Settings'][k]['Default'] == 'True':
+                self.ui.cmbImportPatternName.setCurrentIndex(index)
+                self.ui.cmbImportPatternName.emit(SIGNAL('activated(QString)'), k)
+            index += 1
 
-        # Set Export dropdown to default value
-        defaults = [k for k, v in self.settings['Export Settings'].items() if v['Default'] == 'True']
-        if len(defaults) > 0:
-            item = defaults[0]
-        else:
-            item = self.ui.cmbExportPatternName.currentText()
-        index = self.ui.cmbExportPatternName.findText(item)
+        logger.info("Building Export Pattern Menu")
+        # Initiate default Export settings
+        index = 0
         self.ui.cmbExportPatternName.setCurrentIndex(index)
-        self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), item)
+        for k in sorted(self.settings['Export Settings'].keys(), key=lambda s: s.lower()):
+            # Exclude Deleted items
+            if 'Deleted' in self.settings['Export Settings'][k]:
+                continue
+            self.ui.cmbExportPatternName.addItem(k)
+            if 'Default' in self.settings['Export Settings'][k] and self.settings['Export Settings'][k]['Default'] == 'True':
+                self.ui.cmbExportPatternName.setCurrentIndex(index)
+                self.ui.cmbExportPatternName.emit(SIGNAL('activated(QString)'), k)
+            index += 1
 
         logger.info("Applying Application Settings")
         # Initiate active Application settings
         # Attach settings
-        try:
-            if self.settings['Application Settings']['Attach Notes']['Attach Notes'] == 'True':
-                self.ui.chbAttachNotes.setCheckState(Qt.Checked)
-            else:
-                self.ui.chbAttachNotes.setCheckState(Qt.Unchecked)
-            self.ui.cmbNotesPosition.setCurrentIndex(self.ui.cmbNotesPosition.findText(
-                self.settings['Application Settings']['Attach Notes']['Notes Position']))
-        except:
-            # Create empty keys in the dictionary
-            self.settings['Application Settings']['Attach Notes'] = self.settings.applicationSettings['Attach Notes']
+        if self.settings['Notes']['Attach'] == 'True':
+            self.ui.chbAttachNotes.setCheckState(Qt.Checked)
+        else:
+            self.ui.chbAttachNotes.setCheckState(Qt.Unchecked)
+        self.ui.cmbNotesPosition.setCurrentIndex(self.ui.cmbNotesPosition.findText(self.settings['Notes']['Position']))
 
         # Set Language Settings
         logger.info("Applying Language Settings")
-        if 'Language' not in self.settings['Application Settings']:
-            logger.info("... language not in settings, setting entire language config to default")
-            self.settings['Application Settings']['Language'] = self.settings.applicationSettings['Language']
-        else:
-            logger.info("... language in settings, updating UI")
-            # Date Language Options
-            self.ui.cmbDateLanguage.insertSeparator(1000)
-            self.ui.cmbDateLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST))
-            # Set Date Language Options
-            if 'Date Language' in self.settings['Application Settings']['Language']:
-                logger.info("... date language in settings, applying")
-                lang = self.settings['Application Settings']['Language']['Date Language']
-                logger.info("lang is '%s'" % lang)
-                langNo = self.ui.cmbDateLanguage.findText(lang)
-                logger.info("langNo is %d" % langNo)
-                self.ui.cmbDateLanguage.setCurrentIndex(langNo)
-            else:
-                logger.info("... date language not in settings, setting to default")
-                self.settings['Application Settings']['Language']['Date Language'] = \
-                    self.settings.applicationSettings['Language']['Date Language']
+        # Date Language Options
+        self.ui.cmbDateLanguage.insertSeparator(1000)
+        self.ui.cmbDateLanguage.addItems(sorted(self.QLOCALE_LANGUAGE_LIST, key=lambda s: s.lower()))
+        # Set Date Language Options
+        lang = self.settings['Language']['Date Language']
+        logger.info("lang is '%s'" % lang)
+        langNo = self.ui.cmbDateLanguage.findText(lang)
+        logger.info("langNo is %d" % langNo)
+        self.ui.cmbDateLanguage.setCurrentIndex(langNo)
 
-            # Additional Language Options
-            # Iteration ensures that we don't overwrite existing settings when a new field is added
-            language_settings = [
-                (self.ui.editHighlightLanguage, 'Highlight'),
-                (self.ui.editNoteLanguge, 'Note'),
-                (self.ui.editBookmarkLanguage, 'Bookmark'),
-                (self.ui.editRangeSeparator, 'Range Separator'),
-            ]
-            for ui_element, settings_key in language_settings:
-                logger.info("Setting UI for %s" % settings_key)
-                try:
-                    ui_element.setText(unicode(self.settings['Application Settings']['Language'][settings_key]))
-                except:
-                    # Create empty keys in the dictionary
-                    self.settings['Application Settings']['Language'][settings_key] = \
-                        self.settings.applicationSettings['Language'][settings_key]
+        # Additional Language Options
+        # Iteration ensures that we don't overwrite existing settings when a new field is added
+        language_settings = [
+            (self.ui.editHighlightLanguage, 'Highlight'),
+            (self.ui.editNoteLanguge, 'Note'),
+            (self.ui.editBookmarkLanguage, 'Bookmark'),
+            (self.ui.editRangeSeparator, 'Range Separator'),
+        ]
+        for ui_element, settings_key in language_settings:
+            logger.info("Setting UI for %s" % settings_key)
+            ui_element.setText(unicode(self.settings['Language'][settings_key]))
 
     # Begin Import Tab Slots
     def onImportPatternActivated(self, item):
@@ -817,7 +752,7 @@ class SettingsDialog(QDialog):
             self.ui.cmbImportPatternName.addItem(item[0])
             # Activate just added item
             self.ui.cmbImportPatternName.setCurrentIndex(self.ui.cmbImportPatternName.count() - 1)
-            self.settings['Import Settings'][unicode(item[0])] = self.settings.importSettings
+            self.settings.addImportPattern(unicode(item[0]))
             self.onImportPatternActivated(item[0])
 
     def onImportDeletePattern(self):
@@ -825,7 +760,7 @@ class SettingsDialog(QDialog):
         itemNo = self.ui.cmbImportPatternName.currentIndex()
         item = self.ui.cmbImportPatternName.currentText()
         self.ui.cmbImportPatternName.removeItem(itemNo)
-        self.settings['Import Settings'][unicode(item)]['Deleted'] = "True"
+        self.settings.removeImportPattern(unicode(item))
         # Update pattern text
         item = self.ui.cmbImportPatternName.currentText()
         self.onImportPatternActivated(item)
@@ -1040,9 +975,8 @@ class SettingsDialog(QDialog):
         self.close()
 
     def onButtonApply(self):
-        settingsJson = self.settings.save()
         logger.info("Emitting settingsChanged")
-        self.emit(SIGNAL('settingsChanged(QString)'), settingsJson)
+        self.emit(SIGNAL('settingsChanged(QString)'), self.settings)
 
     def onButtonCancel(self):
         self.close()

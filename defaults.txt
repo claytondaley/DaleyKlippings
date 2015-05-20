@@ -135,10 +135,10 @@
 			"Notes Position": "Automatic (default)"
 		},
 		"Language": {
-			"Note": "",
-			"Highlight": "",
-			"Bookmark": "",
-			"Range Separator": "",
+			"Note": "Note",
+			"Highlight": "Highlight",
+			"Bookmark": "Bookmark",
+			"Range Separator": "-",
 			"Date Language": "English (default)"
 		}
 	}

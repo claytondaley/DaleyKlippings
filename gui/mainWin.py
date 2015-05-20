@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainWin.ui'
 #
-# Created: Tue Jun 17 00:02:30 2014
+# Created: Tue May 19 20:37:50 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -215,13 +215,10 @@ class Ui_mainWin(object):
 
         self.retranslateUi(mainWin)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL("triggered()"), mainWin.close)
-        QtCore.QObject.connect(self.actionImport, QtCore.SIGNAL("triggered()"), mainWin.onImport)
         QtCore.QObject.connect(self.actionAbout, QtCore.SIGNAL("triggered()"), mainWin.onAbout)
-        QtCore.QObject.connect(self.actionExport, QtCore.SIGNAL("triggered()"), mainWin.onExport)
         QtCore.QObject.connect(self.actionFilter, QtCore.SIGNAL("triggered()"), mainWin.onFilter)
         QtCore.QObject.connect(self.filterEdit, QtCore.SIGNAL("textChanged(QString)"), mainWin.onFilterInput)
         QtCore.QObject.connect(self.filterCloseButton, QtCore.SIGNAL("clicked()"), mainWin.onFilter)
-        QtCore.QObject.connect(self.actionAppend, QtCore.SIGNAL("triggered()"), mainWin.onImport)
         QtCore.QObject.connect(self.filterCaseBox, QtCore.SIGNAL("stateChanged(int)"), mainWin.onFilterCaseState)
         QtCore.QObject.connect(self.actionHelp, QtCore.SIGNAL("triggered()"), mainWin.onHelp)
         QtCore.QObject.connect(self.actionSettings, QtCore.SIGNAL("triggered()"), mainWin.onSettings)
