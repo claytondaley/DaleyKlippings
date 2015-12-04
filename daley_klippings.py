@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+    #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ########################################################################
 #  DaleyKlippings
@@ -22,7 +22,7 @@
 """
 Main DaleyKlippings window
 """
-__ver__ = '1.3.4'
+__ver__ = '1.3.2'
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -627,7 +627,7 @@ class MainWin(QMainWindow):
             else:
                 #return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
                 #                                    Qt.DisplayRole).toString())
-                return self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole) or u''
+                return self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole)
         except Exception as err:
             logger.exception("Error: " + err.message)
             return u''
