@@ -627,7 +627,7 @@ class MainWin(QMainWindow):
             else:
                 #return unicode(self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)),
                 #                                    Qt.DisplayRole).toString())
-                return self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole)
+                return self.proxyModel.data(self.proxyModel.index(row, HEADERS.index(wildcard)), Qt.DisplayRole) or u''
         except Exception as err:
             logger.exception("Error: " + err.message)
             return u''
