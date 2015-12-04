@@ -1,4 +1,4 @@
-    #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ########################################################################
 #  DaleyKlippings
@@ -22,7 +22,7 @@
 """
 Main DaleyKlippings window
 """
-__ver__ = '1.3.2'
+__ver__ = '1.3.4'
 
 import logging
 logging.basicConfig(level=logging.INFO)
