@@ -14,7 +14,7 @@
    <string>Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="mainWin.qrc">
     <normaloff>:/icons/Bloomy/configure.png</normaloff>:/icons/Bloomy/configure.png</iconset>
   </property>
   <property name="locale">
@@ -30,7 +30,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabApplication">
       <attribute name="title">
@@ -247,6 +247,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="cmbImportPatternName">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -264,6 +267,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QCheckBox" name="chbIsDefaultImport">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="whatsThis">
             <string>Make current import pattern default Import &amp; Append buttons action</string>
            </property>
@@ -294,6 +300,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QPushButton" name="buttonImportDeletePattern">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -346,6 +355,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="editImportDelimiter">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -370,6 +382,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="1" column="1">
              <widget class="QPlainTextEdit" name="textImportPattern">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -396,6 +411,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="2" column="1">
              <widget class="QLineEdit" name="editImportDateFormat">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -550,6 +568,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item>
              <widget class="QLineEdit" name="editImportExtension">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -577,6 +598,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item>
              <widget class="QComboBox" name="cmbImportEncoding">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -630,6 +654,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QComboBox" name="cmbExportPatternName">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -647,6 +674,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QCheckBox" name="chbIsDefaultExport">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="whatsThis">
             <string>Make current export pattern default Export button action</string>
            </property>
@@ -671,6 +701,9 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QPushButton" name="buttonExportDeletePattern">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="whatsThis">
             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -705,6 +738,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="0" column="1">
              <widget class="QPlainTextEdit" name="textExportHeader">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -735,6 +771,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="1" column="1">
              <widget class="QPlainTextEdit" name="textExportBody">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -765,6 +804,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="3" column="1">
              <widget class="QPlainTextEdit" name="textExportBottom">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -795,6 +837,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item row="4" column="1">
              <widget class="QLineEdit" name="editExportDateFormat">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="whatsThis">
                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -935,6 +980,9 @@ Pattern:</string>
             </item>
             <item row="2" column="1">
              <widget class="QPlainTextEdit" name="textExportNotes">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -981,6 +1029,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item>
              <widget class="QLineEdit" name="editExportExtensions">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1008,6 +1059,9 @@ p, li { white-space: pre-wrap; }
             </item>
             <item>
              <widget class="QComboBox" name="cmbExportEncoding">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>

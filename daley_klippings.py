@@ -22,15 +22,13 @@
 """
 Main DaleyKlippings window
 """
-from copy import deepcopy
-
-__ver__ = '1.3.3'
+__ver__ = '1.3.4'
 
 import logging
 logging.basicConfig(level=logging.INFO)
-handler = logging.StreamHandler()
+# handler = logging.StreamHandler()
 logger = logging.getLogger("daley_klippings")
-logger.addHandler(handler)
+# logger.addHandler(handler)
 logger.info("Loading DaleyKlippings")
 
 import os
@@ -38,21 +36,27 @@ import codecs
 from pprint import pformat
 import unicodecsv as csv
 from functools import partial
-from PySide.QtCore import Qt, SIGNAL, QLocale, QTime, QDir, QDateTime, QModelIndex
+from PySide.QtCore import Qt, SIGNAL, QLocale, QTime, QDir, QDateTime, QModelIndex, Signal, SLOT
 from PySide.QtGui import QMainWindow, QSortFilterProxyModel, QMenu, QAction, QInputDialog, QFileDialog, QMessageBox, \
     QApplication, QIcon
 from delegators import ComboBoxDelegate, LocationEditDelegate, DateEditDelegate
-from settings import JsonFileStore, Settings, SettingsDialog
-from table import TableModel, RegexExport, RegexImport, NoteHandler
-from gui.mainWin import Ui_mainWin
+from settings import JsonFileStore, Settings, SettingsDialog, HEADERS
+from table import TableModel, RegexExport, RegexImport, LegacyNotesHandler, CsvParser
+from gui.ui_mainWin import Ui_mainWin
 
 
 class MainWin(QMainWindow):
     """
     Main DaleyKlippings window class
     """
-    def __init__(self, settings_store, parent=None):
+    importDefault = None
+    appendDefault = None
+    exportDefault = None
+
+    def __init__(self, settings_store, columns, parent=None):
         QMainWindow.__init__(self, parent)
+        self.settings_store = settings_store
+        self.columns = columns
 
         # Initiate GUI
         self.ui = Ui_mainWin()
@@ -62,13 +66,13 @@ class MainWin(QMainWindow):
 
         # Initiate settings
         try:
-            settings_store.load()
+            self.settings_store.load()
             self.settings = settings_store.get()
         except (OSError, IOError):
             msg = 'Custom settings file "settings.txt"\nwas not found. We will create this file\n' \
                   'for you and start DaleyKlippings with the default settings.'
             QMessageBox.warning(None, 'File not found', msg)
-            settings_store.save()
+            self.settings_store.save()
             # Create settings file to prevent the error from recurring
         """
         except:
@@ -99,7 +103,7 @@ class MainWin(QMainWindow):
         self.ui.filterLine.setVisible(False)
 
         # Initiate data model
-        self.tableModel = TableModel()
+        self.tableModel = TableModel(self.columns)
         self.proxyModel = QSortFilterProxyModel()
         self.proxyModel.setSourceModel(self.tableModel)
         self.proxyModel.setSortRole(Qt.EditRole)
@@ -124,7 +128,7 @@ class MainWin(QMainWindow):
         self.connect(self.actionFilterAll, SIGNAL('triggered(bool)'), self.onFilterOptionTriggered)
         self.menuFilterOption.addSeparator()
         self.actionFilterHeaders = {}
-        for h in self.tableModel.table_data.headers:
+        for h in self.tableModel.headers:
             self.actionFilterHeaders[h] = QAction(h, self)
             self.actionFilterHeaders[h].setCheckable(True)
             self.menuFilterOption.addAction(self.actionFilterHeaders[h])
@@ -166,6 +170,15 @@ class MainWin(QMainWindow):
         This function is called to create the toolbar and anytime settings change (to update the list of patterns
         in the dropdown.
         """
+        # Clear old signals (if they exist)
+        if self.importDefault is not None:
+            self.ui.actionImport.triggered.disconnect(self.importDefault)
+            self.ui.actionAppend.triggered.disconnect(self.appendDefault)
+            self.ui.actionExport.triggered.disconnect(self.exportDefault)
+            self.ui.toolButtonImport.triggered.disconnect(self.importDefault)
+            self.ui.toolButtonAppend.triggered.disconnect(self.appendDefault)
+            self.ui.toolButtonExport.triggered.disconnect(self.exportDefault)
+
         # Import (and Append) Buttons
         self.menuButtonImport = QMenu()
         self.menuButtonImport.addAction(self.ui.actionImport)
@@ -191,11 +204,13 @@ class MainWin(QMainWindow):
         self.menuButtonExport.addSeparator()
 
         # Add Import Patterns from Settings
-        for k, v in sorted(self.settings['Import Settings'].iteritems()):
+        logger.debug('Processing Import Settings: \n%s' % pformat(self.settings['Import Settings']))
+        for k in sorted(self.settings['Import Settings']):
             # Don't display "deleted" items (which must remain the settings file to override the defaults file)
             if 'Deleted' in self.settings['Import Settings'][k]:
                 continue
             # Import Action
+            v = self.settings['Import Settings'][k]
             import_action = QAction(k, self.menuButtonImport)
             import_action.triggered.connect(partial(self.onImport, name=k, importPattern=v))
             self.menuButtonImport.addAction(import_action)
@@ -208,25 +223,29 @@ class MainWin(QMainWindow):
             logger.debug("Added dropdown items (import and append) for %s" % k)
 
             if 'Default' in v and v['Default'] == 'True':
-                logging.info("Adding action for %s pattern to Import and Append buttons" % k)
-                self.ui.toolButtonImport.triggered.connect(partial(self.onImport, name=k, importPattern=v))
-                self.ui.toolButtonAppend.triggered.connect(partial(self.onImport, name=k, importPattern=v, append=True))
-                self.ui.actionImport.triggered.connect(partial(self.onImport, name=k, importPattern=v))
-                self.ui.actionAppend.triggered.connect(partial(self.onImport, name=k, importPattern=v, append=True))
+                logging.debug("Adding %s pattern as default to Import and Append buttons" % k)
+                self.importDefault = partial(self.onImport, name=k, importPattern=v)
+                self.ui.actionImport.triggered.connect(self.importDefault)
+                self.ui.toolButtonImport.triggered.connect(self.importDefault)
+                self.appendDefault = partial(self.onImport, name=k, importPattern=v, append=True)
+                self.ui.actionAppend.triggered.connect(self.appendDefault)
+                self.ui.toolButtonAppend.triggered.connect(self.appendDefault)
+
 
         # Add Export Patterns from Settings
-        for k, v in sorted(self.settings['Export Settings'].iteritems()):
+        for k in sorted(self.settings['Export Settings']):
             if 'Deleted' in self.settings['Export Settings'][k]:
                 continue
             # Export Action
+            v = self.settings['Export Settings'][k]
             action = QAction(k, self.menuButtonExport)
             action.triggered.connect(partial(self.onExport, name=k, exportPattern=v))
             self.menuButtonExport.addAction(action)
 
             if 'Default' in v and v['Default'] == 'True':
-                logging.info("Adding action for %s pattern to Export buttons" % k)
-                self.ui.toolButtonExport.triggered.connect(partial(self.onExport, name=k, exportPattern=v))
-                self.ui.actionExport.triggered.connect(partial(self.onExport, name=k, exportPattern=v))
+                self.exportDefault = partial(self.onExport, name=k, exportPattern=v)
+                self.ui.actionExport.triggered.connect(self.exportDefault)
+                self.ui.toolButtonExport.triggered.connect(self.exportDefault)
 
         # Add menus to UI
         self.ui.toolButtonImport.setMenu(self.menuButtonImport)
@@ -268,7 +287,9 @@ class MainWin(QMainWindow):
         """
         Slot for custom import actions triggered signals
         """
-        logging.info("Importing using importPattern:\n\n%s" % pformat(importPattern))
+        logging.debug("Importing using importPattern:\n\n%s" % pformat(importPattern))
+        summary = []
+        detail = []
 
         try:
             name = unicode(name)
@@ -286,6 +307,10 @@ class MainWin(QMainWindow):
                 return
             else:
                 file_name = unicode(file_name)
+
+            message = 'Loading clippings from file %s' % QDir.dirName(QDir(file_name))
+            detail.append(message)
+            logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
 
             try:
                 logger.info("Trying to decode using %s" % importPattern['Encoding'])
@@ -315,53 +340,84 @@ class MainWin(QMainWindow):
                     bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
                     raise e
 
-            summary = ''
+            parser = RegexImport(self.columns, self.settings['Language'], importPattern)
+            try:
+                parser.parse(my_clippings)
+            except Exception as error:
+                bad_encoding = QMessageBox()
+                informational_text = u'The Import Pattern is invalid.\r\n\r\n' + \
+                                     'Import Pattern resulted in the error:\n%s' % str(error.message)
+                bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
 
-            parser = RegexImport(self.settings['Language'], importPattern)
-            all = parser.parse(my_clippings)
+            candidates = len(parser.candidates)
+            parsed = len(parser.parsed)
+            data = parser.parsed
 
-            summary = u'%d out of %d clippings were successfully processed%s' % (all.parsed, all.rows, u' ' * 50)
-            if all.parsed == 0 and all.rows > 0:
-                summary += u'Please verify that you selected the right file or try a different Import Pattern.' + u' ' * 50 + \
-                           u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' ' * 50
+            message = u'%d out of %d clippings were successfully processed.' % (parsed, candidates)
+            summary.append('')
+            summary.append(message)
+            detail.append('')
+            detail.append(message)
+            logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
+
+            if parsed == 0 and candidates > 0:
+                message = u'Please verify that you selected the right file or try a different Import Pattern.' + u' ' * 50 + \
+                          u'\r\n\r\nIf none of the built-in patterns work, please contact daleyklippings@claytondaley.com.' + u' ' * 50
+                summary.append('')
+                summary.append(message)
+                logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
 
             if self.settings['Notes']['Attach'] == 'True':
-                matcher = NoteHandler()
-                matcher.match(all)
+                matcher = LegacyNotesHandler(self.settings['Notes'], self.settings['Language'])
+                matcher.match(parser.parsed)
+                matched = len(parser.parsed) - len(matcher.matched)
 
-                summary += u'\r\n - We were able to match %d Note%s with a Highlight %s' % \
-                           (matcher.matched, ('s' if matcher.matched > 1 else ''), u' ' * 50)
+                message = u' - We were able to match %d Note%s with a Highlight %s' % \
+                          (matched, ('s' if matcher.matched > 1 else ''), u' ' * 50)
+                summary.append(message)
+                detail.append(message)
+                logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
+
                 if matcher.matched > 0:
-                    summary += u'\r\n - As a result, fewer lines will show up in the interface.' + u' ' * 50
+                    message = u' - As a result, fewer lines will show up in the interface.' + u' ' * 50
+                    summary.append(message)
 
-            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
-                QTime.currentTime().toString('hh:mm:ss'),
-                QDir.dirName(QDir(file_name)),
-                summary
-            )
+                data = matcher.matched
 
             if not default_encoding:
-                summary += u'\r\n\r\nNOTE:  The encoding selected for your import pattern did not work.  However, we were ' \
-                           u'able to import using one of our default patterns.  Please review your data and make sure ' \
-                           u'it has imported properly.  If it has not, please select a different import pattern on the ' \
-                           u'Import Tab of Settings.'
-            summary += u'\r\n\r\nFor more details, click the "Show Details" button' + u' ' * 50
-            import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', summary)
+                message = u'NOTE:  The encoding selected for your import pattern did not work.  However, we were ' + \
+                          u'able to import using one of our default patterns.  Please review your data and make sure ' + \
+                          u'it has imported properly.  If it has not, please select a different import pattern on the ' + \
+                          u'Import Tab of Settings.'
+                summary.append(message)
+                detail.append(message)
+                logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
+            message = u'For more details, click the "Show Details" button'
+            summary.append('')
+            summary.append(message)
+            import_complete = QMessageBox(QMessageBox.Information, u'Import Complete', (u' ' * 50 + '\r\n').join(summary))
             import_complete.addButton(QMessageBox.Ok)
             import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
-            import_complete.setDetailedText(detail)
+            import_complete.setDetailedText('\r\n'.join(detail))
             import_complete.exec_()
 
-            logger.debug(summary)
-            self.ui.statusBar.showMessage(summary, 3000)
-
-            # Set up row indicator text
-            self.ui.rowIndicator.setText('Rows: %s/%s' % (self.proxyModel.rowCount(),
-                                                          self.tableModel.rowCount(None)))
+            self.ui.statusBar.showMessage(u''.join(summary), 3000)
         except Exception as error:
             logger.exception("Exception: %s" % error.message)
             import_error = QMessageBox()
             import_error.warning(self, u'Import Error', u'Error during import.\r\n\r\n' + error.message)
+        else:
+            # Set up row indicator text
+            # TODO: Figure out why this isn't working
+            self.ui.rowIndicator.setText('Rows: %d/%d' % (self.proxyModel.rowCount(),
+                                                          self.tableModel.rowCount(None)))
+
+            message = "Setting Table Data"
+            logger.debug("<%s> %s" % (QTime.currentTime().toString('hh:mm:ss'), message))
+            if append:
+                self.tableModel.appendTableData(data)
+            else:
+                self.tableModel.setTableData(data)
 
     def onExport(self, name, exportPattern, co=None):
         """
@@ -369,27 +425,31 @@ class MainWin(QMainWindow):
         """
         try:
             name = unicode(name)
-            fileName = QFileDialog.getSaveFileName(self, '', '',
-                                                   ';;'.join(['%s (*.%s)' % (name, ext) for ext in exportPattern['Extension']]))[0]
+            extensions = [x for x in exportPattern['Extension'].split(',') if x != '']
+
+            fileName = QFileDialog.getSaveFileName(
+                self, '', '', ';;'.join(['%s (*.%s)' % (name, ext) for ext in extensions]))[0]
             if fileName == '':
                 return
 
-            fileOut = codecs.open(unicode(fileName), 'w', exportPattern['Encoding'], 'replace')
+            logger.info("Exporting to file %s" % fileName)
+            fileOut = codecs.open(unicode(fileName), 'w', exportPattern['Encoding'].split(' ')[0], 'replace')
             parser = RegexExport(exportPattern)
-            fileOut.write(parser.process(self.proxyModel))
+            if parser.export_(self.proxyModel):
+                output = '\r\n'.join(parser.rows)
+                logger.debug("... writing file:\r\n%s" % output)
+                fileOut.write(output)
+                status = '<%s> Data has been exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'),
+                                                                  QDir.dirName(QDir(fileName)))
+                logger.info(status)
+                fileOut.close()
 
-            fileOut.close()
+                # Pop Export Status Box
+                export_complete = QMessageBox(QMessageBox.Information, u'Export Complete', u'Export Complete' + u' ' * 100)
+                export_complete.setInformativeText(u'Data has been exported to "%s"' % QDir.dirName(QDir(fileName)))
+                export_complete.exec_()
 
-            status = '<%s> Data has been exported to "%s"' % (QTime.currentTime().toString('hh:mm:ss'),
-                                                              QDir.dirName(QDir(fileName)))
-
-            # Pop Export Status Box
-            export_complete = QMessageBox(QMessageBox.Information, u'Export Complete', u'Export Complete' + u' ' * 100)
-            export_complete.setInformativeText(u'Data has been exported to "%s"' % QDir.dirName(QDir(fileName)))
-            export_complete.exec_()
-
-            logger.info(status)
-            self.ui.statusBar.showMessage(status, 3000)
+                self.ui.statusBar.showMessage(status, 3000)
 
         except Exception as error:
             export_error = QMessageBox()
@@ -398,22 +458,14 @@ class MainWin(QMainWindow):
     def onImportCsv(self, append=False):
         try:
             # Get Import Pattern
-            sender = self.sender()
-            logger.debug(str(sender.parent()))
-            if sender.parent() == self.menuButtonImport:
-                append = False
-            elif sender.parent() == self.menuButtonAppend:
-                append = True
-
             file_name = QFileDialog.getOpenFileName(self, '', '',
                                                     ';;'.join(['Comma Separated Value (*.csv)']))[0]
             if file_name == '':
                 # This happens when we cancel the file dialog so no need to throw an error
                 return
-            else:
-                file_name = unicode(file_name)
 
             try:
+                file_name = unicode(file_name)
                 csv_file = open(file_name, 'rb')
                 csv_reader = csv.reader(csv_file)
             except Exception as e:
@@ -423,16 +475,18 @@ class MainWin(QMainWindow):
                 bad_encoding.critical(bad_encoding, u'Import Encoding', informational_text)
                 raise e
 
-            summary, detail = self.tableModel.from_csv(csv_reader, append=append)
-            summary = "<%s> Loading clippings from file %s\r\n\r\n%s" % (
+            # TODO: Fix csv import logic
+            parser = CsvParser()
+            parser.import_(csv_reader=csv_reader)
+
+            summary = "<%s> Loading clippings from file %s" % (
                 QTime.currentTime().toString('hh:mm:ss'),
-                QDir.dirName(QDir(file_name)),
-                summary
+                QDir.dirName(QDir(file_name))
             )
             import_complete = QMessageBox(QMessageBox.Information, u'CSV Import Complete', summary)
             import_complete.addButton(QMessageBox.Ok)
             import_complete.setEscapeButton(QMessageBox.Ok)  # does not work
-            import_complete.setDetailedText(detail)
+            import_complete.setDetailedText('\r\n'.join(parser.detail))
             import_complete.exec_()
 
         except Exception as error:
@@ -451,14 +505,14 @@ class MainWin(QMainWindow):
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)
 
         # Write header row
-        writer.writerow(self.tableModel.table_data.headers)
+        writer.writerow(self.tableModel.headers)
 
         # This outputs only the rows visible on the screen
         for row in range(self.proxyModel.rowCount()):
             row_data = []
-            for i in range(len(self.tableModel.table_data.headers)):
+            for i in range(len(self.tableModel.headers)):
                 item = self.proxyModel.data(self.proxyModel.index(row, i), Qt.DisplayRole)
-                if item and self.tableModel.table_data.headers[i] == 'Date':
+                if item and self.tableModel.headers[i] == 'Date':
                     if u'%' in self.date_format:
                         # The % sign indicates that the pattern is a basic Python format
                         item = item.strftime(self.date_format).strip()
@@ -508,7 +562,7 @@ class MainWin(QMainWindow):
 
     def onFilterOptionTriggered(self, state):
         sender = self.sender()
-        for h in self.tableModel.table_data.headers:
+        for h in self.tableModel.headers:
             if sender != self.actionFilterHeaders[h]:
                 self.actionFilterHeaders[h].setEnabled(True)
                 self.actionFilterHeaders[h].setChecked(False)
@@ -517,7 +571,7 @@ class MainWin(QMainWindow):
             self.actionFilterAll.setChecked(False)
 
             self.ui.filterOptionButton.setChecked(True)
-            self.proxyModel.setFilterKeyColumn(self.tableModel.table_data.headers.index(sender.text()))
+            self.proxyModel.setFilterKeyColumn(self.tableModel.headers.index(sender.text()))
         else:
             self.ui.filterOptionButton.setChecked(False)
             self.proxyModel.setFilterKeyColumn(-1)
@@ -564,15 +618,16 @@ class MainWin(QMainWindow):
 
     def onSettings(self):
         settingsDialog = SettingsDialog(self.settings, self)
-        self.connect(settingsDialog, SIGNAL('settingsChanged(QString)'), self.onSettingsChanged)
+        # The signal is defined to carry a QString and has limited flexibility
+        settingsDialog.settingsChanged.connect(self.onSettingsChanged)
         settingsDialog.show()
 
     def onSettingsChanged(self, settings):
         logging.info("onSettingsChanged called")
+        logging.debug("... with settings %s" % pformat(settings))
         try:
-            logging.debug("Updating settings to %s" % pformat(settings))
             self.settings = settings
-            self.settingsStore.save(settings)
+            self.settings_store.save(settings)
         except Exception as e:
             logger.exception("Settings save() resulted in exception:\n%s" % e.message)
         logging.debug("... new Setting set")
@@ -591,7 +646,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     settingsStore = JsonFileStore(None)
     # Inject source of settings
-    mainWin = MainWin(settings_store=settingsStore)
+    mainWin = MainWin(columns=HEADERS, settings_store=settingsStore)
 
     try:
         mainWin.show()

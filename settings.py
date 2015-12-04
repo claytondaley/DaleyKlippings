@@ -19,9 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ########################################################################
 import logging
-from PySide.QtCore import QRegExp, SIGNAL, Qt
-from PySide.QtGui import QMessageBox, QDialog, QWhatsThis, QRegExpValidator, QInputDialog, QApplication
-from gui.ui_settingsDialog import Ui_settingsDialog
+from pprint import pformat
 
 logger = logging.getLogger("daley_klippings.settings")
 logger.info("Loading DaleyKlippings Settings Models")
@@ -35,6 +33,19 @@ import codecs
 from copy import deepcopy
 import simplejson as sj
 from appdirs import AppDirs
+from PySide.QtCore import QRegExp, SIGNAL, Qt, Signal
+from PySide.QtGui import QDialog, QWhatsThis, QRegExpValidator, QInputDialog, QApplication
+from gui.ui_settingsDialog import Ui_settingsDialog
+
+
+HEADERS = (u'Book',
+           u'Author',
+           u'Type',
+           u'Page',
+           u'Location',
+           u'Date',
+           u'Highlight',
+           u'Note')
 
 
 class ImportPattern(dict):
@@ -85,7 +96,8 @@ class ImportPattern(dict):
         return settings
 
     def delete(self):
-        self['Deleted'] = "True"
+        self['Deleted'] = 'True'
+        self['Default'] = 'False'
 
 
 class ExportPattern(dict):
@@ -115,6 +127,10 @@ class ExportPattern(dict):
             settings['Version'] = '1.0'
         # Mutable, but returned for convenience
         return settings
+
+    def delete(self):
+        self['Deleted'] = 'True'
+        self['Default'] = 'False'
 
 
 class Settings(dict):
@@ -165,6 +181,12 @@ class Settings(dict):
                 settings['Language'] = settings['Application Settings']['Language']
                 del(settings['Application Settings']['Language'])
             del(settings['Application Settings'])
+            for k, v in settings['Import Settings'].iteritems():
+                if 'Default' not in v:
+                    v['Default'] = 'False'
+            for k, v in settings['Export Settings'].iteritems():
+                if 'Default' not in v:
+                    v['Default'] = 'False'
             settings['Version'] = '1.0'
         # Mutable, but returned for convenience
         return settings
@@ -189,8 +211,28 @@ class Settings(dict):
     def addImportPattern(self, name):
         self['Import Settings'][name] = ImportPattern()
 
+    def addExportPattern(self, name):
+        self['Export Settings'][name] = ExportPattern()
+
     def removeImportPattern(self, name):
         self['Import Settings'][name].delete()
+
+    def removeExportPattern(self, name):
+        self['Export Settings'][name].delete()
+
+    def setImportDefault(self, name, enabled):
+        if enabled:
+            # If we're enabling a default, we must ensure all other defaults are false
+            for k, v in self['Import Settings'].iteritems():
+                self['Import Settings'][k]['Default'] = 'False'
+        self['Import Settings'][name]['Default'] = unicode(enabled)
+
+    def setExportDefault(self, name, enabled):
+        if enabled:
+            # If we're enabling a default, we must ensure all other defaults are false
+            for k, v in self['Export Settings'].iteritems():
+                self['Export Settings'][k]['Default'] = 'False'
+        self['Export Settings'][name]['Default'] = unicode(enabled)
 
 
 class JsonFileStore(object):
@@ -256,7 +298,7 @@ class JsonFileStore(object):
             logger.info("... defaults not found, returning all settings")
             return self
 
-        diff = deepcopy(self)
+        diff = deepcopy(settings)
         logger.info("Parsing Import Settings to find duplicates with default.")
         for k, v in diff['Import Settings'].items():
             if k in self.defaults['Import Settings'] and self.defaults['Import Settings'][k] == v:
@@ -605,6 +647,8 @@ class SettingsDialog(QDialog):
         'Shambala'
     ]
 
+    settingsChanged = Signal(dict)
+
     def __init__(self, settings, parent=None):
         QDialog.__init__(self, parent)
 
@@ -638,7 +682,8 @@ class SettingsDialog(QDialog):
         for k in sorted(self.settings['Import Settings'].keys(), key=lambda s: s.lower()):
             # Exclude Deleted items
             if 'Deleted' in self.settings['Import Settings'][k]:
-                continue
+                logger.info("... skipping deleted pattern %s" % k)
+            logger.info("... adding %s" % k)
             self.ui.cmbImportPatternName.addItem(k)
             if 'Default' in self.settings['Import Settings'][k] and self.settings['Import Settings'][k]['Default'] == 'True':
                 self.ui.cmbImportPatternName.setCurrentIndex(index)
@@ -652,7 +697,8 @@ class SettingsDialog(QDialog):
         for k in sorted(self.settings['Export Settings'].keys(), key=lambda s: s.lower()):
             # Exclude Deleted items
             if 'Deleted' in self.settings['Export Settings'][k]:
-                continue
+                logger.info("... skipping deleted pattern %s" % k)
+            logger.info("... adding %s" % k)
             self.ui.cmbExportPatternName.addItem(k)
             if 'Default' in self.settings['Export Settings'][k] and self.settings['Export Settings'][k]['Default'] == 'True':
                 self.ui.cmbExportPatternName.setCurrentIndex(index)
@@ -695,40 +741,48 @@ class SettingsDialog(QDialog):
     # Begin Import Tab Slots
     def onImportPatternActivated(self, item):
         if unicode(item) == '':
-            self.ui.textImportPattern.setEnabled(False)
-            self.ui.textImportPattern.setPlainText('')
+            # No pattern so disable the dialog
+            self.ui.cmbImportPatternName.setEnabled(False)
 
             self.ui.chbIsDefaultImport.setEnabled(False)
             self.ui.chbIsDefaultImport.setChecked(False)
 
+            self.ui.buttonImportDeletePattern.setEnabled(False)
+
             self.ui.editImportDelimiter.setEnabled(False)
             self.ui.editImportDelimiter.setText('')
+
+            self.ui.textImportPattern.setEnabled(False)
+            self.ui.textImportPattern.setPlainText('')
+
+            self.ui.editImportDateFormat.setEnabled(False)
+            self.ui.editImportDateFormat.setText('')
 
             self.ui.editImportExtension.setEnabled(False)
             self.ui.editImportExtension.setText('')
 
             self.ui.cmbImportEncoding.setEnabled(False)
             self.ui.cmbImportEncoding.setCurrentIndex(0)
-
-            self.ui.editImportDateFormat.setEnabled(False)
-            self.ui.editImportDateFormat.setText('')
         else:
-            self.ui.textImportPattern.setEnabled(True)
-            pattern = self.settings['Import Settings'][unicode(item)]['Pattern']
-            self.ui.textImportPattern.setPlainText(pattern)
+            self.ui.cmbImportPatternName.setEnabled(True)
 
             self.ui.chbIsDefaultImport.setEnabled(True)
-            # try-except to ensure compatibility with old settings files
-            try:
-                isDefaultImport = self.settings['Import Settings'][unicode(item)]['Default']
-            except:
-                self.settings['Import Settings'][unicode(item)]['Default'] = 'False'
-                isDefaultImport = 'False'
+            isDefaultImport = self.settings['Import Settings'][unicode(item)]['Default']
             self.ui.chbIsDefaultImport.setChecked('True' == unicode(isDefaultImport))
+
+            self.ui.buttonImportDeletePattern.setEnabled(True)
 
             self.ui.editImportDelimiter.setEnabled(True)
             delimiter = self.settings['Import Settings'][unicode(item)]['Delimiter']
             self.ui.editImportDelimiter.setText(delimiter)
+
+            self.ui.textImportPattern.setEnabled(True)
+            pattern = self.settings['Import Settings'][unicode(item)]['Pattern']
+            self.ui.textImportPattern.setPlainText(pattern)
+
+            self.ui.editImportDateFormat.setEnabled(True)
+            dateFormat = self.settings['Import Settings'][unicode(item)]['Date Format']
+            self.ui.editImportDateFormat.setText(dateFormat)
 
             self.ui.editImportExtension.setEnabled(True)
             extension = self.settings['Import Settings'][unicode(item)]['Extension']
@@ -739,16 +793,13 @@ class SettingsDialog(QDialog):
             encodingNo = self.ui.cmbImportEncoding.findText(encoding)
             self.ui.cmbImportEncoding.setCurrentIndex(encodingNo)
 
-            self.ui.editImportDateFormat.setEnabled(True)
-            dateFormat = self.settings['Import Settings'][unicode(item)]['Date Format']
-            self.ui.editImportDateFormat.setText(dateFormat)
-
     def onImportAddPattern(self):
         """
         Add new pattern
         """
         item = QInputDialog.getText(self, 'Add pattern', 'Input a new notes pattern name')
-        if item[1] == True and unicode(item[0]).strip() != '':
+        # If not Cancelled
+        if item[1] and unicode(item[0]).strip() != '':
             self.ui.cmbImportPatternName.addItem(item[0])
             # Activate just added item
             self.ui.cmbImportPatternName.setCurrentIndex(self.ui.cmbImportPatternName.count() - 1)
@@ -777,12 +828,7 @@ class SettingsDialog(QDialog):
     def onImportIsDefaultChanged(self, isDefaultImport):
         item = self.ui.cmbImportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Import Settings'][unicode(item)]['Default'] = unicode(isDefaultImport)
-            # If new Default state is True then change Default settings of all other imports to False
-            if unicode(self.settings['Import Settings'][unicode(item)]['Default']) == 'True':
-                for i in self.settings['Import Settings']:
-                    if unicode(i) != unicode(item):
-                        self.settings['Import Settings'][unicode(i)]['Default'] = 'False'
+            self.settings.setImportDefault(unicode(item), u'True' == unicode(isDefaultImport))
 
     def onImportDelimiterChanged(self, delimiter):
         item = self.ui.cmbImportPatternName.currentText()
@@ -807,9 +853,16 @@ class SettingsDialog(QDialog):
 
     # Begin Export Tab Slots
     def onExportPatternActivated(self, item):
+        # Don't send signals to change settings
+        self.blockSignals(True)
+
         if unicode(item) == '':
+            self.ui.cmbExportPatternName.setEnabled(False)
+
             self.ui.chbIsDefaultExport.setEnabled(False)
             self.ui.chbIsDefaultExport.setChecked(False)
+
+            self.ui.buttonExportDeletePattern.setEnabled(False)
 
             self.ui.textExportHeader.setEnabled(False)
             self.ui.textExportHeader.setPlainText('')
@@ -833,14 +886,13 @@ class SettingsDialog(QDialog):
             self.ui.cmbExportEncoding.setCurrentIndex(0)
 
         else:
+            self.ui.cmbExportPatternName.setEnabled(True)
+
             self.ui.chbIsDefaultExport.setEnabled(True)
-            # try-except to ensure compatibility with old settings files
-            try:
-                isDefaultExport = self.settings['Export Settings'][unicode(item)]['Default']
-            except:
-                self.settings['Export Settings'][unicode(item)]['Default'] = 'False'
-                isDefaultExport = 'False'
+            isDefaultExport = self.settings['Export Settings'][unicode(item)]['Default']
             self.ui.chbIsDefaultExport.setChecked('True' == unicode(isDefaultExport))
+
+            self.ui.buttonExportDeletePattern.setEnabled(True)
 
             self.ui.textExportHeader.setEnabled(True)
             header = self.settings['Export Settings'][unicode(item)]['Header']
@@ -871,16 +923,19 @@ class SettingsDialog(QDialog):
             encodingNo = self.ui.cmbExportEncoding.findText(encoding)
             self.ui.cmbExportEncoding.setCurrentIndex(encodingNo)
 
+        self.blockSignals(False)
+
     def onExportAddPattern(self):
         """
         Add new pattern
         """
         item = QInputDialog.getText(self, 'Add pattern', 'Input new notes pattern name')
-        if item[1] == True and unicode(item[0]).strip() != '':
+        # If not Cancelled
+        if item[1] and unicode(item[0]).strip() != '':
             self.ui.cmbExportPatternName.addItem(item[0])
             # Activate just added item
             self.ui.cmbExportPatternName.setCurrentIndex(self.ui.cmbExportPatternName.count() - 1)
-            self.settings['Export Settings'][unicode(item[0])] = self.settings.exportSettings
+            self.settings.addExportPattern(unicode(item[0]))
             self.onExportPatternActivated(item[0])
 
     def onExportDeletePattern(self):
@@ -888,7 +943,7 @@ class SettingsDialog(QDialog):
         itemNo = self.ui.cmbExportPatternName.currentIndex()
         item = self.ui.cmbExportPatternName.currentText()
         self.ui.cmbExportPatternName.removeItem(itemNo)
-        self.settings['Export Settings'][unicode(item)]['Deleted'] = "True"
+        self.settings.removeExportPattern(unicode(item))
         # Update pattern text
         item = self.ui.cmbExportPatternName.currentText()
         self.onExportPatternActivated(item)
@@ -896,12 +951,7 @@ class SettingsDialog(QDialog):
     def onExportIsDefaultChanged(self, isDefaultExport):
         item = self.ui.cmbExportPatternName.currentText()
         if unicode(item) != '':
-            self.settings['Export Settings'][unicode(item)]['Default'] = unicode(isDefaultExport)
-            # If new Default state is True then change Default settings of all other exports to False
-            if unicode(self.settings['Export Settings'][unicode(item)]['Default']) == 'True':
-                for i in self.settings['Export Settings']:
-                    if unicode(i) != unicode(item):
-                        self.settings['Export Settings'][unicode(i)]['Default'] = 'False'
+            self.settings.setExportDefault(unicode(item), u'True' == unicode(isDefaultExport))
 
     def onExportHeaderChanged(self):
         item = self.ui.cmbExportPatternName.currentText()
@@ -943,31 +993,36 @@ class SettingsDialog(QDialog):
             self.settings['Export Settings'][unicode(item)]['Extension'] = unicode(extension)
     #End Export Settings Slots
 
-    #Begin Appliction Settings Slots
+    #Begin Application Settings Slots
     def onApplicationAttachNotesChanged(self, state):
         # Turn off Notes Attach options if it is disabled
         self.ui.cmbNotesPosition.setEnabled(state)
-        self.settings['Application Settings']['Attach Notes']['Attach Notes'] = unicode(state)
+        self.settings['Notes']['Attach'] = unicode(state)
+        logger.info("Notes/Attach updated to %s" % self.settings['Notes']['Attach'])
 
     def onApplicationAttachNotesSettingsChanged(self, text):
-        sender = self.sender()
-        if sender == self.ui.cmbNotesPosition:
-            self.settings['Application Settings']['Attach Notes']['Notes Position'] = unicode(text)
+        self.settings['Notes']['Position'] = unicode(text)
+        logger.info("Notes/Position updated to %s" % self.settings['Notes']['Position'])
 
     def onApplicationDateLanguageChanged(self, language):
-        self.settings['Application Settings']['Language']['Date Language'] = unicode(language)
+        self.settings['Language']['Date Language'] = unicode(language)
+        logger.info("Language/Date Language updated to %s" % self.settings['Language']['Date Language'])
 
     def onApplicationRangeSeparatorChanged(self, text):
-        self.settings['Application Settings']['Language']['Range Separator'] = unicode(text)
+        self.settings['Language']['Range Separator'] = unicode(text)
+        logger.info("Language/Range Separator updated to %s" % self.settings['Language']['Range Separator'])
 
     def onApplicationHighlightLanguageChanged(self, text):
-        self.settings['Application Settings']['Language']['Highlight'] = unicode(text)
+        self.settings['Language']['Highlight'] = unicode(text)
+        logger.info("Language/Highlight updated to %s" % self.settings['Language']['Highlight'])
 
     def onApplicationNoteLanguageChanged(self, text):
-        self.settings['Application Settings']['Language']['Note'] = unicode(text)
+        self.settings['Language']['Note'] = unicode(text)
+        logger.info("Language/Note updated to %s" % self.settings['Language']['Note'])
 
     def onApplicationBookmarkLanguageChanged(self, text):
-        self.settings['Application Settings']['Language']['Bookmark'] = unicode(text)
+        self.settings['Language']['Bookmark'] = unicode(text)
+        logger.info("Language/Bookmark updated to %s" % self.settings['Language']['Bookmark'])
     #End Application Settings Slots
 
     def onButtonOK(self):
@@ -976,7 +1031,9 @@ class SettingsDialog(QDialog):
 
     def onButtonApply(self):
         logger.info("Emitting settingsChanged")
-        self.emit(SIGNAL('settingsChanged(QString)'), self.settings)
+        logger.debug("... with settings %s" % pformat(self.settings))
+        # The signal is defined to carry a QString and has limited flexibility
+        self.settingsChanged.emit(self.settings)
 
     def onButtonCancel(self):
         self.close()
